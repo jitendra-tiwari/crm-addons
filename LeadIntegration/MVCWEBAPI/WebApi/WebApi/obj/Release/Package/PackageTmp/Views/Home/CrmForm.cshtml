@@ -1,0 +1,23 @@
+﻿
+@{
+    ViewBag.Title = "CrmForm";
+    Layout = null;
+}
+
+<h2>CrmForm</h2>
+
+@{ 
+    if (ViewBag.result != null)
+    {
+        @Html.Raw(ViewBag.result);
+      <br/>
+      <h1>I frame calling</h1>
+        <iframe style="width:500px;height:300px" src="@ViewBag.url"></iframe>
+
+
+
+        
+    }
+
+
+}
