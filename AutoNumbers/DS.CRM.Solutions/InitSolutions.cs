@@ -1163,6 +1163,7 @@ namespace DS.CRM
     }
     public class tabParameters
     {
+
         public string tabName { get; set; }
         public string tabDisplayName { get; set; }
         public string tabSectionName { get; set; }
