@@ -60,6 +60,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants.cs" />
     <Compile Include="InitSolutions.cs" />
     <Compile Include="CrmServiceHelpers.cs" />
     <Compile Include="DeviceIdManager.cs" />
@@ -90,13 +91,11 @@
     <Content Include="ImportJob.xml">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="ImportJob2.xml">
+    <Content Include="ImportConfiguration.xml">
       <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="FilesToImportWithDesign\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

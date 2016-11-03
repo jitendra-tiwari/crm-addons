@@ -23,31 +23,25 @@ namespace DS.CRM
     {
         #region Class Level Members
 
-        /// <summary>
-        /// Stores the organization service proxy.
-        /// </summary>
-        OrganizationServiceProxy _serviceProxy;        
-        private System.String _customizationPrefix = "dots001";        
-        System.String ManagedSolutionLocation = @"D:\temp\ManagedSolutionForImportExample.zip";
-        String outputDir = @"D:\temp\";
-        private string _customEntityName = "dots_forminformation001";
-        private string _customConfigurationEntityName = "dots_configuration001";
-        private Guid SitemapId;
+        private OrganizationServiceProxy _serviceProxy;
+        private readonly string _customizationPrefix = Constants.CustomizationPrefix;
+        private readonly string _managedSolutionLocation = Constants.ManagedSolutionLocation;
+        private readonly string _outputDir = Constants.OutputDirectory;
+        private readonly string _customEntityName = Constants.CustomEntityName;
+        private readonly string _customConfigurationEntityName = Constants.CustomConfigurationEntityName;
 
-        private System.Guid[] _webResourceIds = new System.Guid[9];
-        private System.Guid[] _webResourceIdForSolution = new System.Guid[1];
+        private Guid _sitemapId;
+        private Guid[] _webResourceIds = Constants.WebResourceIds;
+        private Guid[] _webResourceIdForSolution = Constants.WebResourceIdForSolution;
 
-        // Specify which language code to use in the sample. If you are using a language
-        // other than US English, you will need to modify this value accordingly.
-        // See http://msdn.microsoft.com/en-us/library/0h88fahh.aspx
-        private const int _languageCode = 1033;
-        private Guid _solutionsSampleSolutionId;
-        private Guid _crmSdkPublisherId;
+        private const int _languageCode = Constants.LanguageCode;
 
+        private Guid _solutionsSampleSolutionId = Guid.Empty;
+        private Guid _crmSdkPublisherId = Guid.Empty;
 
         #endregion Class Level Members
 
-        #region How To Sample Code
+        #region Public Funtions
         /// <summary>
         /// Shows how to perform the following tasks with solutions:
         /// - Create a Publisher
@@ -67,24 +61,15 @@ namespace DS.CRM
         {
             try
             {
-
                 // Connect to the Organization service. 
                 // The using statement assures that the service proxy will be properly disposed.
                 using (_serviceProxy = new OrganizationServiceProxy(serverConfig.OrganizationUri, serverConfig.HomeRealmUri, serverConfig.Credentials, serverConfig.DeviceCredentials))
                 {
-
                     // This statement is required to enable early-bound type support.
                     _serviceProxy.EnableProxyTypes();
-                    // GetDisplayNameAndLogicalNameOfFields("account");
-                    // GetAllFieldsOfEntityWithValue("account");
-                    //GetEntitiesDisplayNameAndLogicalName(_serviceProxy);
-                    //RetriveRecord();
-                    //CreateSiteMap();
-
+                    
                     // Call the method to create any data that this sample requires.
                     CreateRequiredRecords();
-                    //<snippetWorkWithSolutions1>
-
                 }
             }
 
@@ -95,9 +80,7 @@ namespace DS.CRM
                 throw;
             }
         }
-
-
-
+        
         /// <summary>
         /// This method creates any entity records that this sample requires.
         /// </summary>
@@ -117,11 +100,11 @@ namespace DS.CRM
             //Define a new publisher
             Publisher _crmSdkPublisher = new Publisher
             {
-                UniqueName = "sdksamples",
-                FriendlyName = "Microsoft CRM SDK Samples",
+                UniqueName = "dsleadintegration",
+                FriendlyName = "Dotsquares Ltd.",
                 SupportingWebsiteUrl = "http://msdn.microsoft.com/en-us/dynamics/crm/default.aspx",
-                CustomizationPrefix = "sample",
-                EMailAddress = "someone@microsoft.com",
+                CustomizationPrefix = "ds",
+                EMailAddress = "jitendra.tiwari@dotsquares.com",
                 Description = "This publisher was created with samples from the Microsoft Dynamics CRM SDK"
 
             };
@@ -163,10 +146,10 @@ namespace DS.CRM
             //Define a solution
             Solution solution = new Solution
             {
-                UniqueName = "samplesolutionforImport",
-                FriendlyName = "Sample Solution for Import",
+                UniqueName = "dsleadintegration",
+                FriendlyName = "Dotsquares Lead Integration Solution",
                 PublisherId = new EntityReference(Publisher.EntityLogicalName, _tempPublisherId),
-                Description = "This solution was created by the WorkWithSolutions sample code in the Microsoft Dynamics CRM SDK samples.",
+                Description = "This solution was created by the Dotsquares in the Microsoft Dynamics CRM SDK samples.",
                 Version = "1.0",
                 ConfigurationPageId = new EntityReference(WebResource.EntityLogicalName, _webResourceIdForSolution[0])
 
@@ -213,10 +196,8 @@ namespace DS.CRM
                 SolutionUniqueName = solution.UniqueName
 
             };
-
-
+            
             _serviceProxy.Execute(createOptionSetRequest);
-
 
             //delete configuration entity
             if (IsEntityExist(_customEntityName) > 0)
@@ -228,20 +209,16 @@ namespace DS.CRM
                 _serviceProxy.Execute(customEntityNameFormField);
             }
 
-            //<snippetWorkWithSolutions5>
-            // Add an existing Solution Component
-            //Add the custom entity to the solution
+            
             // Create the custom entity.
-
             CreateEntityRequest createformInforequest = new CreateEntityRequest
             {
-
                 //Define the entity
                 Entity = new EntityMetadata
                 {
                     SchemaName = _customEntityName,
-                    DisplayName = new Label("Sample WebForm", 1033),
-                    DisplayCollectionName = new Label("Sample WebForms", 1033),
+                    DisplayName = new Label("DS Lead Integration", 1033),
+                    DisplayCollectionName = new Label("Lead Forms", 1033),
                     Description = new Label("An entity to store information about user webform", 1033),
                     OwnershipType = OwnershipTypes.UserOwned,
                     IsActivity = false,
@@ -262,6 +239,7 @@ namespace DS.CRM
 
 
             };
+
             var _new_powerformEntity = _serviceProxy.Execute(createformInforequest);
 
             // Add some attributes to the Power WebForm entity
@@ -318,8 +296,8 @@ namespace DS.CRM
                 Entity = new EntityMetadata
                 {
                     SchemaName = _customConfigurationEntityName,
-                    DisplayName = new Label("Sample Configuration", 1033),
-                    DisplayCollectionName = new Label("Sample Configuration", 1033),
+                    DisplayName = new Label("DS Configuration", 1033),
+                    DisplayCollectionName = new Label("DS Configuration", 1033),
                     Description = new Label("An entity to store information about user details", 1033),
                     OwnershipType = OwnershipTypes.UserOwned,
                     IsActivity = false,
@@ -360,18 +338,18 @@ namespace DS.CRM
 
 
             CreateAttributeRequest createorguniquenameAttributeRequest = new CreateAttributeRequest
+            {
+                EntityName = _customConfigurationEntityName,
+                Attribute = new StringAttributeMetadata
                 {
-                    EntityName = _customConfigurationEntityName,
-                    Attribute = new StringAttributeMetadata
-                    {
-                        SchemaName = "new_orguniquename",
-                        RequiredLevel = new AttributeRequiredLevelManagedProperty(AttributeRequiredLevel.None),
-                        MaxLength = 100,
-                        FormatName = StringFormatName.Text,
-                        DisplayName = new Label("OrgUniqueName", 1033),
-                        Description = new Label("The OrgUniqueName.", 1033),
-                    }
-                };
+                    SchemaName = "new_orguniquename",
+                    RequiredLevel = new AttributeRequiredLevelManagedProperty(AttributeRequiredLevel.None),
+                    MaxLength = 100,
+                    FormatName = StringFormatName.Text,
+                    DisplayName = new Label("OrgUniqueName", 1033),
+                    Description = new Label("The OrgUniqueName.", 1033),
+                }
+            };
 
             _serviceProxy.Execute(createorguniquenameAttributeRequest);
 
@@ -449,34 +427,10 @@ namespace DS.CRM
             _serviceProxy.Execute(addConfigReq);
 
             //assign web resource to slution
-            createWebResource(solution.UniqueName);
+            CreateWebResource(solution.UniqueName);
 
             //assign configuration page above creted to solution
             AssiginConfigurationPageToSolution(_webResourceIdForSolution[0], solution.UniqueName);
-
-            ////assign sitemap to solution
-            //RetrieveEntityRequest retrieveSiteEntityRequest = new RetrieveEntityRequest
-            //{
-            //    EntityFilters = EntityFilters.Entity,
-            //    LogicalName = SiteMap.EntityLogicalName,
-
-            //};
-            //RetrieveEntityResponse retrieveSiteEntityResponse = (RetrieveEntityResponse)_serviceProxy.Execute(retrieveSiteEntityRequest);
-
-            //AddSolutionComponentRequest addReq2 = new AddSolutionComponentRequest()
-            //{
-            //    ComponentType = 1,
-            //    ComponentId = (Guid)retrieveSiteEntityResponse.EntityMetadata.MetadataId,
-            //    SolutionUniqueName = solution.UniqueName,
-            //    AddRequiredComponents = true
-            //};
-            //_serviceProxy.Execute(addReq2);
-
-            //Export an a solution
-
-
-
-
 
             ExportSolutionRequest exportSolutionRequest = new ExportSolutionRequest();
             exportSolutionRequest.Managed = false;
@@ -485,8 +439,8 @@ namespace DS.CRM
             ExportSolutionResponse exportSolutionResponse = (ExportSolutionResponse)_serviceProxy.Execute(exportSolutionRequest);
 
             byte[] exportXml = exportSolutionResponse.ExportSolutionFile;
-            System.IO.Directory.CreateDirectory(outputDir);
-            File.WriteAllBytes(ManagedSolutionLocation, exportXml);
+            System.IO.Directory.CreateDirectory(_outputDir);
+            File.WriteAllBytes(_managedSolutionLocation, exportXml);
 
             // Delete the solution and the components so it can be installed.
 
@@ -519,13 +473,12 @@ namespace DS.CRM
             }
 
 
-            Console.WriteLine("Managed Solution created and copied to {0}", ManagedSolutionLocation);
+            Console.WriteLine("Managed Solution created and copied to {0}", _managedSolutionLocation);
 
 
 
         }
-
-
+        
         public static List<getAllEntitiesModel> GetEntitiesDisplayNameAndLogicalName(IOrganizationService organizationService)
         {
             //RetrieveAllEntitiesRequest request = new RetrieveAllEntitiesRequest()
@@ -622,6 +575,7 @@ namespace DS.CRM
 
 
         }
+
         public void CreateSiteMap()
         {
             QueryExpression query = new QueryExpression();
@@ -714,6 +668,7 @@ namespace DS.CRM
             //**************************************
             string strHTML = System.Text.Encoding.UTF8.GetString(b);
         }
+
         public void RetriveRecord()
         {
             RetrieveMultipleRequest rmr = new RetrieveMultipleRequest();
@@ -730,7 +685,7 @@ namespace DS.CRM
             rmr.Query = query;
             resp = (RetrieveMultipleResponse)_serviceProxy.Execute(rmr);
             wb = (SiteMap)resp.EntityCollection.Entities[0];
-            SitemapId = wb.SiteMapId.Value;
+            _sitemapId = wb.SiteMapId.Value;
             // byte[] b = Convert.FromBase64String(wb.Content);
 
             //**************************************
@@ -738,6 +693,7 @@ namespace DS.CRM
             //**************************************
             //string strHTML = System.Text.Encoding.UTF8.GetString(b);
         }
+
         public void AssignSiteMap(Guid SesId, string _ImportWebResourcesSolutionUniqueName)
         {
             SiteMap sMap = new SiteMap();
@@ -751,6 +707,7 @@ namespace DS.CRM
             updateSiteMapResourceItem.Parameters.Add("SolutionUniqueName", _ImportWebResourcesSolutionUniqueName);
             _serviceProxy.Execute(updateSiteMapResourceItem);
         }
+
         public void AssiginConfigurationPageToSolution(Guid WesId, string _ImportWebResourcesSolutionUniqueName)
         {
             WebResource wes = new WebResource();
@@ -763,10 +720,8 @@ namespace DS.CRM
             updateWebResourceItem.Parameters.Add("SolutionUniqueName", _ImportWebResourcesSolutionUniqueName);
             _serviceProxy.Execute(updateWebResourceItem);
         }
-
-
-
-        public void getRibbon()
+        
+        public void GetRibbon()
         {
 
             // assign entity to solution
@@ -811,6 +766,7 @@ namespace DS.CRM
 
             CopySetTabandFieldsData(_customEntityName, tnt);
         }
+
         public int IsEntityExist(string entityName)
         {
             try
@@ -822,12 +778,9 @@ namespace DS.CRM
 
                 return resp.Results.Count;
             }
-            catch (Exception ex)
-            {
-                return 0;
-
-            }
+            catch { return 0; }
         }
+
         public StringBuilder CopySetTabandFieldsData(string entityLogicalName, List<tabParameters> tabParm)
         {
 
@@ -933,12 +886,14 @@ namespace DS.CRM
             return MyStringBuilder;
 
         }
+
         public void PublishForm(Entity en)
         {
             var request = new PublishXmlRequest { ParameterXml = String.Format("<importexportxml><entities><entity>{0}</entity></entities></importexportxml>", en.GetAttributeValue<string>("objecttypecode")) };
             _serviceProxy.Execute(request);
         }
-        public void createWebResource(string _ImportWebResourcesSolutionUniqueName)
+
+        public void CreateWebResource(string _ImportWebResourcesSolutionUniqueName)
         {
             //<snippetImportWebResources1>
 
@@ -965,7 +920,7 @@ namespace DS.CRM
                 //Set the Web Resource properties
                 WebResource wr = new WebResource
                 {
-                    Content = getEncodedFileContents(@"../../" + webResource.path),
+                    Content = GetEncodedFileContents(@"../../" + webResource.path),
                     DisplayName = webResource.displayName,
                     Description = webResource.description,
                     Name = _customizationPrefix + webResource.name,
@@ -999,7 +954,7 @@ namespace DS.CRM
             //<snippetImportWebResources1>
 
             //Read the descriptive data from the XML file
-            XDocument xmlDoc = XDocument.Load("../../ImportJob2.xml");
+            XDocument xmlDoc = XDocument.Load("../../ImportConfiguration.xml");
 
             //Create a collection of anonymous type references to each of the Web Resources
             var webResources = (from webResource in xmlDoc.Descendants("webResource")
@@ -1014,12 +969,11 @@ namespace DS.CRM
 
             // Loop through the collection creating Web Resources
             int counter = 0;
-
-            //<snippetImportWebResources2>
+            
             //Set the Web Resource properties
             WebResource wr = new WebResource
             {
-                Content = getEncodedFileContents(@"../../" + webResources.path),
+                Content = GetEncodedFileContents(@"../../" + webResources.path),
                 DisplayName = webResources.displayName,
                 Description = webResources.description,
                 Name = _customizationPrefix + webResources.name,
@@ -1033,12 +987,9 @@ namespace DS.CRM
             {
                 Target = wr
             };
-            //Set the SolutionUniqueName optional parameter so the Web Resources will be
-            // created in the context of a specific solution.
-            //cr.Parameters.Add("SolutionUniqueName", _ImportWebResourcesSolutionUniqueName);
-
+            
             CreateResponse cresp = (CreateResponse)_serviceProxy.Execute(cr);
-            //</snippetImportWebResources2>
+            
             // Capture the id values for the Web Resources so the sample can delete them.
             _webResourceIdForSolution[counter] = cresp.id;
 
@@ -1047,9 +998,8 @@ namespace DS.CRM
 
             //</snippetImportWebResources1>
         }
-        //<snippetImportWebResources3>
-        //Encodes the Web Resource File
-        static public string getEncodedFileContents(String pathToFile)
+        
+        static public string GetEncodedFileContents(String pathToFile)
         {
             FileStream fs = new FileStream(pathToFile, FileMode.Open, FileAccess.Read);
             byte[] binaryData = new byte[fs.Length];
@@ -1057,8 +1007,6 @@ namespace DS.CRM
             fs.Close();
             return System.Convert.ToBase64String(binaryData, 0, binaryData.Length);
         }
-        //</snippetImportWebResources3>
-
 
         /// <summary>
         /// Deletes any entity records that were created for this sample.
@@ -1081,14 +1029,14 @@ namespace DS.CRM
                 _serviceProxy.Delete(Solution.EntityLogicalName, _solutionsSampleSolutionId);
                 _serviceProxy.Delete(Publisher.EntityLogicalName, _crmSdkPublisherId);
                 // Remove the managed solution created by the create required fields code.
-                File.Delete(ManagedSolutionLocation);
+                File.Delete(_managedSolutionLocation);
 
 
                 Console.WriteLine("Entity records have been deleted.");
             }
         }
 
-        #endregion How To Sample Code
+        #endregion
 
         #region Main
         /// <summary>
@@ -1117,7 +1065,7 @@ namespace DS.CRM
                 Console.WriteLine("Inner Fault: {0}",
                     null == ex.Detail.InnerFault ? "No Inner Fault" : "Has Inner Fault");
             }
-            catch (System.TimeoutException ex)
+            catch (TimeoutException ex)
             {
                 Console.WriteLine("The application terminated with an error.");
                 Console.WriteLine("Message: {0}", ex.Message);
@@ -1125,7 +1073,7 @@ namespace DS.CRM
                 Console.WriteLine("Inner Fault: {0}",
                     null == ex.InnerException.Message ? "No Inner Fault" : ex.InnerException.Message);
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine("The application terminated with an error.");
                 Console.WriteLine(ex.Message);
@@ -1150,20 +1098,16 @@ namespace DS.CRM
             }
             // Additional exceptions to catch: SecurityTokenValidationException, ExpiredSecurityTokenException,
             // SecurityAccessDeniedException, MessageSecurityException, and SecurityNegotiationException.
-
             finally
             {
                 Console.WriteLine("Press <Enter> to exit.");
                 Console.ReadLine();
             }
-
         }
-        #endregion Main
-
+        #endregion
     }
     public class tabParameters
     {
-
         public string tabName { get; set; }
         public string tabDisplayName { get; set; }
         public string tabSectionName { get; set; }
@@ -1195,10 +1139,3 @@ namespace DS.CRM
 
     }
 }
-
-
-
-
-
-
-
