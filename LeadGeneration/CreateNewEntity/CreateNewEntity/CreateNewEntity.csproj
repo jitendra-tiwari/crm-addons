@@ -80,6 +80,7 @@
     <Content Include="FilesToImport\dots_configuration_pageOFDots.html" />
     <Content Include="FilesToImport\dots_displaybutton.html" />
     <Content Include="FilesToImport\dots_displaylinks.html" />
+    <Content Include="FilesToImport\Images\dotsquares.png" />
     <Content Include="FilesToImport\Images\submit.png" />
     <Content Include="FilesToImport\Script\bootstrap.js" />
     <Content Include="FilesToImport\Script\bootstrap.min.js" />

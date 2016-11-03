@@ -211,3 +211,7 @@ i.fail {
 	text-align: center;
 	width: 30px;
 }
+.form-error {
+       position: absolute;
+    top: 94%;
+        }

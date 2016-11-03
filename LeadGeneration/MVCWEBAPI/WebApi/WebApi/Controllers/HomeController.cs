@@ -1,4 +1,8 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Xrm.Client;
+using Microsoft.Xrm.Client.Services;
+using Microsoft.Xrm.Sdk;
+using Microsoft.Xrm.Sdk.Query;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,6 +15,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using WebApi.Database;
 using WebApi.Models;
 
 namespace WebApi.Controllers
@@ -21,8 +26,9 @@ namespace WebApi.Controllers
 
         public ActionResult Index()
         {
+          
             ViewBag.Title = "Home Page";
-
+           
             //string password = "HomePage";
             //var en = EncryptString(password, "@123");
             //var de = DecryptString(en, "@123");
@@ -82,8 +88,37 @@ namespace WebApi.Controllers
                 //return await httpResponse.Content.ReadAsStringAsync();
             }
         }
+        public bool IsSolutionUnInstall(tbl_Configuration tbl)
+        {
+            OrganizationService _service;
+            CrmConnection connection = CrmConnection.Parse("Url='" + tbl.ServerUrl + "'; Username='" + tbl.UserName + "'; Password='" + tbl.Password + "'");
+            using (_service = new OrganizationService(connection))
+            {
+                QueryExpression query = new QueryExpression();
+                query.EntityName = "dots_configuration001";
+                query.ColumnSet = new ColumnSet(true);
+
+                EntityCollection col = _service.RetrieveMultiple(query);
+
+                Entity SampleCofiguration = null;
+                if (col != null && col.Entities.Count > 0)
+                {
+                    SampleCofiguration = col.Entities[0];
+                    //for solution installed and also registerd
+                    if (SampleCofiguration["new_registerid"].ToString() != null)
+                        return false;
+                    else //for solution installed but not registerd
+                        return true;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+        }
         public async Task<ActionResult> CrmForm(Guid rId)
         {
+            
             WebApi.Database.MicrosoftCRMEntities Obj = new Database.MicrosoftCRMEntities();
             try
             {
@@ -91,35 +126,50 @@ namespace WebApi.Controllers
                 if (rId != Guid.Empty)
                 {
                     var objtbl_Configuration = Obj.tbl_Configuration.SingleOrDefault(o => o.Id == rId);
+                    
                     if (objtbl_Configuration != null)
                     {
-                        if (objtbl_Configuration.ExpireDate <= DateTime.Now)
+                        //check solution uninstalled or not
+                        if (IsSolutionUnInstall(objtbl_Configuration) == false)
                         {
-                            string getUrlName = "GetForm";
-                            var AbsoluteUri = Request.Url.AbsoluteUri;
-                            var sd = Request.Url.GetLeftPart(UriPartial.Authority);
-                            string ApiUrl = AbsoluteUri.Replace(AbsoluteUri, sd + "/api/values/" + getUrlName.ToLower());
-                            HttpClient httpClient = new HttpClient();
+                            if (DateTime.Now.Date <= objtbl_Configuration.ExpireDate.Date)
+                            {
+                                string getUrlName = "GetForm";
+                                var AbsoluteUri = Request.Url.AbsoluteUri;
+                                var sd = Request.Url.GetLeftPart(UriPartial.Authority);
+                                string ApiUrl = AbsoluteUri.Replace(AbsoluteUri, sd + "/api/values/" + getUrlName.ToLower());
+                                HttpClient httpClient = new HttpClient();
 
 
-                            string server = "http://wds1.projectstatus.co.uk/CRMWebAPI/api/values/GetForm";
-                            //string local = "http://localhost:54126/api/values/GetForm";
-                            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, ApiUrl);
-                            HttpResponseMessage response = await httpClient.SendAsync(request);
-                            string result = await response.Content.ReadAsStringAsync();
-                            var rs = JsonConvert.DeserializeObject<HtmlConversion>(result);
-                            string body = rs.m_StringValue;
-                            body = body.Replace("###5", rId.ToString());
+                                string server = "http://wds1.projectstatus.co.uk/CRMWebAPI/api/values/GetForm";
+                                //string local = "http://localhost:54126/api/values/GetForm";
+                                HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, ApiUrl);
+                                HttpResponseMessage response = await httpClient.SendAsync(request);
+                                string result = await response.Content.ReadAsStringAsync();
+                                var rs = JsonConvert.DeserializeObject<HtmlConversion>(result);
+                                string body = rs.m_StringValue;
+                                body = body.Replace("###5", rId.ToString());
 
-                            ViewBag.result = body;
+                                ViewBag.result = body;
 
-                            ViewBag.url = Request.Url.AbsoluteUri;
+                                ViewBag.url = Request.Url.AbsoluteUri;
+                            }
+                            else
+                            {
+                                message = "Trial pack has expire!!!";
+                                ViewBag.message = message;
+                            }
                         }
                         else
                         {
-                            message = "Trial pack has expire!!!";
+                            message = "Please check solution registration and installation exist or not!!!";
                             ViewBag.message = message;
                         }
+                    }
+                    else
+                    {
+                        message = "You are not authorized user!!!";
+                        ViewBag.message = message;
                     }
                 }
                

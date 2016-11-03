@@ -11,7 +11,7 @@ namespace WebApi.Database
 {
     using System;
     using System.Collections.Generic;
-    using System.Data.SqlTypes;
+    
     public partial class tbl_Configuration
     {
         public System.Guid Id { get; set; }
@@ -30,8 +30,9 @@ namespace WebApi.Database
         public string OrgUniqueName { get; set; }
         public string ServerUrl { get; set; }
         public string SubscriptionType { get; set; }
-        public System.DateTime CreateDate { get; set; }       
-        public System.DateTime ModifyDate { get; set; }
+        public System.DateTime CreateDate { get; set; }
+        public Nullable<System.DateTime> ModifyDate { get; set; }
         public System.DateTime ExpireDate { get; set; }
+        public bool IsCreated { get; set; }
     }
 }

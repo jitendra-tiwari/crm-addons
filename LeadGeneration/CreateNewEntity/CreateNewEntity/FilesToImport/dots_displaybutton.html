@@ -1,19 +1,14 @@
-﻿
-<html>
+﻿<html>
 <head>
     <title></title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <link href="CSS/bootstrap.min.css" rel="stylesheet">
-    <link href="CSS/style.css" rel="stylesheet">
-    <script src="Script/bootstrap.min.js"></script>
+
     <script>
 
         $(document).ready(function () {
-            $("#geturl").click(function () {
-                $(".loading").show();
-                GetConfigurationDetails();
-            });
 
+
+                GetConfigurationDetails();
 
         });
         function GetConfigurationDetails() {
@@ -32,11 +27,10 @@
                     console.log('output');
                     console.log(output);
                     if (output.length > 0) {
-                        var link = "https://192.168.2.110:444/api/values/CrmForm?rId='" + output[0].new_registerId + "'";
-                        $(".loading").hide();
-                        $("#link-url").val(link);
-                        $("#frame-url").val("<iframe style='width:500px;height:300px' src='" + urlLink + "'></iframe>");
-                        $("#getUrlModal").show();
+                     var link = "https://crmwebapi.24livehost.com/Home/CrmForm?rId=" + output[0].new_registerid + "";
+
+                        $("#link-url").text(link);
+                        $("#frame-url").text("<iframe style='width:500px;height:300px' src='"+link+"'></iframe>");
                     }
                     //Xrm.Page.getAttribute("address1_line1").setValue(output[0].Address1_Line1);
 
@@ -51,32 +45,15 @@
 
         }
     </script>
+    <meta>
+    <meta>
+    <meta>
 </head>
-<body>
-    <div class="loading" style="display:none;">&nbsp;</div>
-    <div class="modal fade" id="getUrlModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">For Copy Ctrl+C</h4>
+<body style="word-wrap: break-word;">
+    <span style="font-style: normal;
+    font-weight: bold;">Copy Url link:</span><span id="link-url"></span>
+    <span style="font-style: normal;
+    font-weight: bold;">Copy Iframe Link:</span><span id="frame-url"></span>
 
-                </div>
-                <div class="modal-body">
-                    <!--<h3>Test CRM Credentials</h3>-->
-                    <label for="link-url">URL</label>
-                    <p><input id="link-url" name="link-url" type="text" class="form-control"></p>
-                    <label for="frame-url">IFRAME URL</label>
-                    <p><input id="frame-url" name="frame-url" type="text" class="form-control"></p>
-                </div>
-                <!--<div class="modal-footer">
-
-                    <button type="button" class="btn btn-primary">OK</button>
-                </div>-->
-            </div>
-        </div>
-    </div>
-    <input type="button" id="geturl" value="Get Url Link" style="width:200px;height:30px;" />
-    <!--<a href="#" class="blue" data-toggle="modal" data-target="#getUrlModal">Test CRM Credentials</a>-->
 </body>
 </html>

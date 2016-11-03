@@ -31,13 +31,13 @@ namespace CreateNewEntity
         private Guid _crmSdkPublisherId;
         private System.String _customizationPrefix="dots001";
         private Guid _solutionsSampleSolutionId;
-        System.String ManagedSolutionLocation = @"D:\temp\ManagedSolutionForImportExample.zip";
+        System.String ManagedSolutionLocation = @"D:\temp\DS_Lead_Integration_Solutions.zip";
         String outputDir = @"D:\temp\";
         private  string _customEntityName = "dots_forminformation001";
         private string _customConfigurationEntityName = "dots_configuration001";
       private  Guid SitemapId;
       
-        private System.Guid[] _webResourceIds = new System.Guid[9];
+        private System.Guid[] _webResourceIds = new System.Guid[10];
         private System.Guid[] _webResourceIdForSolution = new System.Guid[1];
 
         // Specify which language code to use in the sample. If you are using a language
@@ -118,11 +118,11 @@ namespace CreateNewEntity
             //Define a new publisher
             Publisher _crmSdkPublisher = new Publisher
             {
-                UniqueName = "sdksamples",
-                FriendlyName = "Microsoft CRM SDK Samples",
+                UniqueName = "dsleadintegration",
+                FriendlyName = "Dotsquares Ltd.",
                 SupportingWebsiteUrl = "http://msdn.microsoft.com/en-us/dynamics/crm/default.aspx",
-                CustomizationPrefix = "sample",               
-                EMailAddress = "someone@microsoft.com",
+                CustomizationPrefix = "ds",               
+                EMailAddress = "jitendra.tiwari@dotsquares.com",
                 Description = "This publisher was created with samples from the Microsoft Dynamics CRM SDK"           
                  
             };
@@ -164,10 +164,10 @@ namespace CreateNewEntity
             //Define a solution
             Solution solution = new Solution
             {
-                UniqueName = "samplesolutionforImport",
-                FriendlyName = "Sample Solution for Import",
+                UniqueName = "dsleadintegration",
+                FriendlyName = "Dotsquares Lead Integration Solution",
                 PublisherId = new EntityReference(Publisher.EntityLogicalName, _tempPublisherId),
-                Description = "This solution was created by the WorkWithSolutions sample code in the Microsoft Dynamics CRM SDK samples.",
+                Description = "This solution was created by the Dotsquares in the Microsoft Dynamics CRM SDK samples.",
                 Version = "1.0",
                 ConfigurationPageId=new EntityReference(WebResource.EntityLogicalName, _webResourceIdForSolution[0])
                               
@@ -241,8 +241,8 @@ namespace CreateNewEntity
                     Entity = new EntityMetadata
                     {
                         SchemaName = _customEntityName,
-                        DisplayName = new Label("Sample WebForm", 1033),
-                        DisplayCollectionName = new Label("Sample WebForms", 1033),
+                        DisplayName = new Label("DS Lead Integration", 1033),
+                        DisplayCollectionName = new Label("Lead Forms", 1033),
                         Description = new Label("An entity to store information about user webform", 1033),
                         OwnershipType = OwnershipTypes.UserOwned,
                         IsActivity = false,
@@ -319,8 +319,8 @@ namespace CreateNewEntity
                     Entity = new EntityMetadata
                     {
                         SchemaName = _customConfigurationEntityName,
-                        DisplayName = new Label("Sample Configuration", 1033),
-                        DisplayCollectionName = new Label("Sample Configuration", 1033),
+                        DisplayName = new Label("DS Configuration", 1033),
+                        DisplayCollectionName = new Label("DS Configuration", 1033),
                         Description = new Label("An entity to store information about user details", 1033),
                         OwnershipType = OwnershipTypes.UserOwned,
                         IsActivity = false,

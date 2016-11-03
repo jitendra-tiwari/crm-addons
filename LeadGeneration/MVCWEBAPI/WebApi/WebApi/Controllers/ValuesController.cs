@@ -83,7 +83,7 @@ namespace WebApi.Controllers
             sb.Append("<head>");
             sb.Append("<meta charset='utf-8'><meta http-equiv='X-UA-Compatible' content='IE=edge'><meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='' ><meta name='author' content='' ><link rel='icon' href = '../../favicon.ico'>");
             sb.Append("<title>Dotsquares</title>");
-            sb.Append("<link href='http://localhost:54126/CSS/bootstrap.min.css' rel='stylesheet'><link href='http://localhost:54126/CSS/style.css' rel='stylesheet'>");
+            sb.Append("<link href='"+sd+"/CSS/bootstrap.min.css' rel='stylesheet'><link href='"+sd+"/CSS/style.css' rel='stylesheet'>");
             sb.Append("</head>");
             sb.Append("<body>");
 
@@ -112,7 +112,7 @@ namespace WebApi.Controllers
                 }
             }
 
-            sb.Append("<div style='margin-top:10px' class='form-group'><div class='col-sm-12 controls'><button type = 'submit' class='btn btn-success' >Submit</button></div></div>");
+            sb.Append("<div style='margin-top:10px' class='form-group'><div class='col-sm-12 controls'><button type = 'submit' class='btn btn-success' id='btn-f-submit' >Submit</button></div></div>");
 
 
             sb.Append("</form>");
@@ -120,7 +120,7 @@ namespace WebApi.Controllers
             sb.Append("<script src='https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js'></script>");
             sb.Append("<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js'></script>");
             sb.Append("<link href='https://cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/theme-default.min.css' rel='stylesheet' type='text/css'/>");
-            sb.Append("<script src='http://localhost:54126/Script/bootstrap.min.js'></script>");
+            sb.Append("<script src='"+sd+"/Script/bootstrap.min.js'></script>");
             sb.Append("<script>$.validate({form: '"+'#'+form.FormId+"', });</script>");
 
             sb.Append("</body>");
@@ -134,7 +134,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]        
-        public LeadCreationModel PostForm(GetFormData model)
+        public LeadCreationModel PostForm([FromBody]  GetFormData model)
         {
             var Leadmodel = new LeadCreationModel();
             try
@@ -354,7 +354,41 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
-        public CRMUserAuthenticateModel UserAuthenticate(string FirstName, string LastName,string Company,string ContactNo,string Email,string Address,string Country,string State,string City,string PostalCode,string SubscriptionType, string orgName,string ServerUrl, string UserName,string Password)
+        public CRMUserAuthenticateModel LoadDetails(string registerId)
+        {
+            var model = new CRMUserAuthenticateModel();
+            Guid Id = Guid.Empty;
+            if (registerId != null)
+                Id = Guid.Parse(registerId);
+
+            var result = Obj.tbl_Configuration.SingleOrDefault(o => o.Id == Id);
+            if (result != null)
+            {
+                model.FirstName = result.FirstName;
+                model.LastName = result.LastName;
+                model.Company = result.Company;
+                model.ContactNo = result.ContactNo;
+                model.Email = result.Email;
+                model.Address = result.Address;
+                model.Country = result.Country;
+                model.State = result.State;
+                model.City = result.City;
+                model.PostalCode = result.PostalCode;
+                model.UserName = result.UserName;
+                model.Password = "*****";
+                model.SubscriptionType = result.SubscriptionType;
+                model.ExpireDate = result.ExpireDate.Date;
+                model.IsSuccess = true;
+                return model;
+            }
+            else
+            {
+                model.IsSuccess = false;
+                return model;
+            }
+        }
+        [HttpGet]       
+        public CRMUserAuthenticateModel UserAuthenticate(string FirstName, string LastName, string Company, string ContactNo, string Email, string Address, string Country, string State, string City, string PostalCode, string SubscriptionType, string orgName, string ServerUrl, string UserName, string Password,string RegisterId)
         {
 
            
@@ -405,6 +439,8 @@ namespace WebApi.Controllers
                 // Set the credentials.
                 AuthenticationCredentials authCredentials = GetCredentials(serviceManagement, endpointType ,_userName,_password,_domain);
 
+                //for stop 5 second to response some server 
+                System.Threading.Thread.Sleep(5000);
 
                 String organizationUri = String.Empty;
                 // Get the discovery service proxy.
@@ -448,11 +484,15 @@ namespace WebApi.Controllers
                             new ColumnSet(new string[] { "firstname", "lastname" })).ToEntity<SystemUser>();
                         //Console.WriteLine("Logged on user is {0} {1}.",
                         //    systemUser.FirstName, systemUser.LastName);
-                        tbl_Configuration tblConfig = new tbl_Configuration();
-                        var update = Obj.tbl_Configuration.SingleOrDefault(o => o.Id == Guid.NewGuid());
+                        Guid registerId = Guid.Empty;
+                        if (RegisterId != null)
+                            registerId = Guid.Parse(RegisterId);
+                        
+                                                    tbl_Configuration tblConfig = new tbl_Configuration();
+                        var update = Obj.tbl_Configuration.SingleOrDefault(o => o.Id == registerId);
                         if (update != null)
                         {
-                           
+
                             update.FirstName = FirstName;
                             update.LastName = LastName;
                             update.Company = Company;
@@ -468,14 +508,15 @@ namespace WebApi.Controllers
                             update.OrgUniqueName = orgName;
                             update.ServerUrl = ServerUrl;
                             update.SubscriptionType = SubscriptionType;
-                            update.ModifyDate = DateTime.Now;
+                            update.ModifyDate = DateTime.Now;                           
+                            update.IsCreated = false;
                             // tblConfig.ExpireDate = DateTime.Now.AddDays(trialTimePeriodInDays);
                             Obj.SaveChanges();
                         }
-                                                
+
                         else
                         {
-                            
+                            tblConfig.Id = Guid.NewGuid();
                             tblConfig.FirstName = FirstName;
                             tblConfig.LastName = LastName;
                             tblConfig.Company = Company;
@@ -492,19 +533,26 @@ namespace WebApi.Controllers
                             tblConfig.ServerUrl = ServerUrl;
                             tblConfig.SubscriptionType = SubscriptionType;
                             tblConfig.CreateDate = DateTime.Now;
+                            tblConfig.ModifyDate = null;
                             tblConfig.ExpireDate = DateTime.Now.AddDays(trialTimePeriodInDays);
+                            tblConfig.IsCreated = true;                           
                             Obj.tbl_Configuration.Add(tblConfig);
                             Obj.SaveChanges();
                         }
-                        
+
                         //return model
                         string  EncrypyUserName="",EncryptPassword="";
                         Guid Id = Guid.Empty;
-                        if(update!=null)
+                        if (update != null)
+                        {
                             model.Id = update.Id;
+                            model.IsCreated = update.IsCreated;
+                        }
                         else
-                        model.Id = tblConfig.Id;
-
+                        {
+                            model.Id = tblConfig.Id;
+                            model.IsCreated = tblConfig.IsCreated;
+                        }
                         model.FirstName = FirstName;
                         model.LastName = LastName;
                         model.Company = Company;
@@ -527,6 +575,7 @@ namespace WebApi.Controllers
                         model.SubscriptionType = SubscriptionType;
                                                                   
                         model.IsSuccess = true;
+                        
                     }
                 }
 

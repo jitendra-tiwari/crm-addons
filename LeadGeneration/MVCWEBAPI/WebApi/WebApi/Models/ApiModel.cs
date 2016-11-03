@@ -31,9 +31,9 @@ namespace WebApi.Models
         public string new_email { get; set; }
         public string new_description { get; set; }
 
-        public string new_url { get; set; }
-        public string new_username { get; set; }
-        public string new_pass { get; set; }
+        //public string new_url { get; set; }
+        //public string new_username { get; set; }
+        //public string new_pass { get; set; }
     }
 
 
@@ -78,6 +78,9 @@ namespace WebApi.Models
 
         public bool IsSuccess { get; set; }
         public string Error { get; set; }
+
+        public bool IsCreated { get; set; }
+       
     }
     public class DotsWebFormModel
     {

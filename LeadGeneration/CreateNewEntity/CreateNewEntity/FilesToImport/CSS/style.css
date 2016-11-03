@@ -211,3 +211,15 @@ i.fail {
 	text-align: center;
 	width: 30px;
 }
+.status {
+    margin: 0;
+    padding: 0;
+}
+.status > li {
+    background: #f5d89e none repeat scroll 0 0;
+ float:left;
+    list-style: outside none none;
+    margin-left: 23px;
+    padding: 10px 50px;
+    text-align: center;
+}

@@ -30,6 +30,19 @@ name: "API Default",
 routeTemplate: "api/{controller}/{action}/{id}",
 defaults: new { id = RouteParameter.Optional }
             );
+            //            config.Routes.MapHttpRoute(
+            //  name: "ApiByAction",
+            //  routeTemplate: "api/values/UserAuthenticate/{username}/{password}/{email}/{address}",
+            //  defaults: new { controller = "values", action = "UserAuthenticate" }
+            //);
+           
+            
+            //config.Routes.MapHttpRoute(
+            //  name: "ApiByAction",
+            // //routeTemplate: "api/values/UserAuthenticate/{firstname}/{lastname}/{company}/{contactno}/{email}/{address}/{country}/{state}/{city}/{postalcode}/{subscriptiontype}/{orgname}/{serverurl}/{username}/{password}",
+            // routeTemplate: "api/values/UserAuthenticate/{firstname}/{lastname}/{company}/{contactno}/{email}/{address}/{country}/{state}/{city}/{postalcode}/{subscriptiontype}/{orgname}/{serverurl}/{username}/{password}",
+            //  defaults: new { controller = "values", action = "UserAuthenticate" }
+            //);
         }
     }
 }

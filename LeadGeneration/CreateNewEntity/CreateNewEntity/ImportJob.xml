@@ -62,5 +62,12 @@
     <description>The HTML Web resource for the sample.</description>
     <name>_/ImportWebResources/Images/submit.png</name>
     <type name="PNG format">5</type>
-  </webResource> 
+  </webResource>
+  <webResource>
+    <path>FilesToImport\Images\dotsquares.png</path>
+    <displayName>Web Resource Import Sample dotsquares.png image</displayName>
+    <description>The HTML Web resource for the sample.</description>
+    <name>_/ImportWebResources/Images/dotsquares.png</name>
+    <type name="PNG format">5</type>
+  </webResource>
 </job>
