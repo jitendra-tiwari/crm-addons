@@ -30,6 +30,7 @@ namespace WebApi.Database
         public string OrgUniqueName { get; set; }
         public string ServerUrl { get; set; }
         public string SubscriptionType { get; set; }
+        public string SolutionName { get; set; }
         public System.DateTime CreateDate { get; set; }
         public Nullable<System.DateTime> ModifyDate { get; set; }
         public System.DateTime ExpireDate { get; set; }

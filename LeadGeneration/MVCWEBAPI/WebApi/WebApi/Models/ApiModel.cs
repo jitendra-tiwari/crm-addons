@@ -74,6 +74,7 @@ namespace WebApi.Models
         public string Password { get; set; }
         public string EPassword { get; set; }
         public string SubscriptionType { get; set; }
+        public string SolutionName { get; set; }
         public DateTime ExpireDate { get; set; }
 
         public bool IsSuccess { get; set; }

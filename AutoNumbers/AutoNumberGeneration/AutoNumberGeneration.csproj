@@ -55,6 +55,7 @@
     <Compile Include="AutoNumber.cs" />
     <Compile Include="Model\AutoNumberModel.cs" />
     <Compile Include="MyOrganizationCrmSdkTypes.cs" />
+    <Compile Include="OptionSets.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

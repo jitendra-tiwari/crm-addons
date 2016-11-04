@@ -29,6 +29,7 @@ namespace WebApi.Controllers
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class ValuesController : ApiController
     {
+        int trialTimePeriodInDays = Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["trialTimePeriodInDays"]);
         WebApi.Database.MicrosoftCRMEntities Obj = new Database.MicrosoftCRMEntities();
 
         private const string initVector = "akram@dots9uzpgzl88";
@@ -387,13 +388,145 @@ namespace WebApi.Controllers
                 return model;
             }
         }
+
+
+        [HttpGet]
+        public CRMUserAuthenticateModel LoadDetailsDotsCommon(string serverUrl, string orgName)
+        {
+            var model = new CRMUserAuthenticateModel();
+           
+
+            var result = Obj.tbl_Configuration.SingleOrDefault(o => o.ServerUrl.ToLower() == serverUrl.ToLower() && o.OrgUniqueName.ToLower()==orgName);
+            if (result != null)
+            {
+                model.FirstName = result.FirstName;
+                model.LastName = result.LastName;
+                model.Company = result.Company;
+                model.ContactNo = result.ContactNo;
+                model.Email = result.Email;
+                model.Address = result.Address;
+                model.Country = result.Country;
+                model.State = result.State;
+                model.City = result.City;
+                model.PostalCode = result.PostalCode;
+                model.UserName = result.UserName;
+                model.Password = "*****";
+                model.SubscriptionType = result.SubscriptionType;
+                model.ExpireDate = result.ExpireDate.Date;
+                model.IsSuccess = true;
+                return model;
+            }
+            else
+            {
+                model.IsSuccess = false;
+                return model;
+            }
+        }
+        [HttpGet]
+        public CRMUserAuthenticateModel DotsCommon(string FirstName, string LastName, string Company, string ContactNo, string Email, string Address, string Country, string State, string City, string PostalCode, string SubscriptionType, string orgName, string ServerUrl, string UserName, string Password, string SName)
+        {
+            var model = new CRMUserAuthenticateModel();
+            try
+            {
+               
+                tbl_Configuration tblConfig = new tbl_Configuration();
+                var update = Obj.tbl_Configuration.SingleOrDefault(o => o.ServerUrl.ToLower() == ServerUrl.ToLower() && o.OrgUniqueName.ToLower() == orgName.ToLower());
+                if (update != null)
+                {
+
+                    update.FirstName = FirstName;
+                    update.LastName = LastName;
+                    update.Company = Company;
+                    update.ContactNo = ContactNo;
+                    update.Email = Email;
+                    update.Address = Address;
+                    update.Country = Country;
+                    update.State = State;
+                    update.City = City;
+                    update.PostalCode = PostalCode;
+                    update.UserName = UserName;
+                    update.Password = Password;
+                    update.OrgUniqueName = orgName;
+                    update.ServerUrl = ServerUrl;
+                    update.SubscriptionType = SubscriptionType;
+                    update.ModifyDate = DateTime.Now;
+                    update.IsCreated = false;
+                    // tblConfig.ExpireDate = DateTime.Now.AddDays(trialTimePeriodInDays);
+                    Obj.SaveChanges();
+                }
+
+                else
+                {
+                    tblConfig.Id = Guid.NewGuid();
+                    tblConfig.FirstName = FirstName;
+                    tblConfig.LastName = LastName;
+                    tblConfig.Company = Company;
+                    tblConfig.ContactNo = ContactNo;
+                    tblConfig.Email = Email;
+                    tblConfig.Address = Address;
+                    tblConfig.Country = Country;
+                    tblConfig.State = State;
+                    tblConfig.City = City;
+                    tblConfig.PostalCode = PostalCode;
+                     tblConfig.UserName = UserName;
+                     tblConfig.Password = Password;
+                    tblConfig.OrgUniqueName = orgName;
+                    tblConfig.ServerUrl = ServerUrl;
+                    tblConfig.SubscriptionType = SubscriptionType;
+                    tblConfig.SolutionName = SName;
+                    tblConfig.CreateDate = DateTime.Now;
+                    tblConfig.ModifyDate = null;
+                    tblConfig.ExpireDate = DateTime.Now.AddDays(trialTimePeriodInDays);
+                    tblConfig.IsCreated = true;
+                    Obj.tbl_Configuration.Add(tblConfig);
+                    Obj.SaveChanges();
+                }
+
+                //return model
+                
+                if (update != null)
+                {
+                    model.Id = update.Id;
+                    model.IsCreated = update.IsCreated;
+                }
+                else
+                {
+                    model.Id = tblConfig.Id;
+                    model.IsCreated = tblConfig.IsCreated;
+                }
+                model.FirstName = FirstName;
+                model.LastName = LastName;
+                model.Company = Company;
+                model.ContactNo = ContactNo;
+                model.Email = Email;
+                model.Address = Address;
+                model.Country = Country;
+                model.State = State;
+                model.City = City;
+                model.PostalCode = PostalCode;
+                model.UserName = UserName;
+                model.Password = Password;
+                model.SubscriptionType = SubscriptionType;
+                model.SolutionName = SName;
+
+                model.IsSuccess = true;
+
+                return model;
+            }
+            catch (Exception ex)
+            {
+                model.IsSuccess = false;
+                model.Error = ex.Message;
+                return model;
+            }
+        }
         [HttpGet]       
         public CRMUserAuthenticateModel UserAuthenticate(string FirstName, string LastName, string Company, string ContactNo, string Email, string Address, string Country, string State, string City, string PostalCode, string SubscriptionType, string orgName, string ServerUrl, string UserName, string Password,string RegisterId)
         {
 
            
           
-            int trialTimePeriodInDays = Convert.ToInt32( System.Configuration.ConfigurationManager.AppSettings["trialTimePeriodInDays"]);
+          
             //string orgName = paramsObject.orgName;
             //string UserName = paramsObject.UserName;
             //string Password = paramsObject.Password;
@@ -508,6 +641,7 @@ namespace WebApi.Controllers
                             update.OrgUniqueName = orgName;
                             update.ServerUrl = ServerUrl;
                             update.SubscriptionType = SubscriptionType;
+                            update.SolutionName = "LeadCreation";
                             update.ModifyDate = DateTime.Now;                           
                             update.IsCreated = false;
                             // tblConfig.ExpireDate = DateTime.Now.AddDays(trialTimePeriodInDays);
@@ -532,6 +666,7 @@ namespace WebApi.Controllers
                             tblConfig.OrgUniqueName = orgName;
                             tblConfig.ServerUrl = ServerUrl;
                             tblConfig.SubscriptionType = SubscriptionType;
+                            tblConfig.SolutionName = "LeadCreation";
                             tblConfig.CreateDate = DateTime.Now;
                             tblConfig.ModifyDate = null;
                             tblConfig.ExpireDate = DateTime.Now.AddDays(trialTimePeriodInDays);

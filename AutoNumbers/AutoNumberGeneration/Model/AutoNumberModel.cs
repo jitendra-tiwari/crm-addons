@@ -6,34 +6,34 @@ using System.Threading.Tasks;
 
 namespace AutoNumberGeneration.Model
 {
-    public class tabParameters
+    public class TabParameters
     {
 
-        public string tabName { get; set; }
-        public string tabDisplayName { get; set; }
-        public string tabSectionName { get; set; }
-        public string tabSectionDisplayName { get; set; }
+        public string TabName { get; set; }
+        public string TabDisplayName { get; set; }
+        public string TabSectionName { get; set; }
+        public string TabSectionDisplayName { get; set; }
 
-        public List<entityFields> entityFields { get; set; }
+        public List<EntityFields> EntityFields { get; set; }
     }
 
-    public class entityFields
+    public class EntityFields
     {
-        public string controlId { get; set; }
-        public string dataFieldName { get; set; }
-        public string fieldDisplayName { get; set; }
+        public string ControlId { get; set; }
+        public string DataFieldName { get; set; }
+        public string FieldDisplayName { get; set; }
 
-        public string viewId { get; set; }
+        public string ViewId { get; set; }
         public bool IsGrid { get; set; }
     }
 
-    public class getAllEntitiesModel
+    public class GetAllEntitiesModel
     {
         public string DisplayName { get; set; }
         public string LogicalName { get; set; }
     }
 
-    public class getEntitiyFieldNames
+    public class GetEntitiyFieldNames
     {
         public string FieldName { get; set; }
         public string Value { get; set; }

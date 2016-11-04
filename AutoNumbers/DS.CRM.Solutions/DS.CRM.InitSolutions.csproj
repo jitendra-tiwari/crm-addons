@@ -95,7 +95,12 @@
       <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\AutoNumberGeneration\AutoNumberGeneration.csproj">
+      <Project>{1101FD56-D0E7-4586-83BE-2C69FE8FEE44}</Project>
+      <Name>AutoNumberGeneration</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -177,7 +177,10 @@ function SaveConfigurationDetails(RegisterId,serverUrl, orgUniqueName, username,
                 $("#tryalertsuccess").show();
                 $("#tryalertdanger").hide();
                 $("#tryalertsuccess").text("User Authenticate Successfully!");
-               
+                //appned button to div for open popup
+                AppendButton();
+                //create url and set value to popup
+                CreateUrl(RegisterId);
 
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -290,48 +293,65 @@ function CheckConfigurationDetails() {
         }
     });
 
-    function LoadConfigurationService(registrationId) {
+   
+   
+   
+}
+function LoadConfigurationService(registrationId) {
 
-        $.ajax({
-            url: "https://crmwebapi.24livehost.com/api/values/LoadDetails",            
-            type: "get", //send it through get method
-            data: {RegisterId: registrationId },
-            success: function (response) {
-                console.log(response);
-                if (response.IsSuccess) {
-                    $("#trytxtfirstname").val(response.FirstName);
-                    $("#trytxtlastname").val(response.LastName);
-                    $("#trytxtemail").val(response.Email);
+    $.ajax({
+        url: "https://crmwebapi.24livehost.com/api/values/LoadDetails",
+        type: "get", //send it through get method
+        data: { RegisterId: registrationId },
+        success: function (response) {
+            console.log(response);
+            if (response.IsSuccess) {
+                $("#trytxtfirstname").val(response.FirstName);
+                $("#trytxtlastname").val(response.LastName);
+                $("#trytxtemail").val(response.Email);
 
-                    $("#trytxtcompany").val(response.Company);
-                    $("#trytxtphonenumber").val(response.ContactNo);
-                    $("#trytxtaddress").val(response.Address);
-                    $("#trytxtcountry").val(response.Country);
-                    $("#trytxtstate").val(response.State);
-                    $("#trytxtcity").val(response.City);
+                $("#trytxtcompany").val(response.Company);
+                $("#trytxtphonenumber").val(response.ContactNo);
+                $("#trytxtaddress").val(response.Address);
+                $("#trytxtcountry").val(response.Country);
+                $("#trytxtstate").val(response.State);
+                $("#trytxtcity").val(response.City);
 
-                    $("#trytxtusername").val(response.UserName);
-                    $("#solutionStatus").text(response.SubscriptionType);
-                    var date = new Date(response.ExpireDate);
-                    var fulldate = ((date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear());
-                    $("#solutionExpires").text(fulldate);
-                   // $("#trytxtpassword").val(response.Password);
-                    $(".loading").hide();
+                $("#trytxtusername").val(response.UserName);
+                $("#solutionStatus").text(response.SubscriptionType);
+                var date = new Date(response.ExpireDate);
+                var fulldate = ((date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear());
+                $("#solutionExpires").text(fulldate);
+                // $("#trytxtpassword").val(response.Password); 
 
-                }
-                else{
-                
-                    $(".loading").hide();
-                }
-               
-            },
-            error: function (xhr) {
+                //appned button to div for open popup
+                AppendButton();
+                //create url and set value to popup
+                CreateUrl(registrationId);
+
                 $(".loading").hide();
-                //Do Something to handle error
-                $("#tryalertdanger").show();
-                $("#tryalertdanger").text(xhr.responseText);
-            }
-        });
-    }
 
+            }
+            else {
+
+                $(".loading").hide();
+            }
+
+        },
+        error: function (xhr) {
+            $(".loading").hide();
+            //Do Something to handle error
+            $("#tryalertdanger").show();
+            $("#tryalertdanger").text(xhr.responseText);
+        }
+    });
+}
+function AppendButton() {
+    $('#mydivbutton').append('<button id="btnurlpopup" data-target="#myModalUrl" data-toggle="modal">Get Url</button>');
+}
+
+function CreateUrl(RegisterId) {
+    var link = "https://crmwebapi.24livehost.com/Home/CrmForm?rId=" + RegisterId + "";
+    $("#txtUrl-Link").val(link);
+    $("#txtIframe-Src").val("<iframe style='width:500px;height:300px' src='" + link + "'></iframe>");
 }

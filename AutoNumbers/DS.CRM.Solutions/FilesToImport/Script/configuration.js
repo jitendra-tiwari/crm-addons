@@ -1,126 +1,155 @@
 ﻿
 $(document).ready(function () {
-   // getValidUser();  
+    // getValidUser();  
+       
+    CheckConfigurationDetails();
 
         $("#registration-form").submit(function (event) {
-            event.preventDefault();
-            alert('call function here');
+            event.preventDefault();           
             getValidUser();
         });
        
 });
+
+
 function getValidUser()
 {
     
     //  var IsTrue = $("#configurationForm").validate();
-    var trialId = "",subId="",type="";
+    var trialId = "", subId = "", type = "";
+    
     var serverUrl = parent.Xrm.Page.context.getClientUrl();
     var orgUniqueName = parent.Xrm.Page.context.getOrgUniqueName();
-
+    var userName = parent.Xrm.Page.context.getUserName();
     trialId = $("input[id='optradio_try']:checked").attr("id");
     subId = $("input[id='optradio_subscribe']:checked").attr("id");
-    if (typeof trialId === "undefined") {
+   
+    if (typeof trialId != "undefined") {
 
-        type = $("label[for='" + trialId + "']").text();
+        //type = $("label[for='" + trialId + "']").text();
+        type = "Trial";
     }
-    else if (typeof subId === "undefined")
+    else if (typeof subId != "undefined")
     {
-        type = $("label[for='" + trialId + "']").text();
+        //type = $("label[for='" + trialId + "']").text();
+        type = "Subscribe";
     }
+   
+ 
 
     var firstname = $("#trytxtfirstname").val();
     var lastname = $("#trytxtlastname").val();
     var email = $("#trytxtemail").val();
 
     var company = $("#trytxtcompany").val();
-    var phonenumbar = $("#trytxtphonenumbar").val();
-    var address = $("#trytxtemail").val();
+    var phonenumber = $("#trytxtphonenumber").val();
+    var address = $("#trytxtaddress").val();
     var country = $("#trytxtcountry").val();
     var state = $("#trytxtstate").val();
     var city = $("#trytxtcity").val();
 
-    var username = $("#trytxtusername").val();
-    var password = $("#trytxtpassword").val();
-
+   // var username = $("#trytxtusername").val();
+   // var password = $("#trytxtpassword").val();
+    var postalcode="44";
     $(".loading").show();
-    //if(IsTrue)
-    //{
-    
+   
+    try
+    {
         $.ajax({
-            url: "https://crmwebapi.24livehost.com/api/values/UserAuthenticate",
+            url: "https://crmwebapi.24livehost.com/api/values/DotsCommon",
+            //url: "http://localhost:54126/api/values/UserAuthenticate",
             type: "get", //send it through get method
-            data: {FirstName:firstname,LastName:lastname, Company:company,ContactNo:phonenumbar,Email:email,Address:address,Country:country,State:state,City:city,PostalCode:"",SubscriptionType:type,orgName: orgUniqueName,ServerUrl:serverUrl, UserName: username, Password: password },
+            data: { FirstName: firstname, LastName: lastname, Company: company, ContactNo: phonenumber, Email: email, Address: address, Country: country, State: state, City: city, PostalCode: postalcode, SubscriptionType: type, orgName: orgUniqueName, ServerUrl: serverUrl, UserName: userName, Password: null, SName: "AutoNumber" },
             success: function (response) {
                 console.log(response);
                 if (response.IsSuccess) {
-                    SaveConfigurationDetails(response.Id, serverUrl, orgUniqueName, username, password);
+                    if (response.IsCreated) {
+                        $(".loading").hide();
+                        $("#tryalertdanger").show();
+                        $("#tryalertdanger").text("User registration is successfull. !");
+                    }
+                    else {
+                        $(".loading").hide();
+                        $("#tryalertdanger").show();
+                        $("#tryalertdanger").text("Records are updated successfully.. !");
+                    }
                 }
                 else {
                     $(".loading").hide();
-                    $("#tryalertdanger").text("Please check your credential otherwise contact to admin.!");
+                    $("#tryalertdanger").show();
+                    $("#tryalertdanger").text(response.Error);
                 }
             },
             error: function (xhr) {
                 $(".loading").hide();
                 //Do Something to handle error
-                alert("error occurs");
+                $("#tryalertdanger").show();
+                $("#tryalertdanger").text("Some error occur.!");
             }
         });
-           
-        
-    //}
-}
-
-
-
-function SaveConfigurationDetails(RegisterId,serverUrl, orgUniqueName, username, password) {
-
-    if (serverUrl != "") {
-        var context = parent.Xrm.Page.context;
-        var serverUrl = context.getClientUrl();
-        var ODATA_ENDPOINT = "/XRMServices/2011/OrganizationData.svc";
-        var CRMObject = new Object();
-        ///////////////////////////////////////////////////////////// 
-        // Specify the ODATA entity collection 
-        var ODATA_EntityCollection = "/dots_configuration001Set";
-        ///////////////////////////////////////////////////////////// 
-        // Define attribute values for the CRM object you want created 
-
        
-        CRMObject.new_serverurl = serverUrl;
-        CRMObject.new_registerid = RegisterId;
-        CRMObject.new_orguniquename = orgUniqueName;
-        CRMObject.new_username = username;
-        CRMObject.new_password = password;
-
-        //Parse the entity object into JSON 
-        var jsonEntity = window.JSON.stringify(CRMObject);
-        //Asynchronous AJAX function to Create a CRM record using OData 
-        $.ajax({
-            type: "POST",
-            contentType: "application/json; charset=utf-8",
-            datatype: "json",
-            url: serverUrl + ODATA_ENDPOINT + ODATA_EntityCollection,
-            data: jsonEntity,
-            beforeSend: function (XMLHttpRequest) {
-                //Specifying this header ensures that the results will be returned as JSON. 
-                XMLHttpRequest.setRequestHeader("Accept", "application/json");
-            },
-            success: function (data, textStatus, XmlHttpRequest) {
-
-                var NewCRMRecordCreated = data["d"];
-                $(".loading").hide();
-                console.log(data["d"]);               
-                $("#tryalertsuccess").text("User Authenticate Successfully!");
-               
-
-            },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
-                $(".loading").hide();
-                $("#tryalertdanger").text("Please check your credential otherwise contact to admin.!");
-                alert("failure");
-            }
-        });
     }
+    catch(err) {       
+        $(".loading").hide();
+        $("#tryalertsuccess").hide();
+        $("#tryalertdanger").show();
+        $("#tryalertdanger").text(err.message);
+    }
+    
+}
+
+
+
+function CheckConfigurationDetails() {
+   // $(".loading").show();
+    var myserverUrl = parent.Xrm.Page.context.getClientUrl();
+    var myorgUniqueName = parent.Xrm.Page.context.getOrgUniqueName();
+   
+
+    $.ajax({
+        url: "https://crmwebapi.24livehost.com/api/values/LoadDetailsDotsCommon",
+        type: "get", //send it through get method
+        data: { serverUrl: myserverUrl, orgName: myorgUniqueName },
+        success: function (response) {
+            console.log(response);
+            if (response.IsSuccess) {
+                $("#trytxtfirstname").val(response.FirstName);
+                $("#trytxtlastname").val(response.LastName);
+                $("#trytxtemail").val(response.Email);
+
+                $("#trytxtcompany").val(response.Company);
+                $("#trytxtphonenumber").val(response.ContactNo);
+                $("#trytxtaddress").val(response.Address);
+                $("#trytxtcountry").val(response.Country);
+                $("#trytxtstate").val(response.State);
+                $("#trytxtcity").val(response.City);
+
+               // $("#trytxtusername").val(response.UserName);
+                $("#solutionStatus").text(response.SubscriptionType);
+                var date = new Date(response.ExpireDate);
+                var fulldate = ((date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear());
+                $("#solutionExpires").text(fulldate);
+                // $("#trytxtpassword").val(response.Password);
+                $(".loading").hide();
+
+            }
+            else {
+
+                $(".loading").hide();
+            }
+
+        },
+        error: function (xhr) {
+            $(".loading").hide();
+            //Do Something to handle error
+            $("#tryalertdanger").show();
+            $("#tryalertdanger").text(xhr.responseText);
+        }
+    });
+   
+   
+
+   
 
 }
+
