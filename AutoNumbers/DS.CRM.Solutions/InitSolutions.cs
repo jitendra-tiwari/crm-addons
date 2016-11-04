@@ -34,7 +34,7 @@ namespace DS.CRM
         private Guid[] _webResourceIds = Constants.WebResourceIds;
         private Guid[] _webResourceIdForSolution = Constants.WebResourceIdForSolution;
 
-        private const int _languageCode = Constants.LanguageCode;
+        private readonly int _languageCode = Constants.LanguageCode;
 
         private Guid _solutionsSampleSolutionId = Guid.Empty;
         private Guid _crmSdkPublisherId = Guid.Empty;
@@ -89,7 +89,7 @@ namespace DS.CRM
             // Create a managed solution for the Install or upgrade a solution sample
 
             Guid _tempPublisherId = new Guid();
-            System.String _tempCustomizationPrefix = "new";
+            System.String _tempCustomizationPrefix = "ds";
             Guid _tempSolutionsSampleSolutionId = new Guid();
             Random rn = new Random();
             System.String _TempGlobalOptionSetName = "_TempSampleGlobalOptionSetName" + rn.Next();
@@ -100,13 +100,12 @@ namespace DS.CRM
             //Define a new publisher
             Publisher _crmSdkPublisher = new Publisher
             {
-                UniqueName = "dsleadintegration",
-                FriendlyName = "Dotsquares Ltd.",
-                SupportingWebsiteUrl = "http://msdn.microsoft.com/en-us/dynamics/crm/default.aspx",
-                CustomizationPrefix = "ds",
-                EMailAddress = "jitendra.tiwari@dotsquares.com",
-                Description = "This publisher was created with samples from the Microsoft Dynamics CRM SDK"
-
+                UniqueName = Constants.PublisherUniqueName,
+                FriendlyName = Constants.PublisherFriendlyName,
+                SupportingWebsiteUrl = Constants.PublisherSupportingWebsiteUrl,
+                CustomizationPrefix = Constants.PublisherCustomizationPrefix,
+                EMailAddress = Constants.PublisherEmailAddress,
+                Description = Constants.PublisherDescription
             };
 
             //Does publisher already exist?
@@ -115,7 +114,6 @@ namespace DS.CRM
                 EntityName = Publisher.EntityLogicalName,
                 ColumnSet = new ColumnSet("publisherid", "customizationprefix"),
                 Criteria = new FilterExpression()
-
             };
 
             querySDKSamplePublisher.Criteria.AddCondition("uniquename", ConditionOperator.Equal, _crmSdkPublisher.UniqueName);
@@ -141,18 +139,15 @@ namespace DS.CRM
             UploadConfigurationPageForSolution();
             //SetWebResourceConfigurationForSolution();
 
-
-            //Create a Solution
             //Define a solution
             Solution solution = new Solution
             {
-                UniqueName = "dsleadintegration",
-                FriendlyName = "Dotsquares Lead Integration Solution",
+                UniqueName = Constants.SolutionUniqueName,
+                FriendlyName = Constants.SolutionFriendlyName,
                 PublisherId = new EntityReference(Publisher.EntityLogicalName, _tempPublisherId),
-                Description = "This solution was created by the Dotsquares in the Microsoft Dynamics CRM SDK samples.",
-                Version = "1.0",
+                Description = Constants.SolutionDescription,
+                Version = Constants.SolutionVersion,
                 ConfigurationPageId = new EntityReference(WebResource.EntityLogicalName, _webResourceIdForSolution[0])
-
             };
 
             //Check whether it already exists
@@ -171,6 +166,7 @@ namespace DS.CRM
                 SampleSolutionResults = (Solution)querySampleSolutionResults.Entities[0];
                 _tempSolutionsSampleSolutionId = (Guid)SampleSolutionResults.SolutionId;
             }
+            
             if (SampleSolutionResults == null)
             {
                 _tempSolutionsSampleSolutionId = _serviceProxy.Create(solution);
@@ -194,7 +190,6 @@ namespace DS.CRM
             {
                 OptionSet = optionSetMetadata,
                 SolutionUniqueName = solution.UniqueName
-
             };
             
             _serviceProxy.Execute(createOptionSetRequest);
@@ -234,15 +229,12 @@ namespace DS.CRM
                     FormatName = StringFormatName.Text,
                     DisplayName = new Label("Name", 1033),
                     Description = new Label("The primary attribute for the Power WebForm entity.", 1033),
-
                 }
-
-
             };
 
             var _new_powerformEntity = _serviceProxy.Execute(createformInforequest);
 
-            // Add some attributes to the Power WebForm entity
+            // Add some attributes to the WebForm entity
             CreateAttributeRequest createEmailAttributeRequest = new CreateAttributeRequest
             {
                 EntityName = _customEntityName,
@@ -315,8 +307,6 @@ namespace DS.CRM
                     Description = new Label("The primary attribute for the configuration entity.", 1033),
 
                 }
-
-
             };
             _serviceProxy.Execute(createrequest);
 
@@ -429,7 +419,7 @@ namespace DS.CRM
             //assign web resource to slution
             CreateWebResource(solution.UniqueName);
 
-            //assign configuration page above creted to solution
+            //assign configuration page above created to solution
             AssiginConfigurationPageToSolution(_webResourceIdForSolution[0], solution.UniqueName);
 
             ExportSolutionRequest exportSolutionRequest = new ExportSolutionRequest();
@@ -472,11 +462,7 @@ namespace DS.CRM
                 _serviceProxy.Delete(Publisher.EntityLogicalName, _tempPublisherId);
             }
 
-
             Console.WriteLine("Managed Solution created and copied to {0}", _managedSolutionLocation);
-
-
-
         }
         
         public static List<getAllEntitiesModel> GetEntitiesDisplayNameAndLogicalName(IOrganizationService organizationService)
@@ -592,13 +578,6 @@ namespace DS.CRM
             string sitemapcontent = sitemap["sitemapxml"].ToString();
             XDocument sitemapxml = XDocument.Parse(sitemapcontent);
 
-            //create new area
-
-            //           sitemapxml.Element("SiteMap")
-            //.Elements("Area")
-            //.Where(x => (string)x.Attribute("Id") == "WebPowerPack")
-            //.Remove();
-
             XElement root = new XElement("Area");
             root.Add(new XAttribute("Id", "WebPowerPack"),
                 new XAttribute("ShowGroups", "true"),
@@ -611,17 +590,7 @@ namespace DS.CRM
                 )));
 
 
-            sitemapxml.Element("SiteMap").Add(root);
-
-
-            //XElement root = new XElement("Area");
-            //root.Add(new XAttribute("Id", "WebPowerPack"), new XAttribute("ShowGroups", "true"), new XAttribute("Title", "WebPowerPack"));
-            //root.Add(new XElement("Group", new XAttribute("Id", "Group_SubWebPowerWebForm"), new XAttribute("Title", "SubWebPowerWebForm"),
-            //    new XElement("SubArea", new XAttribute("Id", "SubArea_dots_forminformation"), new XAttribute("Entity", "dots_forminformation")
-            //    )));
-
-
-            //sitemapxml.Element("SiteMap").Add(root);
+            sitemapxml.Element("SiteMap").Add(root);           
 
 
             sitemap["sitemapxml"] = sitemapxml.ToString();
@@ -731,25 +700,7 @@ namespace DS.CRM
                 LogicalName = SiteMap.EntityLogicalName,
             };
             RetrieveEntityResponse retrievepowerEntityResponse = (RetrieveEntityResponse)_serviceProxy.Execute(retrievepowertEntityRequest);
-            //RetrieveEntityRibbonRequest entRibReq = new RetrieveEntityRibbonRequest() { RibbonLocationFilter = RibbonLocationFilters.All };
-            ////Check for custom entities
-            //RetrieveAllEntitiesRequest raer = new RetrieveAllEntitiesRequest() { EntityFilters = EntityFilters.Entity };
-
-            //RetrieveAllEntitiesResponse resp = (RetrieveAllEntitiesResponse)_serviceProxy.Execute(raer);
-
-            //foreach (EntityMetadata em in resp.EntityMetadata)
-            //{
-            //    if (em.IsCustomEntity == true )
-            //    {
-            //        if (em.LogicalName == _customEntityName)
-            //        {
-            //            entRibReq.EntityName = em.LogicalName;
-            //            RetrieveEntityRibbonResponse entRibResp = (RetrieveEntityRibbonResponse)_serviceProxy.Execute(entRibReq);
-            //        }
-
-
-            //    }
-            //}
+            
         }
 
         public void CreateTab()
@@ -832,23 +783,7 @@ namespace DS.CRM
                 MyStringBuilder.Append("</rows>");
                 MyStringBuilder.Append("</section></sections></column></columns>");
                 MyStringBuilder.Append("</tab>");
-            }
-
-            //QueryExpression qe = new QueryExpression();
-            //qe.EntityName = "account";
-            //qe.ColumnSet = new ColumnSet { AllColumns = true };
-
-
-            // qe.LinkEntities.Add(new LinkEntity("account", "contact", "primarycontactid", "contactid", JoinOperator.Inner));
-            // qe.LinkEntities[0].Columns.AddColumns("firstname", "lastname");
-            // qe.LinkEntities[0].EntityAlias = "primarycontact";
-
-            //EntityCollection ec = _serviceProxy.RetrieveMultiple(qe);
-
-            //RetrieveEntityRequest entityReq = new RetrieveEntityRequest();
-            //// entityReq.EntityFilters = EntityFilters.Entity;
-            //entityReq.LogicalName = _customEntityName;
-            //RetrieveEntityResponse resp = (RetrieveEntityResponse)_serviceProxy.Execute(entityReq);
+            }          
 
             var sd = MyStringBuilder.ToString();
 
@@ -1106,6 +1041,7 @@ namespace DS.CRM
         }
         #endregion
     }
+
     public class tabParameters
     {
         public string tabName { get; set; }
