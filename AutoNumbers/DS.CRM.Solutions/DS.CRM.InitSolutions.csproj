@@ -64,8 +64,6 @@
     <Compile Include="InitSolutions.cs" />
     <Compile Include="CrmServiceHelpers.cs" />
     <Compile Include="DeviceIdManager.cs" />
-    <Compile Include="MyOrganizationCrmSdkTypes.cs" />
-    <Compile Include="OptionSets.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AutoNumberGeneration.Model
 {
-    public class TabParameters
+    public class TabParametersModel
     {
 
         public string TabName { get; set; }
@@ -27,13 +27,13 @@ namespace AutoNumberGeneration.Model
         public bool IsGrid { get; set; }
     }
 
-    public class GetAllEntitiesModel
+    public class CRMEntityModel
     {
         public string DisplayName { get; set; }
         public string LogicalName { get; set; }
     }
 
-    public class GetEntitiyFieldNames
+    public class EntitiyFieldNameModel
     {
         public string FieldName { get; set; }
         public string Value { get; set; }

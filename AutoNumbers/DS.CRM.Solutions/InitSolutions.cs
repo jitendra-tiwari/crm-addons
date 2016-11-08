@@ -1,4 +1,5 @@
-﻿using Microsoft.Crm.Sdk.Messages;
+﻿using AutoNumberGeneration.Model;
+using Microsoft.Crm.Sdk.Messages;
 using Microsoft.Crm.Sdk.Samples;
 using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Client;
@@ -315,8 +316,8 @@ namespace DS.CRM
 
             Console.WriteLine("Managed Solution created and copied to {0}", _managedSolutionLocation);
         }
-        
-        public static List<getAllEntitiesModel> GetEntitiesDisplayNameAndLogicalName(IOrganizationService organizationService)
+
+        public static List<CRMEntityModel> GetEntitiesDisplayNameAndLogicalName(IOrganizationService organizationService)
         {
             //RetrieveAllEntitiesRequest request = new RetrieveAllEntitiesRequest()
             //{
@@ -333,7 +334,7 @@ namespace DS.CRM
             //    }
 
             //Dictionary<string, string> EntityDisplayAndLogicalname = new Dictionary<string, string>();
-            List<getAllEntitiesModel> EntityDisplayAndLogicalname = new List<getAllEntitiesModel>();
+            List<CRMEntityModel> EntityDisplayAndLogicalname = new List<CRMEntityModel>();
             RetrieveAllEntitiesRequest metaDataRequest = new RetrieveAllEntitiesRequest();
             RetrieveAllEntitiesResponse metaDataResponse = new RetrieveAllEntitiesResponse();
             metaDataRequest.EntityFilters = EntityFilters.Entity;
@@ -349,7 +350,7 @@ namespace DS.CRM
                 //if(Entity.DisplayName.LocalizedLabels[i].Label!=null )
                 // s = Entity.DisplayName.LocalizedLabels[i].Label;
 
-                EntityDisplayAndLogicalname.Add(new getAllEntitiesModel { DisplayName = AEntity.DisplayName.UserLocalizedLabel != null ? AEntity.DisplayName.UserLocalizedLabel.Label : "Not Found", LogicalName = AEntity.LogicalName });
+                EntityDisplayAndLogicalname.Add(new CRMEntityModel { DisplayName = AEntity.DisplayName.UserLocalizedLabel != null ? AEntity.DisplayName.UserLocalizedLabel.Label : "Not Found", LogicalName = AEntity.LogicalName });
 
 
             }
@@ -376,20 +377,20 @@ namespace DS.CRM
 
             // Access the retrieved entity
             EntityMetadata retrievedEntityMetadata = entityResponse.EntityMetadata;
-            List<getEntitiyFieldNames> entityFieldList = new List<getEntitiyFieldNames>();
+            List<EntitiyFieldNameModel> entityFieldList = new List<EntitiyFieldNameModel>();
             //get the display name
 
             foreach (var attribute in retrievedEntityMetadata.Attributes)
             {
-                
-                entityFieldList.Add(new getEntitiyFieldNames { FieldName = attribute.DisplayName.UserLocalizedLabel != null ? attribute.DisplayName.UserLocalizedLabel.Label : "Field name not found", Value = attribute.LogicalName });
+
+                entityFieldList.Add(new EntitiyFieldNameModel { FieldName = attribute.DisplayName.UserLocalizedLabel != null ? attribute.DisplayName.UserLocalizedLabel.Label : "Field name not found", Value = attribute.LogicalName });
 
             }
         }
 
-        public List<getEntitiyFieldNames> GetAllFieldsOfEntityWithValue(string selectedEntityName)
+        public List<EntitiyFieldNameModel> GetAllFieldsOfEntityWithValue(string selectedEntityName)
         {
-            List<getEntitiyFieldNames> entityFieldList = new List<getEntitiyFieldNames>();
+            List<EntitiyFieldNameModel> entityFieldList = new List<EntitiyFieldNameModel>();
 
             QueryExpression query = new QueryExpression();
             query.EntityName = selectedEntityName;
@@ -405,7 +406,7 @@ namespace DS.CRM
             {
                 //Console.WriteLine(attribute.Key + ": " + attribute.Value);
 
-                entityFieldList.Add(new getEntitiyFieldNames { FieldName = attribute.Key, Value = attribute.Value.ToString() });
+                entityFieldList.Add(new EntitiyFieldNameModel { FieldName = attribute.Key, Value = attribute.Value.ToString() });
             }
 
             return entityFieldList;
@@ -557,13 +558,13 @@ namespace DS.CRM
         public void CreateTab()
         {
 
-            List<tabParameters> tnt = new List<tabParameters>();
-            List<entityFields> ent = new List<entityFields>();
-            ent.Add(new entityFields { controlId = "new_name", dataFieldName = "new_name", fieldDisplayName = "Name" });
-            ent.Add(new entityFields { controlId = "new_email", dataFieldName = "new_email", fieldDisplayName = "Email" });
-            ent.Add(new entityFields { controlId = "new_message", dataFieldName = "new_message", fieldDisplayName = "Message" });
+            List<TabParametersModel> tnt = new List<TabParametersModel>();
+            List<EntityFields> ent = new List<EntityFields>();
+            ent.Add(new EntityFields { ControlId = "new_name", DataFieldName = "new_name", FieldDisplayName = "Name" });
+            ent.Add(new EntityFields { ControlId = "new_email", DataFieldName = "new_email", FieldDisplayName = "Email" });
+            ent.Add(new EntityFields { ControlId = "new_message", DataFieldName = "new_message", FieldDisplayName = "Message" });
 
-            tnt.Add(new tabParameters { tabName = "tab_custom", tabDisplayName = "Custom Tab", tabSectionName = "tab_section", tabSectionDisplayName = "New Section", entityFields = ent });
+            tnt.Add(new TabParametersModel { TabName = "tab_custom", TabDisplayName = "Custom Tab", TabSectionName = "tab_section", TabSectionDisplayName = "New Section", EntityFields = ent });
 
 
             CopySetTabandFieldsData(_customEntityName, tnt);
@@ -583,7 +584,7 @@ namespace DS.CRM
             catch { return 0; }
         }
 
-        public StringBuilder CopySetTabandFieldsData(string entityLogicalName, List<tabParameters> tabParm)
+        public StringBuilder CopySetTabandFieldsData(string entityLogicalName, List<TabParametersModel> tabParm)
         {
 
             QueryExpression qe = new QueryExpression("systemform");
@@ -613,22 +614,22 @@ namespace DS.CRM
                 if (i > 2)
                 {
                     MyStringBuilder.AppendLine();
-                    MyStringBuilder.Append("<tab name=\"" + tab.tabName + "\" id=\"{" + tabId + "}\" IsUserDefined=\"0\" locklevel=\"0\" showlabel=\"true\"  expanded=\"true\" >");
+                    MyStringBuilder.Append("<tab name=\"" + tab.TabName + "\" id=\"{" + tabId + "}\" IsUserDefined=\"0\" locklevel=\"0\" showlabel=\"true\"  expanded=\"true\" >");
                 }
                 else
-                    MyStringBuilder.Append("<tab name=\"" + tab.tabName + "\" id=\"{" + tabId + "}\" IsUserDefined=\"0\" locklevel=\"0\" showlabel=\"true\"  expanded=\"true\" >");
+                    MyStringBuilder.Append("<tab name=\"" + tab.TabName + "\" id=\"{" + tabId + "}\" IsUserDefined=\"0\" locklevel=\"0\" showlabel=\"true\"  expanded=\"true\" >");
 
-                MyStringBuilder.Append("<labels><label description=\"" + tab.tabDisplayName + "\" languagecode=\"1033\" /></labels>");
-                MyStringBuilder.Append("<columns><column width=\"100%\"><sections><section name=\"" + tab.tabSectionName + "\" showlabel=\"false\"  showbar=\"false\" locklevel=\"0\" id=\"{" + sectioId + "}\" IsUserDefined=\"0\" layout=\"varwidth\" columns=\"1\" labelwidth=\"115\" celllabelalignment=\"Left\" celllabelposition=\"Left\" ><labels><label description=\"" + tab.tabSectionDisplayName + "\" languagecode=\"1033\" /></labels>");
+                MyStringBuilder.Append("<labels><label description=\"" + tab.TabDisplayName + "\" languagecode=\"1033\" /></labels>");
+                MyStringBuilder.Append("<columns><column width=\"100%\"><sections><section name=\"" + tab.TabSectionName + "\" showlabel=\"false\"  showbar=\"false\" locklevel=\"0\" id=\"{" + sectioId + "}\" IsUserDefined=\"0\" layout=\"varwidth\" columns=\"1\" labelwidth=\"115\" celllabelalignment=\"Left\" celllabelposition=\"Left\" ><labels><label description=\"" + tab.TabSectionDisplayName + "\" languagecode=\"1033\" /></labels>");
                 MyStringBuilder.Append("<rows>");
-                foreach (var field in tab.entityFields)
+                foreach (var field in tab.EntityFields)
                 {
                     Guid cellId = Guid.NewGuid();
                     Guid classId = Guid.NewGuid();
                     if (field.IsGrid)
-                        MyStringBuilder.Append("<row><cell id=\"{" + cellId + "}\" showlabel=\"true\" locklevel=\"0\" > <labels><label description=\"" + field.fieldDisplayName + "\" languagecode=\"1033\" /> </labels><control id=\"" + field.controlId + "\" classid=\"{" + classId + "}\"  disabled=\"false\"><parameters><ViewId>" + field.viewId + "</ViewId><IsUserView>false</IsUserView><RelationshipName>New_Parent_powerformId</RelationshipName><TargetEntityType>new_powerformfieldsid</TargetEntityType><AutoExpand>Fixed</AutoExpand><EnableQuickFind>false</EnableQuickFind><EnableViewPicker>false</EnableViewPicker><ViewIds>" + field.viewId + "</ViewIds ><EnableJumpBar>false</EnableJumpBar><ChartGridMode>Grid</ChartGridMode><VisualizationId/><IsUserChart>false</IsUserChart><EnableChartPicker>false</EnableChartPicker><RecordsPerPage>10</RecordsPerPage></parameters></control></cell></row>");
+                        MyStringBuilder.Append("<row><cell id=\"{" + cellId + "}\" showlabel=\"true\" locklevel=\"0\" > <labels><label description=\"" + field.FieldDisplayName + "\" languagecode=\"1033\" /> </labels><control id=\"" + field.ControlId + "\" classid=\"{" + classId + "}\"  disabled=\"false\"><parameters><ViewId>" + field.ViewId + "</ViewId><IsUserView>false</IsUserView><RelationshipName>New_Parent_powerformId</RelationshipName><TargetEntityType>new_powerformfieldsid</TargetEntityType><AutoExpand>Fixed</AutoExpand><EnableQuickFind>false</EnableQuickFind><EnableViewPicker>false</EnableViewPicker><ViewIds>" + field.ViewId + "</ViewIds ><EnableJumpBar>false</EnableJumpBar><ChartGridMode>Grid</ChartGridMode><VisualizationId/><IsUserChart>false</IsUserChart><EnableChartPicker>false</EnableChartPicker><RecordsPerPage>10</RecordsPerPage></parameters></control></cell></row>");
                     else
-                        MyStringBuilder.Append("<row><cell id=\"{" + cellId + "}\" showlabel=\"true\" locklevel=\"0\" > <labels><label description=\"" + field.fieldDisplayName + "\" languagecode=\"1033\" /> </labels><control id=\"" + field.controlId + "\" classid=\"{" + classId + "}\" datafieldname=\"" + field.dataFieldName + "\" disabled=\"false\" /></cell></row>");
+                        MyStringBuilder.Append("<row><cell id=\"{" + cellId + "}\" showlabel=\"true\" locklevel=\"0\" > <labels><label description=\"" + field.FieldDisplayName + "\" languagecode=\"1033\" /> </labels><control id=\"" + field.ControlId + "\" classid=\"{" + classId + "}\" datafieldname=\"" + field.DataFieldName + "\" disabled=\"false\" /></cell></row>");
                 }
 
                 MyStringBuilder.Append("</rows>");
@@ -891,38 +892,5 @@ namespace DS.CRM
             }
         }
         #endregion
-    }
-
-    public class tabParameters
-    {
-        public string tabName { get; set; }
-        public string tabDisplayName { get; set; }
-        public string tabSectionName { get; set; }
-        public string tabSectionDisplayName { get; set; }
-
-        public List<entityFields> entityFields { get; set; }
-    }
-
-    public class entityFields
-    {
-        public string controlId { get; set; }
-        public string dataFieldName { get; set; }
-        public string fieldDisplayName { get; set; }
-
-        public string viewId { get; set; }
-        public bool IsGrid { get; set; }
-    }
-
-    public class getAllEntitiesModel
-    {
-        public string DisplayName { get; set; }
-        public string LogicalName { get; set; }
-    }
-
-    public class getEntitiyFieldNames
-    {
-        public string FieldName { get; set; }
-        public string Value { get; set; }
-
-    }
+    }  
 }
