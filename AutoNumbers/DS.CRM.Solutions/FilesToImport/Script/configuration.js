@@ -101,7 +101,7 @@ function getValidUser()
 
 
 function CheckConfigurationDetails() {
-   // $(".loading").show();
+    $(".loading").show();
     var myserverUrl = parent.Xrm.Page.context.getClientUrl();
     var myorgUniqueName = parent.Xrm.Page.context.getOrgUniqueName();
    

@@ -77,17 +77,16 @@
     <Content Include="FilesToImport\CSS\bootstrap.css" />
     <Content Include="FilesToImport\CSS\bootstrap.min.css" />
     <Content Include="FilesToImport\CSS\style.css" />
-    <Content Include="FilesToImport\dots_configuration_page.html" />
-    <Content Include="FilesToImport\dots_configuration_pageOFDots.html" />
-    <Content Include="FilesToImport\dots_displaybutton.html" />
-    <Content Include="FilesToImport\dots_displaylinks.html" />
+    <Content Include="FilesToImport\dots_AutoNumberConfiguration.html" />
+    <Content Include="FilesToImport\dots_entitesAndattributes.html" />
+    <Content Include="FilesToImport\Images\dotsquares.png" />
     <Content Include="FilesToImport\Images\submit.png" />
     <Content Include="FilesToImport\Script\bootstrap.js" />
     <Content Include="FilesToImport\Script\bootstrap.min.js" />
     <Content Include="FilesToImport\Script\configuration.js" />
     <Content Include="FilesToImport\Script\npm.js" />
     <Content Include="FilesToImport\Script\Script.js" />
-    <Content Include="FilesToImport\ShowData.htm" />
+    <Content Include="FilesToImport\Script\SDK.MetaData.js" />
     <Content Include="ImportJob.xml">
       <SubType>Designer</SubType>
     </Content>

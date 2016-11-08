@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.ServiceModel;
 using System.Text;
 using System.Xml;
@@ -27,8 +28,11 @@ namespace DS.CRM
         private readonly string _customizationPrefix = Constants.CustomizationPrefix;
         private readonly string _managedSolutionLocation = Constants.ManagedSolutionLocation;
         private readonly string _outputDir = Constants.OutputDirectory;
-        private readonly string _customEntityName = Constants.CustomEntityName;
-        private readonly string _customConfigurationEntityName = Constants.CustomConfigurationEntityName;
+        // private readonly string _customEntityName = Constants.CustomEntityName;
+        // private readonly string _customConfigurationEntityName = Constants.CustomConfigurationEntityName;
+
+        private readonly string _customEntityName = AutoNumberGeneration.AutoNumber._customEntityName;
+        private readonly string _customConfigurationEntityName = AutoNumberGeneration.AutoNumber._customConfigurationEntityName;
 
         private Guid _sitemapId;
         private Guid[] _webResourceIds = Constants.WebResourceIds;
@@ -66,8 +70,7 @@ namespace DS.CRM
                 using (_serviceProxy = new OrganizationServiceProxy(serverConfig.OrganizationUri, serverConfig.HomeRealmUri, serverConfig.Credentials, serverConfig.DeviceCredentials))
                 {
                     // This statement is required to enable early-bound type support.
-                    _serviceProxy.EnableProxyTypes();
-                    
+                      _serviceProxy.EnableProxyTypes();                   
                     // Call the method to create any data that this sample requires.
                     CreateRequiredRecords();
                 }
@@ -204,72 +207,13 @@ namespace DS.CRM
                 _serviceProxy.Execute(customEntityNameFormField);
             }
 
-            
-            // Create the custom entity.
-            CreateEntityRequest createformInforequest = new CreateEntityRequest
-            {
-                //Define the entity
-                Entity = new EntityMetadata
-                {
-                    SchemaName = _customEntityName,
-                    DisplayName = new Label("DS Lead Integration", 1033),
-                    DisplayCollectionName = new Label("Lead Forms", 1033),
-                    Description = new Label("An entity to store information about user webform", 1033),
-                    OwnershipType = OwnershipTypes.UserOwned,
-                    IsActivity = false,
-                    //CanCreateForms = new BooleanManagedProperty(true),
-                },
 
-                // Define the primary attribute for the entity               
-                PrimaryAttribute = new StringAttributeMetadata
-                {
-                    SchemaName = "new_name",
-                    RequiredLevel = new AttributeRequiredLevelManagedProperty(AttributeRequiredLevel.ApplicationRequired),
-                    MaxLength = 100,
-                    FormatName = StringFormatName.Text,
-                    DisplayName = new Label("Name", 1033),
-                    Description = new Label("The primary attribute for the Power WebForm entity.", 1033),
-                }
-            };
-
-            var _new_powerformEntity = _serviceProxy.Execute(createformInforequest);
-
-            // Add some attributes to the WebForm entity
-            CreateAttributeRequest createEmailAttributeRequest = new CreateAttributeRequest
-            {
-                EntityName = _customEntityName,
-                Attribute = new StringAttributeMetadata
-                {
-                    SchemaName = "new_email",
-                    RequiredLevel = new AttributeRequiredLevelManagedProperty(AttributeRequiredLevel.None),
-                    MaxLength = 100,
-                    FormatName = StringFormatName.Email,
-                    DisplayName = new Label("Email", 1033),
-                    Description = new Label("The Notify E-Mail.", 1033),
-                }
-            };
-
-            _serviceProxy.Execute(createEmailAttributeRequest);
-
-            CreateAttributeRequest createMessageAttributeRequest = new CreateAttributeRequest
-            {
-                EntityName = _customEntityName,
-                Attribute = new StringAttributeMetadata
-                {
-                    SchemaName = "new_message",
-                    RequiredLevel = new AttributeRequiredLevelManagedProperty(AttributeRequiredLevel.None),
-                    MaxLength = 100,
-                    FormatName = StringFormatName.TextArea,
-                    DisplayName = new Label("Message", 1033),
-                    Description = new Label("The Message.", 1033),
-                }
-            };
-
-            _serviceProxy.Execute(createMessageAttributeRequest);
+            // Create the dots_autonumber entity.
+            AutoNumberGeneration.AutoNumber.DotsAutoNumberEntity();
             // CreateTab();
 
 
-            //delete configuration entity
+            //delete dots_configuration entity
             if (IsEntityExist(_customConfigurationEntityName) > 0)
             {
                 DeleteEntityRequest customEntityNameFormField = new DeleteEntityRequest()
@@ -280,104 +224,11 @@ namespace DS.CRM
             }
 
 
-            //for create configuration entity           
-            CreateEntityRequest createrequest = new CreateEntityRequest
-            {
-
-                //Define the entity
-                Entity = new EntityMetadata
-                {
-                    SchemaName = _customConfigurationEntityName,
-                    DisplayName = new Label("DS Configuration", 1033),
-                    DisplayCollectionName = new Label("DS Configuration", 1033),
-                    Description = new Label("An entity to store information about user details", 1033),
-                    OwnershipType = OwnershipTypes.UserOwned,
-                    IsActivity = false,
-                    //CanCreateForms = new BooleanManagedProperty(true),
-                },
-
-                // Define the primary attribute for the entity               
-                PrimaryAttribute = new StringAttributeMetadata
-                {
-                    SchemaName = "new_serverurl",
-                    RequiredLevel = new AttributeRequiredLevelManagedProperty(AttributeRequiredLevel.ApplicationRequired),
-                    MaxLength = 200,
-                    FormatName = StringFormatName.Text,
-                    DisplayName = new Label("ServerUrl", 1033),
-                    Description = new Label("The primary attribute for the configuration entity.", 1033),
-
-                }
-            };
-            _serviceProxy.Execute(createrequest);
-
-            // Add some attributes to the Configuration entity
-            CreateAttributeRequest createRegisterIdAttributeRequest = new CreateAttributeRequest
-            {
-                EntityName = _customConfigurationEntityName,
-                Attribute = new StringAttributeMetadata
-                {
-                    SchemaName = "new_registerid",
-                    RequiredLevel = new AttributeRequiredLevelManagedProperty(AttributeRequiredLevel.None),
-                    MaxLength = 100,
-                    FormatName = StringFormatName.Text,
-                    DisplayName = new Label("RegisterId", 1033),
-                    Description = new Label("The RegisterId.", 1033),
-                }
-            };
-            _serviceProxy.Execute(createRegisterIdAttributeRequest);
+            //for create dots_configuration entity           
+            AutoNumberGeneration.AutoNumber.DotsAutoNumberConfigurationEntity();
 
 
-            CreateAttributeRequest createorguniquenameAttributeRequest = new CreateAttributeRequest
-            {
-                EntityName = _customConfigurationEntityName,
-                Attribute = new StringAttributeMetadata
-                {
-                    SchemaName = "new_orguniquename",
-                    RequiredLevel = new AttributeRequiredLevelManagedProperty(AttributeRequiredLevel.None),
-                    MaxLength = 100,
-                    FormatName = StringFormatName.Text,
-                    DisplayName = new Label("OrgUniqueName", 1033),
-                    Description = new Label("The OrgUniqueName.", 1033),
-                }
-            };
-
-            _serviceProxy.Execute(createorguniquenameAttributeRequest);
-
-            CreateAttributeRequest createusernameAttributeRequest = new CreateAttributeRequest
-            {
-                EntityName = _customConfigurationEntityName,
-                Attribute = new StringAttributeMetadata
-                {
-                    SchemaName = "new_username",
-                    RequiredLevel = new AttributeRequiredLevelManagedProperty(AttributeRequiredLevel.None),
-                    MaxLength = 100,
-                    FormatName = StringFormatName.Text,
-                    DisplayName = new Label("UserName", 1033),
-                    Description = new Label("The UserName value.", 1033),
-                }
-            };
-
-            _serviceProxy.Execute(createusernameAttributeRequest);
-
-
-            CreateAttributeRequest createpasswordAttributeRequest = new CreateAttributeRequest
-            {
-                EntityName = _customConfigurationEntityName,
-                Attribute = new StringAttributeMetadata
-                {
-                    SchemaName = "new_password",
-                    RequiredLevel = new AttributeRequiredLevelManagedProperty(AttributeRequiredLevel.None),
-                    MaxLength = 100,
-                    FormatName = StringFormatName.Text,
-                    DisplayName = new Label("Password", 1033),
-                    Description = new Label("The Password value.", 1033),
-                }
-            };
-
-            _serviceProxy.Execute(createpasswordAttributeRequest);
-
-
-            // assign entity sample form entity to solution
+            // assign dots_autonumber form entity to solution
             RetrieveEntityRequest retrievepowertEntityRequest = new RetrieveEntityRequest
             {
                 EntityFilters = EntityFilters.Entity,
@@ -397,7 +248,7 @@ namespace DS.CRM
             _serviceProxy.Execute(addReq);
 
 
-            //assign configuration entity to solution
+            //assign dots_configuration entity to solution
             RetrieveEntityRequest retrieveconfigurationtEntityRequest = new RetrieveEntityRequest
             {
                 EntityFilters = EntityFilters.Entity,
@@ -530,7 +381,7 @@ namespace DS.CRM
 
             foreach (var attribute in retrievedEntityMetadata.Attributes)
             {
-
+                
                 entityFieldList.Add(new getEntitiyFieldNames { FieldName = attribute.DisplayName.UserLocalizedLabel != null ? attribute.DisplayName.UserLocalizedLabel.Label : "Field name not found", Value = attribute.LogicalName });
 
             }

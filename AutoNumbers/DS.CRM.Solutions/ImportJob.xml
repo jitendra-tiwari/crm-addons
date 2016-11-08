@@ -50,16 +50,16 @@
   <type name="JScript">3</type>
  </webResource>
   <webResource>
-    <path>FilesToImport\dots_displaybutton.html</path>
-    <displayName>Web Resource Import Sample dots_displaybutton.htm file</displayName>
+    <path>FilesToImport\dots_entitesAndattributes.html</path>
+    <displayName>Web Resource Import Sample dots_entitesAndattributes.htm file</displayName>
     <description>The HTML Web resource for the sample.</description>
-    <name>_/ImportWebResources/dots_displaybutton.html</name>
+    <name>_/ImportWebResources/dots_entitesAndattributes.html</name>
     <type name="Html">1</type>
   </webResource> 
 <webResource>
     <path>FilesToImport\Images\submit.png</path>
     <displayName>Web Resource Import Sample submit.png image</displayName>
-    <description>The HTML Web resource for the sample.</description>
+    <description>The IMAGE Web resource for the sample.</description>
     <name>_/ImportWebResources/Images/submit.png</name>
     <type name="PNG format">5</type>
   </webResource> 
