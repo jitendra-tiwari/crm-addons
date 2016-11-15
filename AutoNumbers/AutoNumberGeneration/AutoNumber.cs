@@ -26,7 +26,11 @@ namespace AutoNumberGeneration
         public static string _customEntityName = "dots_autonumber";
         public static string _customConfigurationEntityName = "dots_autonumberconfiguration";
         public static int _languageCode;
-
+        public static void SetProxy(OrganizationServiceProxy _serProxy, int _langCode)
+        {
+            _serviceProxy = _serProxy;
+            _languageCode = _langCode;
+        }
         public static void CreateWorkFlow(OrganizationServiceProxy _serProxy, int _langCode)
         {
             _serviceProxy = _serProxy;
@@ -142,7 +146,7 @@ namespace AutoNumberGeneration
                 };
                 _serviceProxy.Execute(deactivateRequest);
                 _serviceProxy.Delete(Workflow.EntityLogicalName, _workflowId);
-
+                
             }
         }
 
@@ -160,6 +164,8 @@ namespace AutoNumberGeneration
                     Description = new Label("An entity to store information about autonumber for particular entity.", 1033),
                     OwnershipType = OwnershipTypes.UserOwned,
                     IsActivity = false,
+                    
+                  
                     //CanCreateForms = new BooleanManagedProperty(true),
                 },
 
@@ -172,6 +178,7 @@ namespace AutoNumberGeneration
                     FormatName = StringFormatName.Text,
                     DisplayName = new Label("Name", 1033),
                     Description = new Label("The primary attribute for the dots_autonumber entity.", 1033),
+                     
 
                 }
 
@@ -192,7 +199,10 @@ namespace AutoNumberGeneration
                     FormatName = StringFormatName.Text,
                     DisplayName = new Label("PlaceHolder", 1033),
                     Description = new Label("The PlaceHolder.", 1033),
+                     
                 }
+                 
+                 
             };
 
             _serviceProxy.Execute(createPlaceHolderAttributeRequest);
@@ -267,25 +277,25 @@ namespace AutoNumberGeneration
             _serviceProxy.Execute(createMaxLengthRequest);
 
            
-
-            CreateOptionSetRequest createTwoOptionSetRequest = new CreateOptionSetRequest
-            {
-                // Create a global option set (OptionSetMetadata).
-                OptionSet = new OptionSetMetadata
-                {
-                    Name = "new_generateautonumber",
-                    DisplayName = new Label("Example Option Set", _languageCode),
-                    IsGlobal = true,
-                    OptionSetType = OptionSetType.Boolean,
-                    Options =
-                        {
-                            new OptionMetadata(new Label("Yes", _languageCode),1),
-                            new OptionMetadata(new Label("No", _languageCode), 0),
+           
+            //CreateOptionSetRequest createTwoOptionSetRequest = new CreateOptionSetRequest
+            //{
+            //    // Create a global option set (OptionSetMetadata).
+            //    OptionSet = new OptionSetMetadata
+            //    {
+            //        Name = "new_generateautonumber",
+            //        DisplayName = new Label("Generate Autonumber", _languageCode),
+            //        //IsGlobal = true,
+            //        OptionSetType = OptionSetType.Picklist,
+            //        Options =
+            //            {
+            //                new OptionMetadata(new Label("Yes", _languageCode),1),
+            //                new OptionMetadata(new Label("No", _languageCode), 0),
                          
-                        }
-                }
-            };
-            _serviceProxy.Execute(createTwoOptionSetRequest);
+            //            }
+            //    }
+            //};
+            //_serviceProxy.Execute(createTwoOptionSetRequest);
 
             CreateAttributeRequest createTagetAttributeNameRequest = new CreateAttributeRequest
             {
@@ -341,12 +351,12 @@ namespace AutoNumberGeneration
             CreateAttributeRequest createCurrentNumberRequest = new CreateAttributeRequest
             {
                 EntityName = _customEntityName,
-                Attribute = new StringAttributeMetadata
+                Attribute = new IntegerAttributeMetadata
                 {
                     SchemaName = "new_currentnumber",
                     RequiredLevel = new AttributeRequiredLevelManagedProperty(AttributeRequiredLevel.None),
-                     MaxLength = 100,
-                    FormatName = StringFormatName.Text,
+                   //  MaxLength = 100,
+                   // FormatName = StringFormatName.Text,
                     DisplayName = new Label("Current Number", 1033),
                     Description = new Label("The Current Number.", 1033),
 

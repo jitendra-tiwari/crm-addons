@@ -1,8 +1,8 @@
 ﻿
 $(document).ready(function () {
     // getValidUser();  
-       
-    CheckConfigurationDetails();
+    var srUrl = parent.Xrm.Page.context.getClientUrl();
+    SelectConfigurationDetails(srUrl);
 
         $("#registration-form").submit(function (event) {
             event.preventDefault();           
@@ -64,14 +64,15 @@ function getValidUser()
                 console.log(response);
                 if (response.IsSuccess) {
                     if (response.IsCreated) {
+                        SaveConfigurationDetails(serverUrl, response.Id, "test");
                         $(".loading").hide();
-                        $("#tryalertdanger").show();
-                        $("#tryalertdanger").text("User registration is successfull. !");
+                        $("#tryalertsuccess").show();
+                        $("#tryalertsuccess").text("User registration is successfull. !");
                     }
                     else {
                         $(".loading").hide();
-                        $("#tryalertdanger").show();
-                        $("#tryalertdanger").text("Records are updated successfully.. !");
+                        $("#tryalertsuccess").show();
+                        $("#tryalertsuccess").text("Records are updated successfully. !");
                     }
                 }
                 else {
@@ -100,56 +101,171 @@ function getValidUser()
 
 
 
-function CheckConfigurationDetails() {
-    $(".loading").show();
-    var myserverUrl = parent.Xrm.Page.context.getClientUrl();
-    var myorgUniqueName = parent.Xrm.Page.context.getOrgUniqueName();
-   
+function CheckConfigurationDetails(registerid) {
+    
+    if (registerid != null) {
+        $("#btn-try").hide();
+        $(".loading").show();
+        var myserverUrl = parent.Xrm.Page.context.getClientUrl();
+        var myorgUniqueName = parent.Xrm.Page.context.getOrgUniqueName();
 
-    $.ajax({
-        url: "https://crmwebapi.24livehost.com/api/values/LoadDetailsDotsCommon",
-        type: "get", //send it through get method
-        data: { serverUrl: myserverUrl, orgName: myorgUniqueName },
-        success: function (response) {
-            console.log(response);
-            if (response.IsSuccess) {
-                $("#trytxtfirstname").val(response.FirstName);
-                $("#trytxtlastname").val(response.LastName);
-                $("#trytxtemail").val(response.Email);
 
-                $("#trytxtcompany").val(response.Company);
-                $("#trytxtphonenumber").val(response.ContactNo);
-                $("#trytxtaddress").val(response.Address);
-                $("#trytxtcountry").val(response.Country);
-                $("#trytxtstate").val(response.State);
-                $("#trytxtcity").val(response.City);
+        $.ajax({
+            // url: "https://crmwebapi.24livehost.com/api/values/LoadDetailsDotsCommon",
+            url: "https://crmwebapi.24livehost.com/api/values/LoadDetails",
+            type: "get", //send it through get method
+            // data: { serverUrl: myserverUrl, orgName: myorgUniqueName },
+            data: { registerId: registerid },
+            success: function (response) {
+                console.log(response);
+                if (response.IsSuccess) {
+                    $("#trytxtfirstname").val(response.FirstName);
+                    $("#trytxtlastname").val(response.LastName);
+                    $("#trytxtemail").val(response.Email);
 
-               // $("#trytxtusername").val(response.UserName);
-                $("#solutionStatus").text(response.SubscriptionType);
-                var date = new Date(response.ExpireDate);
-                var fulldate = ((date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear());
-                $("#solutionExpires").text(fulldate);
-                // $("#trytxtpassword").val(response.Password);
+                    $("#trytxtcompany").val(response.Company);
+                    $("#trytxtphonenumber").val(response.ContactNo);
+                    $("#trytxtaddress").val(response.Address);
+                    $("#trytxtcountry").val(response.Country);
+                    $("#trytxtstate").val(response.State);
+                    $("#trytxtcity").val(response.City);
+
+                    // $("#trytxtusername").val(response.UserName);
+                    $("#solutionStatus").text(response.SubscriptionType);
+                    var date = new Date(response.ExpireDate);
+                    var fulldate = ((date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear());
+                    $("#solutionExpires").text(fulldate);
+                    // $("#trytxtpassword").val(response.Password);
+
+                    $(".loading").hide();
+
+                }
+                else {
+
+                    $(".loading").hide();
+                }
+
+            },
+            error: function (xhr) {
                 $(".loading").hide();
-
+                //Do Something to handle error
+                $("#tryalertdanger").show();
+                $("#tryalertdanger").text(xhr.responseText);
             }
-            else {
+        });
 
-                $(".loading").hide();
-            }
 
-        },
-        error: function (xhr) {
-            $(".loading").hide();
-            //Do Something to handle error
-            $("#tryalertdanger").show();
-            $("#tryalertdanger").text(xhr.responseText);
-        }
-    });
-   
-   
 
-   
+    }
 
 }
+
+
+function SaveConfigurationDetails(serverUrl, RegisterId, encryptedValue) {
+
+    if (serverUrl != "") {
+        var context = parent.Xrm.Page.context;
+        var serverUrl = context.getClientUrl();
+        var ODATA_ENDPOINT = "/XRMServices/2011/OrganizationData.svc";
+        var CRMObject = new Object();
+        ///////////////////////////////////////////////////////////// 
+        // Specify the ODATA entity collection 
+        var ODATA_EntityCollection = "/dots_autonumberconfigurationSet";
+        ///////////////////////////////////////////////////////////// 
+        // Define attribute values for the CRM object you want created 
+
+
+        CRMObject.new_type = RegisterId;
+        CRMObject.new_value = encryptedValue;
+    
+
+        //Parse the entity object into JSON 
+        var jsonEntity = window.JSON.stringify(CRMObject);
+        //Asynchronous AJAX function to Create a CRM record using OData 
+        $.ajax({
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            datatype: "json",
+            url: serverUrl + ODATA_ENDPOINT + ODATA_EntityCollection,
+            data: jsonEntity,
+            beforeSend: function (XMLHttpRequest) {
+                //Specifying this header ensures that the results will be returned as JSON. 
+                XMLHttpRequest.setRequestHeader("Accept", "application/json");
+            },
+            success: function (data, textStatus, XmlHttpRequest) {
+
+                var NewCRMRecordCreated = data["d"];
+                $("#btn-try").hide();
+                $(".loading").hide();
+                console.log(data["d"]);
+
+                //$("#tryalertsuccess").show();
+                //$("#tryalertdanger").hide();
+                //$("#tryalertsuccess").text("User Authenticate Successfully!");
+
+
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                $(".loading").hide();
+                //$("#tryalertdanger").show();
+                //$("#tryalertdanger").text("Please check your credential otherwise contact to admin.!");
+
+            }
+        });
+    }
+
+}
+
+function SelectConfigurationDetails(serverUrl)
+{
+    $(".loading").show();
+    try {
+
+        var oDataUri = serverUrl + "/XRMServices/2011/OrganizationData.svc/dots_autonumberconfigurationSet";
+
+        $.ajax({
+            type: "GET",
+            contentType: "application/json; charset=utf-8",
+            datatype: "json",
+            url: oDataUri,
+            beforeSend: function (XMLHttpRequest) { XMLHttpRequest.setRequestHeader("Accept", "application/json"); },
+            success: function (data, textStatus, XmlHttpRequest) {
+
+
+                var output = data.d.results;
+                console.log("====Now Test====");
+                console.log(output);
+                if (output.length==0) {
+                     //SaveConfigurationDetails(serverUrl, RegisterId, encryptedValue);
+                   // CheckConfigurationDetails(null);
+                    //for update
+                    // console.log(output[0].new_type);
+                    // var tblconfigId = output[0].dots_configuration001Id;
+                   
+                    $(".loading").hide();
+                }
+                else {
+                    CheckConfigurationDetails(output[0].new_type);
+                }
+               
+
+            },
+            error: function (XmlHttpRequest, textStatus, errorThrown) {
+                $(".loading").hide();
+                //$("#tryalertdanger").show();
+                //$("#tryalertdanger").text("Something going to wrong try again!");
+
+
+            }
+        });
+    }
+    catch (err) {
+        $(".loading").hide();
+        //$("#tryalertsuccess").hide();
+        //$("#tryalertdanger").show();
+        //$("#tryalertdanger").text(err.message);
+    }
+}
+
+
 

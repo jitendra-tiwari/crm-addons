@@ -1,18 +1,20 @@
 ﻿<html>
 <head>
-    <meta>
+    <title>dotsquares</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <script src="../../ClientGlobalContext.js.aspx" type="text/javascript"></script>
+    <script src="Script/SDK.MetaData.js" type="text/javascript"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <meta>
 </head>
-<body onload="getAllEntites()">
+<body onload="getAllEntites()" style="overflow-wrap: break-word; word-wrap: break-word;">
     ﻿
 
     <!--<snippetMetaDataDemo>-->
 
 
-    <title>dotsquares</title>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <script src="ClientGlobalContext.js.aspx" type="text/javascript"></script>
-    <script src="new_SDK.MetaData.js" type="text/javascript"></script>
+
+
     <script type="text/javascript">
   // An unordered list element to add Entity list items to
   var results;
@@ -25,7 +27,83 @@
   //dropdownlist
   var selectbox;
 
+  var addProperty = new Array();
+
   var attributeSelectBox;
+
+
+  $(document).ready(function () {
+      disabledFields();
+      $("#selectbox_AllEntites").change(function () {
+          var targetEntityLogicalName = $(this).val();
+          var targetEntityText = $("#selectbox_AllEntites option:selected").text();
+          if (targetEntityLogicalName == "") {
+              parent.Xrm.Page.getAttribute("new_attributename").setValue(null);
+              parent.Xrm.Page.getAttribute("new_maxlength").setValue(null);
+
+              parent.Xrm.Page.getAttribute("new_targetentityname").setValue(null);
+              parent.Xrm.Page.getAttribute("new_targetentitylogicalname").setValue(null);
+
+              parent.Xrm.Page.getAttribute("new_targetattributename").setValue(null);
+              parent.Xrm.Page.getAttribute("new_targetattributelogicalname").setValue(null);
+          }
+          else {
+              
+              parent.Xrm.Page.getAttribute("new_placeholder").setValue(targetEntityText + "-");
+          }
+
+
+      });
+
+      $('#selectbox_Allattributes').change(function () {
+          var logicalAttributeName = $(this).val();
+          var AttributeName = $("#selectbox_Allattributes option:selected").text();
+          var targetEntity = $("#selectbox_AllEntites").val();
+          var targetEntityText = $("#selectbox_AllEntites option:selected").text();
+      
+         
+          if (logicalAttributeName != "" && targetEntity != "") {
+              $.map(addProperty, function (addProperty) {
+                  if (addProperty.AttributeLogicalName == logicalAttributeName) {
+                      var attributeLogicalName = addProperty.AttributeLogicalName;
+                      var format = addProperty.Format;
+                      var maxLength = addProperty.MaxLength.toString();
+
+                      parent.Xrm.Page.getAttribute("new_attributename").setValue(format);
+                      parent.Xrm.Page.getAttribute("new_maxlength").setValue(maxLength);
+                                       
+                     
+                      //target Entity with value and text
+                      parent.Xrm.Page.getAttribute("new_targetentityname").setValue(targetEntityText);
+                      parent.Xrm.Page.getAttribute("new_targetentitylogicalname").setValue(targetEntity);
+
+                      //target Attribute with value and text
+                      parent.Xrm.Page.getAttribute("new_targetattributename").setValue(AttributeName);
+                      parent.Xrm.Page.getAttribute("new_targetattributelogicalname").setValue(logicalAttributeName);
+
+                      //set place holder
+                      parent.Xrm.Page.getAttribute("new_placeholder").setValue(targetEntityText + "-" + AttributeName);
+
+                  }
+
+              });
+
+          }
+          else {
+              parent.Xrm.Page.getAttribute("new_attributename").setValue(null);
+              parent.Xrm.Page.getAttribute("new_maxlength").setValue(null);
+
+              parent.Xrm.Page.getAttribute("new_targetentityname").setValue(null);
+              parent.Xrm.Page.getAttribute("new_targetentitylogicalname").setValue(null);
+
+              parent.Xrm.Page.getAttribute("new_targetattributename").setValue(null);
+              parent.Xrm.Page.getAttribute("new_targetattributelogicalname").setValue(null);
+          }
+      });
+
+
+     
+  });
 
   function getAllEntites() {
    ///<summary>
@@ -65,10 +143,11 @@
    for (var i = 0; i < entityMetadataCollection.length; i++) {
 
     var entity = entityMetadataCollection[i];
-
+	console.log("====hellio=======");
+console.log(entity);
 
 var optn = document.createElement("option");
-if(entity.DisplayName.UserLocalizedLabel!=null)
+if (entity.DisplayName.UserLocalizedLabel != null)
 {
 optn.text = entity.DisplayName.UserLocalizedLabel.Label;
 
@@ -79,7 +158,7 @@ selectbox.options.add(optn);
 
 
    }
-
+   showSelectedTargetEnityRecord();
   }
   function errorRetrieveAllEntities(error) {
    ///<summary>
@@ -96,16 +175,7 @@ selectbox.options.add(optn);
    ///</summary>
 
    // clear first time attributes of entity
-var theDropDown = document.getElementById("selectbox_Allattributes");
-var numberOfOptions = theDropDown.options;
-
-   for (i=0; i<numberOfOptions.length; i++) {
-   if(numberOfOptions[i].value!="")
-   {
-
-   theDropDown.remove(i);
-   }
-}
+  $("#selectbox_Allattributes").find("option:not(:first)").remove();
 
    var e = document.getElementById("selectbox_AllEntites");
    var logicalEntityName = e.options[e.selectedIndex].value;
@@ -145,20 +215,21 @@ var numberOfOptions = theDropDown.options;
 
 
    for (var i = 0; i < entityMetadata.Attributes.length; i++) {
-    var attribute = entityMetadata.Attributes[i];
+       var attribute = entityMetadata.Attributes[i];
+       console.log("=====attr=======");
+       console.log(attribute);
 
-	var optn = document.createElement("option");
-if(attribute.DisplayName.UserLocalizedLabel!=null)
-{
-optn.text = attribute.DisplayName.UserLocalizedLabel.Label;
+       var optn = document.createElement("option");
+       if (attribute.DisplayName.UserLocalizedLabel != null && attribute.Format == "Text") {
+           optn.text = attribute.DisplayName.UserLocalizedLabel.Label;
+           optn.value = attribute.LogicalName;
+           attributeSelectBox.options.add(optn);
+           var o = { 'AttributeLogicalName': attribute.LogicalName, 'Format': attribute.Format, 'MaxLength': attribute.MaxLength };
+           addProperty.push(o);
 
-optn.value = attribute.SchemaName;
-
-attributeSelectBox.options.add(optn);
-
-
- }
+       }
    }
+   showSelectedTargetAttribute();
 
   }
   function errorRetrieveEntity(error) {
@@ -215,17 +286,46 @@ attributeSelectBox.options.add(optn);
     return node.textContent;
    }
   }
+  function showSelectedTargetEnityRecord()
+  {
+      var entityId = parent.Xrm.Page.data.entity.getId();
+      if (entityId) {          
+       var targetEntity=   parent.Xrm.Page.getAttribute("new_targetentitylogicalname").getValue();        
+       var targetAttribute = parent.Xrm.Page.getAttribute("new_targetattributelogicalname").getValue();
+       $("#selectbox_AllEntites").val(targetEntity);
+       $('#selectbox_Allattributes').val(targetAttribute);
+          //fill all attributes after entity
+       retrieveAttributes();
+      }
 
+  }
+  function showSelectedTargetAttribute()
+  {
+      var entityId = parent.Xrm.Page.data.entity.getId();
+      if (entityId) {       
+          var targetAttribute = parent.Xrm.Page.getAttribute("new_targetattributelogicalname").getValue();       
+          $('#selectbox_Allattributes').val(targetAttribute);
+      }
+  }
+  function disabledFields() {
+
+
+      parent.Xrm.Page.getControl("new_attributename").setDisabled(true);
+      parent.Xrm.Page.getControl("new_maxlength").setDisabled(true);
+      parent.Xrm.Page.getControl("new_name").setDisabled(true);
+      parent.Xrm.Page.getControl("new_currentnumber").setDisabled(true);
+  }
+  
     </script>
 
     <div id="message">
     </div>
-    <table style="width: 100%;">
+    <table style="width: 100%; margin-top: -33px;">
         <tbody>
             <tr class="targetoptions">
                 <td class="tdtargetoptions" id="td1" style="width: 106px;">
                     <label id="entityLabel" class="crm2013TextStyle">
-                         Entity<span style="color: Red;">*</span>
+                        Target Entity<span style="color: Red;">*</span>
                     </label>
                 </td>
                 <td>
@@ -237,7 +337,7 @@ attributeSelectBox.options.add(optn);
             <tr class="targetoptions">
                 <td class="tdtargetoptions" id="td3" style="width: 106px;">
                     <label id="attributeLabel" class="crm2013TextStyle">
-                         Attribute<span style="color: Red;">*</span>
+                        Target Attribute<span style="color: Red;">*</span>
                     </label>
                 </td>
                 <td class="tdtargetoptions" id="td4">
@@ -248,6 +348,7 @@ attributeSelectBox.options.add(optn);
             </tr>
         </tbody>
     </table>
+
 
 
 

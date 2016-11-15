@@ -3,49 +3,57 @@
  <webResource>
   <path>FilesToImport\CSS\style.css</path>
   <displayName>Web Resource Import Sample style.css file</displayName>
-  <description>Provides CSS styles for the sample_/ImportWebResources/dots_configuration_pageOFDots.htm Web resource.</description>
+  <description>Provides CSS styles for the sample_/ImportWebResources/dots_AutoNumberConfiguration.htm Web resource.</description>
   <name>_/ImportWebResources/CSS/style.css</name>
   <type name="Css">2</type>
  </webResource>
    <webResource>
   <path>FilesToImport\CSS\bootstrap.css</path>
   <displayName>Web Resource Import Sample bootstrap.css file</displayName>
-  <description>Provides CSS styles for the sample_/ImportWebResources/dots_configuration_pageOFDots.htm Web resource.</description>
+  <description>Provides CSS styles for the sample_/ImportWebResources/dots_AutoNumberConfiguration.htm Web resource.</description>
   <name>_/ImportWebResources/CSS/bootstrap.css</name>
   <type name="Css">2</type>
  </webResource>
      <webResource>
   <path>FilesToImport\CSS\bootstrap.min.css</path>
   <displayName>Web Resource Import Sample bootstrap.min.css file</displayName>
-  <description>Provides CSS styles for the sample_/ImportWebResources/dots_configuration_pageOFDots.htm Web resource.</description>
+  <description>Provides CSS styles for the sample_/ImportWebResources/dots_AutoNumberConfiguration.htm Web resource.</description>
   <name>_/ImportWebResources/CSS/bootstrap.min.css</name>
   <type name="Css">2</type>
- </webResource>    
- <webResource>
+ </webResource>
+  <webResource>
+    <path>FilesToImport\Script\SDK.MetaData.js</path>
+    <displayName>Web Resource Import Sample SDK.MetaData.js file</displayName>
+    <description>Provides the SDK.ImportWebResources JScript library for the sample_/ImportWebResources/dots_AutoNumberConfiguration.htm Web resource.</description>
+    <name>_/ImportWebResources/Script/SDK.MetaData.js</name>
+    <type name="JScript">3</type>
+  </webResource>
+
+  <webResource>
   <path>FilesToImport\Script\Script.js</path>
   <displayName>Web Resource Import Sample Script.js file</displayName>
-  <description>Provides the SDK.ImportWebResources JScript library for the sample_/ImportWebResources/dots_configuration_pageOFDots.htm Web resource.</description>
+  <description>Provides the SDK.ImportWebResources JScript library for the sample_/ImportWebResources/dots_AutoNumberConfiguration.htm Web resource.</description>
   <name>_/ImportWebResources/Script/Script.js</name>
   <type name="JScript">3</type>
  </webResource>
    <webResource>
   <path>FilesToImport\Script\configuration.js</path>
   <displayName>Web Resource Import Sample configuration.js file</displayName>
-  <description>Provides the SDK.ImportWebResources JScript library for the sample_/ImportWebResources/dots_configuration_pageOFDots.htm Web resource.</description>
+  <description>Provides the SDK.ImportWebResources JScript library for the sample_/ImportWebResources/dots_AutoNumberConfiguration.htm Web resource.</description>
   <name>_/ImportWebResources/Script/configuration.js</name>
   <type name="JScript">3</type>
  </webResource>
    <webResource>
   <path>FilesToImport\Script\bootstrap.js</path>
   <displayName>Web Resource Import Sample bootstrap.js file</displayName>
-  <description>Provides the SDK.ImportWebResources JScript library for the sample_/ImportWebResources/dots_configuration_pageOFDots.htm Web resource.</description>
+  <description>Provides the SDK.ImportWebResources JScript library for the sample_/ImportWebResources/dots_AutoNumberConfiguration.htm Web resource.</description>
   <name>_/ImportWebResources/Script/bootstrap.js</name>
   <type name="JScript">3</type>
  </webResource>
     <webResource>
   <path>FilesToImport\Script\bootstrap.min.js</path>
   <displayName>Web Resource Import Sample bootstrap.min.js file</displayName>
-  <description>Provides the SDK.ImportWebResources JScript library for the sample_/ImportWebResources/dots_configuration_pageOFDots.htm Web resource.</description>
+  <description>Provides the SDK.ImportWebResources JScript library for the sample_/ImportWebResources/dots_AutoNumberConfiguration.htm Web resource.</description>
   <name>_/ImportWebResources/Script/bootstrap.min.js</name>
   <type name="JScript">3</type>
  </webResource>
@@ -62,5 +70,12 @@
     <description>The IMAGE Web resource for the sample.</description>
     <name>_/ImportWebResources/Images/submit.png</name>
     <type name="PNG format">5</type>
-  </webResource> 
+  </webResource>
+  <webResource>
+    <path>FilesToImport\Images\dotsquares.png</path>
+    <displayName>Web Resource Import Sample dotsquares.png image</displayName>
+    <description>The HTML Web resource for the sample.</description>
+    <name>_/ImportWebResources/Images/dotsquares.png</name>
+    <type name="PNG format">5</type>
+  </webResource>
 </job>

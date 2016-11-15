@@ -399,6 +399,7 @@ namespace WebApi.Controllers
             var result = Obj.tbl_Configuration.SingleOrDefault(o => o.ServerUrl.ToLower() == serverUrl.ToLower() && o.OrgUniqueName.ToLower()==orgName);
             if (result != null)
             {
+                model.Id = result.Id;
                 model.FirstName = result.FirstName;
                 model.LastName = result.LastName;
                 model.Company = result.Company;
@@ -430,7 +431,8 @@ namespace WebApi.Controllers
             {
                
                 tbl_Configuration tblConfig = new tbl_Configuration();
-                var update = Obj.tbl_Configuration.SingleOrDefault(o => o.ServerUrl.ToLower() == ServerUrl.ToLower() && o.OrgUniqueName.ToLower() == orgName.ToLower());
+                //always return null
+                var update = Obj.tbl_Configuration.SingleOrDefault(o => o.ServerUrl.ToLower() == ServerUrl.ToLower() && o.OrgUniqueName.ToLower() == orgName.ToLower() && o.SolutionName=="####");
                 if (update != null)
                 {
 

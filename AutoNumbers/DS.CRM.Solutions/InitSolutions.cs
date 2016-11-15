@@ -71,7 +71,10 @@ namespace DS.CRM
                 using (_serviceProxy = new OrganizationServiceProxy(serverConfig.OrganizationUri, serverConfig.HomeRealmUri, serverConfig.Credentials, serverConfig.DeviceCredentials))
                 {
                     // This statement is required to enable early-bound type support.
-                      _serviceProxy.EnableProxyTypes();                   
+                      _serviceProxy.EnableProxyTypes();
+                    CreateSiteMap();
+                   // AutoNumberGeneration.AutoNumber.CreateWorkFlow(_serviceProxy, _languageCode);
+                    AutoNumberGeneration.AutoNumber.SetProxy(_serviceProxy, _languageCode);
                     // Call the method to create any data that this sample requires.
                     CreateRequiredRecords();
                 }
@@ -410,7 +413,7 @@ namespace DS.CRM
             }
 
             return entityFieldList;
-
+           
 
         }
 
@@ -430,14 +433,20 @@ namespace DS.CRM
             string sitemapcontent = sitemap["sitemapxml"].ToString();
             XDocument sitemapxml = XDocument.Parse(sitemapcontent);
 
+            //create new area
+ //           sitemapxml.Element("SiteMap")
+ //.Elements("Area")
+ //.Where(x => (string)x.Attribute("Id") == "WebPowerPack")
+ //.Remove();
+
             XElement root = new XElement("Area");
-            root.Add(new XAttribute("Id", "WebPowerPack"),
+            root.Add(new XAttribute("Id", "DotsquaresPack"),
                 new XAttribute("ShowGroups", "true"),
-                new XAttribute("Title", "WebPowerPack"));
+                new XAttribute("Title", "DotsquaresPack"));
             root.Add(new XElement("Group",
-                new XAttribute("Id", "Group_SubWebPowerWebForm"),
-                new XAttribute("Title", "SubWebPowerWebForm"),
-                new XElement("SubArea", new XAttribute("Id", "SubArea_dots_forminformation"),
+                new XAttribute("Id", "Group_SubDotsquaresWebForm"),
+                new XAttribute("Title", "DotsquaresAutoNumber"),
+                new XElement("SubArea", new XAttribute("Id", "SubArea_dots_autonumber"),
                 new XAttribute("Entity", _customEntityName)
                 )));
 
