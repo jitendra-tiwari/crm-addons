@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<job>
+ <webResource>
+  <path>FilesToImport\CSS\AutoSMSstyle.css</path>
+  <displayName>Web Resource Import Sample style.css file</displayName>
+  <description>Provides CSS styles for the sample_/ImportWebResources/dots_AutoSMSConfiguration.htm Web resource.</description>
+  <name>_/ImportWebResources/CSS/AutoSMSstyle.css</name>
+  <type name="Css">2</type>
+ </webResource>
+   <webResource>
+  <path>FilesToImport\CSS\AutoSMSbootstrap.css</path>
+  <displayName>Web Resource Import Sample bootstrap.css file</displayName>
+  <description>Provides CSS styles for the sample_/ImportWebResources/dots_AutoSMSConfiguration.htm Web resource.</description>
+  <name>_/ImportWebResources/CSS/AutoSMSbootstrap.css</name>
+  <type name="Css">2</type>
+ </webResource>
+     <webResource>
+  <path>FilesToImport\CSS\AutoSMSbootstrap.min.css</path>
+  <displayName>Web Resource Import Sample bootstrap.min.css file</displayName>
+  <description>Provides CSS styles for the sample_/ImportWebResources/dots_AutoSMSConfiguration.htm Web resource.</description>
+  <name>_/ImportWebResources/CSS/AutoSMSbootstrap.min.css</name>
+  <type name="Css">2</type>
+ </webResource>
+  <webResource>
+    <path>FilesToImport\Script\AutoSMSSDK.MetaData.js</path>
+    <displayName>Web Resource Import Sample SDK.MetaData.js file</displayName>
+    <description>Provides the SDK.ImportWebResources JScript library for the sample_/ImportWebResources/dots_AutoSMSConfiguration.htm Web resource.</description>
+    <name>_/ImportWebResources/Script/AutoSMSSDK.MetaData.js</name>
+    <type name="JScript">3</type>
+  </webResource>
+
+  <webResource>
+  <path>FilesToImport\Script\AutoSMSScript.js</path>
+  <displayName>Web Resource Import Sample Script.js file</displayName>
+  <description>Provides the SDK.ImportWebResources JScript library for the sample_/ImportWebResources/dots_AutoSMSConfiguration.htm Web resource.</description>
+  <name>_/ImportWebResources/Script/AutoSMSScript.js</name>
+  <type name="JScript">3</type>
+ </webResource>
+   <webResource>
+  <path>FilesToImport\Script\AutoSMSconfiguration.js</path>
+  <displayName>Web Resource Import Sample configuration.js file</displayName>
+  <description>Provides the SDK.ImportWebResources JScript library for the sample_/ImportWebResources/dots_AutoSMSConfiguration.htm Web resource.</description>
+  <name>_/ImportWebResources/Script/AutoSMSconfiguration.js</name>
+  <type name="JScript">3</type>
+ </webResource>
+   <webResource>
+  <path>FilesToImport\Script\AutoSMSbootstrap.js</path>
+  <displayName>Web Resource Import Sample bootstrap.js file</displayName>
+  <description>Provides the SDK.ImportWebResources JScript library for the sample_/ImportWebResources/dots_AutoSMSConfiguration.htm Web resource.</description>
+  <name>_/ImportWebResources/Script/AutoSMSbootstrap.js</name>
+  <type name="JScript">3</type>
+ </webResource>
+    <webResource>
+  <path>FilesToImport\Script\AutoSMSbootstrap.min.js</path>
+  <displayName>Web Resource Import Sample bootstrap.min.js file</displayName>
+  <description>Provides the SDK.ImportWebResources JScript library for the sample_/ImportWebResources/dots_AutoSMSConfiguration.htm Web resource.</description>
+  <name>_/ImportWebResources/Script/AutoSMSbootstrap.min.js</name>
+  <type name="JScript">3</type>
+ </webResource>
+  <webResource>
+    <path>FilesToImport\dots_AutoSMSEntitesAndattributes.html</path>
+    <displayName>Web Resource Import Sample dots_AutoSMSEntitesAndattributes.html file</displayName>
+    <description>The HTML Web resource for the sample.</description>
+    <name>_/ImportWebResources/dots_AutoSMSEntitesAndattributes.html</name>
+    <type name="Html">1</type>
+  </webResource> 
+<webResource>
+    <path>FilesToImport\Images\AutoSMSsubmit.png</path>
+    <displayName>Web Resource Import Sample AutoSMSsubmit.png image</displayName>
+    <description>The IMAGE Web resource for the sample.</description>
+    <name>_/ImportWebResources/Images/AutoSMSsubmit.png</name>
+    <type name="PNG format">5</type>
+  </webResource>
+  <webResource>
+    <path>FilesToImport\Images\AutoSMSdotsquares.png</path>
+    <displayName>Web Resource Import Sample AutoSMSdotsquares.png image</displayName>
+    <description>The HTML Web resource for the sample.</description>
+    <name>_/ImportWebResources/Images/AutoSMSdotsquares.png</name>
+    <type name="PNG format">5</type>
+  </webResource>
+</job>
