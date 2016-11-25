@@ -24,8 +24,8 @@ namespace EventsCalendar
     public static class CRMEvent 
     {
         public  static  OrganizationServiceProxy _serviceProxy;
-        public static string _customEntityName = "dots_eventscalendar";
-        public static string _customConfigurationEntityName = "dots_crmeventconfiguration";
+        public static string _customEntityName = "dots_eventcalendar";
+        public static string _customConfigurationEntityName = "dots_eventconfiguration";
         public static int _languageCode;
         public static void SetProxy(OrganizationServiceProxy _serProxy, int _langCode)
         {
@@ -33,7 +33,7 @@ namespace EventsCalendar
             _languageCode = _langCode;
         }
 
-        public static void DotsAutoNumberEntity()
+        public static void DotsEventCalendarEntity()
         {
             // Create the custom entity.
             CreateEntityRequest createRequest = new CreateEntityRequest
@@ -47,6 +47,8 @@ namespace EventsCalendar
                     Description = new Label("An entity to store information about EventsCalendar for particular entity.", 1033),
                     OwnershipType = OwnershipTypes.UserOwned,
                     IsActivity = false,
+                    CanCreateViews=new BooleanManagedProperty(false)
+                     
 
 
                     //CanCreateForms = new BooleanManagedProperty(true),
@@ -56,7 +58,7 @@ namespace EventsCalendar
                 PrimaryAttribute = new StringAttributeMetadata
                 {
                     SchemaName = "dots_name",
-                    RequiredLevel = new AttributeRequiredLevelManagedProperty(AttributeRequiredLevel.ApplicationRequired),
+                    RequiredLevel = new AttributeRequiredLevelManagedProperty(AttributeRequiredLevel.None),
                     MaxLength = 100,
                     FormatName = StringFormatName.Text,
                     DisplayName = new Label("Name", 1033),
@@ -73,7 +75,7 @@ namespace EventsCalendar
 
            
 
-        public static void DotsAutoNumberConfigurationEntity()
+        public static void DotsEventCalendarConfigurationEntity()
         {
             // Create the custom entity.
             CreateEntityRequest createRequest = new CreateEntityRequest

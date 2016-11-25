@@ -1,0 +1,57 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <ul class="main">
+        
+        <li>
+            <span class="bold">Dates</span> - {d:<em>n</em>} - The Date inserts the current date at the position of the token in the specified format.
+            <ul class="sub">
+                <li>Date DD:  {dd}, Result:  03</li>
+                <li>Date MM:  {MM}, Result:  06</li>
+                <li>Date MMM:  {MMM}, Result:  06 Aug.</li>
+                <li>Date YY:  {yy}, Result:  16</li>
+                <li>Date YYYY:  {yyyy}, Result:  2016</li>
+                <li>Date 0:  {0}, Result:  06</li>                
+            </ul>
+        </li>
+        <!--<li>
+            <span class="bold">Times</span> - {t:<em>n</em>} - The Time token inserts the current time as a 24 hour clock at the position of the token in the specified format.
+            <ul class="sub">
+                <li>Time Token:  {t:hhmmss}, Result:  021344</li>
+                <li>Time Token:  {t:hh:mm:ss}, Result:  14:12:56</li>
+            </ul>
+        </li>-->
+        <!--<li>
+            <span class="bold">Random Letters</span> - {r:<em>n</em>} - The Random Letter token places any number of random letters A-Z in place of the token.  Defining a numeric value in place of 'n' will specify the number of random letters.  This value may not always be unique.
+            <ul class="sub">
+                <li>Random Letter Token:  {r:10}, Result:  ABMEDBBOPE</li>
+            </ul>
+        </li>-->
+        <!--<li>
+            <span class="bold">Field Values</span> - {f:<em>n</em>} - The Field Value token grabs a value from the specified field on the active form and inserts it in place of the token.  The value for 'n' is case sensitive and must be the field's logical name as it is defined in CRM's Customize the System interface.
+            <ul class="sub">
+                <li>Field Value Token:  {f:accountnumber}, Result:  114582</li>
+                <li>Field Value Token:  {f:new_streetaddress}, Result:  123 Fake St. North</li>
+            </ul>
+        </li>-->
+        <!--<li>
+            <span class="bold">Constants</span> - Any character placed outside of an AutoNumber token will appear as a literal value in the generated value.  Using constants inside an AutoNumber token is possible, but may produce undesired results.
+            <ul class="sub">
+                <li>Example:  acct-{a:1}, Result:  acct-101</li>
+            </ul>
+        </li>-->
+        <!--<li>
+            <span class="bold">Complex Formats</span> - Multiple tokens may be defined within the format field to create custom identifiers.
+            <ul class="sub">
+                <li>Format:  {r:3}{d:mm}, Result:  DEP06</li>
+                <li>Format:  {d:mm}-{a:5}-{d:yyyy}, Result:  06-00101-2012</li>
+            </ul>
+        </li>-->
+    </ul>
+</body>
+</html>

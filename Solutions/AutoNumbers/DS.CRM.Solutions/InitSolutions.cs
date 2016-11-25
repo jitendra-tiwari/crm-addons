@@ -1,4 +1,5 @@
-﻿using AutoNumberGeneration.Model;
+﻿using AutoNumberGeneration;
+using AutoNumberGeneration.Model;
 using Microsoft.Crm.Sdk.Messages;
 using Microsoft.Crm.Sdk.Samples;
 using Microsoft.Xrm.Sdk;
@@ -72,8 +73,9 @@ namespace DS.CRM
                 {
                     // This statement is required to enable early-bound type support.
                       _serviceProxy.EnableProxyTypes();
-                    CreateSiteMap();
-                   // AutoNumberGeneration.AutoNumber.CreateWorkFlow(_serviceProxy, _languageCode);
+                   // CreateSiteMap();
+                    SiteMapCustomization.CreateSiteMap(_serviceProxy, _customEntityName);
+                    // AutoNumberGeneration.AutoNumber.CreateWorkFlow(_serviceProxy, _languageCode);
                     AutoNumberGeneration.AutoNumber.SetProxy(_serviceProxy, _languageCode);
                     // Call the method to create any data that this sample requires.
                     CreateRequiredRecords();
@@ -434,10 +436,10 @@ namespace DS.CRM
             XDocument sitemapxml = XDocument.Parse(sitemapcontent);
 
             //create new area
- //           sitemapxml.Element("SiteMap")
- //.Elements("Area")
- //.Where(x => (string)x.Attribute("Id") == "WebPowerPack")
- //.Remove();
+            sitemapxml.Element("SiteMap")
+ .Elements("Area")
+ .Where(x => (string)x.Attribute("Id") == "WebPowerPack")
+ .Remove();
 
             XElement root = new XElement("Area");
             root.Add(new XAttribute("Id", "DotsquaresPack"),
@@ -794,7 +796,8 @@ namespace DS.CRM
 
             //</snippetImportWebResources1>
         }
-        
+       
+
         static public string GetEncodedFileContents(String pathToFile)
         {
             FileStream fs = new FileStream(pathToFile, FileMode.Open, FileAccess.Read);

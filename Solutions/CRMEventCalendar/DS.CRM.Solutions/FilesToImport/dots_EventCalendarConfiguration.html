@@ -11,7 +11,7 @@
     <title>Bootstrap</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="CSS/AutoSMSbootstrap.min.css" rel="stylesheet">
+    <link href="CSS/Eventbootstrap.min.css" rel="stylesheet">
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <!-- <link href="assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">-->
@@ -24,7 +24,7 @@
           <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
     <!-- Custom styles for this template -->
-    <link href="CSS/AutoSMSstyle.css" rel="stylesheet">
+    <link href="CSS/Eventstyle.css" rel="stylesheet">
     <style>
         .form-error {
             position: absolute;
@@ -37,7 +37,7 @@
      <div class="loading" style="display:none;">&nbsp;</div>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-sm-6 col-md-6 col-lg-8 col-xs-12"> <img src="Images/AutoSMSdotsquares.png" /> </div>
+            <div class="col-sm-6 col-md-6 col-lg-8 col-xs-12"> <img src="Images/Eventdotsquares.png" /> </div>
             <div class="col-sm-6 col-md-6 col-lg-4 col-xs-12 text-right" align="right">
                 <ul class="status">
                     <li>
@@ -100,7 +100,8 @@
                             <form action="#" id="registration-form" method="POST">
                                 <div style="display:none" id="tryalertdanger" class="alert alert-danger col-sm-12"></div>
                                 <div style="display:none" id="tryalertsuccess" class="alert alert-success col-sm-12"></div>
-                                <button type="submit" id="btn-try" class="blue"><img src="Images/AutoSMSsubmit.png" /> Submit </button>
+                                <div id="sub_btn"></div>
+                                <!--<button type="submit" id="btn-try" class="blue"><img src="Images/Eventsubmit.png" /> Submit </button>-->
 
                                 <!--&nbsp; | &nbsp;<a href="#" class="blue" data-toggle="modal" data-target="#myModal2">Test CRM Credentials</a> <br />-->
 
@@ -162,7 +163,7 @@
                             <form action="#" id="registration-form_subscription" method="POST">
                                 <div style="display:none" id="subalertdanger" class="alert alert-danger col-sm-12"></div>
                                 <div style="display:none" id="subalertsuccess" class="alert alert-success col-sm-12"></div>
-                                <button type="submit" id="btn-subscription" class="blue"><img src="Images/AutoSMSsubmit.png" /> Submit </button>
+                                <button type="submit" id="btn-subscription" class="blue"><img src="Images/Eventsubmit.png" /> Submit </button>
                                 <!--&nbsp; | &nbsp;<a href="#" class="blue" data-toggle="modal" data-target="#myModal2">Test CRM Credentials</a> <br />-->
 
                                 <h3 class="heading">General</h3>
@@ -318,7 +319,7 @@
                             <form action="#" id="setup-form" method="POST">
                                 <div style="display:none" id="setupalertdanger" class="alert alert-danger col-sm-12"></div>
                                 <div id="setupalertsuccess" style="display:none" class="alert alert-success col-sm-12"></div>
-                                <button type="submit" id="btn-setup" class="blue"><img src="Images/AutoSMSsubmit.png" /> Submit </button>
+                                <button type="submit" id="btn-setup" class="blue"><img src="Images/Eventsubmit.png" /> Submit </button>
                                 <h3 class="heading" style="margin-top:0px !important;">Power Bank Config</h3>
                                 <div class="row">
                                     <div class="col-sm-4 col-md-4 col-lg-4">
@@ -473,9 +474,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/theme-default.min.css"
           rel="stylesheet" type="text/css" />
-    <script src="Script/AutoSMSbootstrap.min.js"></script>
-    <script src="Script/AutoSMSScript.js"></script>
-    <script src="Script/AutoSMSconfiguration.js"></script>
+    <script src="Script/Eventbootstrap.min.js"></script>
+    <script src="Script/EventScript.js"></script>
+    <script src="Script/Eventconfiguration.js"></script>
     <script>
   //$.validate({
   //  lang: 'es'

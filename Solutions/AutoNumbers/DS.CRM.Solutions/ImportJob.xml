@@ -36,6 +36,15 @@
   <name>_/ImportWebResources/Script/Script.js</name>
   <type name="JScript">3</type>
  </webResource>
+  
+    <webResource>
+  <path>FilesToImport\Script\jquery.min.js</path>
+  <displayName>Web Resource Import Sample jquery.min.js file</displayName>
+  <description>Provides the SDK.ImportWebResources JScript library for the sample_/ImportWebResources/dots_AutoNumberConfiguration.htm Web resource.</description>
+  <name>_/ImportWebResources/Script/jquery.min.js</name>
+  <type name="JScript">3</type>
+ </webResource>
+    
    <webResource>
   <path>FilesToImport\Script\configuration.js</path>
   <displayName>Web Resource Import Sample configuration.js file</displayName>
@@ -63,7 +72,14 @@
     <description>The HTML Web resource for the sample.</description>
     <name>_/ImportWebResources/dots_entitesAndattributes.html</name>
     <type name="Html">1</type>
-  </webResource> 
+  </webResource>
+  <webResource>
+    <path>FilesToImport\dots_HelpFormat.html</path>
+    <displayName>Web Resource Import Sample dots_HelpFormat.htm file</displayName>
+    <description>The HTML Web resource for the sample.</description>
+    <name>_/ImportWebResources/dots_HelpFormat.html</name>
+    <type name="Html">1</type>
+  </webResource>
 <webResource>
     <path>FilesToImport\Images\submit.png</path>
     <displayName>Web Resource Import Sample submit.png image</displayName>

@@ -1,6 +1,6 @@
 ﻿
 $(document).ready(function () {
-    // getValidUser();  
+    // getValidUser();    
     var srUrl = parent.Xrm.Page.context.getClientUrl();
     SelectConfigurationDetails(srUrl);
 
@@ -59,7 +59,7 @@ function getValidUser()
             url: "https://crmwebapi.24livehost.com/api/values/DotsCommon",
             //url: "http://localhost:54126/api/values/UserAuthenticate",
             type: "get", //send it through get method
-            data: { FirstName: firstname, LastName: lastname, Company: company, ContactNo: phonenumber, Email: email, Address: address, Country: country, State: state, City: city, PostalCode: postalcode, SubscriptionType: type, orgName: orgUniqueName, ServerUrl: serverUrl, UserName: userName, Password: null, SName: "AutoSMS" },
+            data: { FirstName: firstname, LastName: lastname, Company: company, ContactNo: phonenumber, Email: email, Address: address, Country: country, State: state, City: city, PostalCode: postalcode, SubscriptionType: type, orgName: orgUniqueName, ServerUrl: serverUrl, UserName: userName, Password: null, SName: "EventsCalendar" },
             success: function (response) {
                 console.log(response);
                 if (response.IsSuccess) {
@@ -104,7 +104,8 @@ function getValidUser()
 function CheckConfigurationDetails(registerid) {
     
     if (registerid != null) {
-        $("#btn-try").hide();
+        // $("#btn-try").hide();
+        $("#sub_btn").html("");
         $(".loading").show();
         var myserverUrl = parent.Xrm.Page.context.getClientUrl();
         var myorgUniqueName = parent.Xrm.Page.context.getOrgUniqueName();
@@ -170,7 +171,7 @@ function SaveConfigurationDetails(serverUrl, RegisterId, encryptedValue) {
         var CRMObject = new Object();
         ///////////////////////////////////////////////////////////// 
         // Specify the ODATA entity collection 
-        var ODATA_EntityCollection = "/dots_autosmsconfigurationSet";
+        var ODATA_EntityCollection = "/dots_eventconfigurationSet";
         ///////////////////////////////////////////////////////////// 
         // Define attribute values for the CRM object you want created 
 
@@ -221,7 +222,7 @@ function SelectConfigurationDetails(serverUrl)
     $(".loading").show();
     try {
 
-        var oDataUri = serverUrl + "/XRMServices/2011/OrganizationData.svc/dots_autosmsconfigurationSet";
+        var oDataUri = serverUrl + "/XRMServices/2011/OrganizationData.svc/dots_eventconfigurationSet";
 
         $.ajax({
             type: "GET",
@@ -241,6 +242,7 @@ function SelectConfigurationDetails(serverUrl)
                     //for update
                     // console.log(output[0].new_type);
                     // var tblconfigId = output[0].dots_configuration001Id;
+                    $("#sub_btn").html('<button type="submit" id="btn-try" class="blue"><img src="Images/Eventsubmit.png" /> Submit </button>');
                    
                     $(".loading").hide();
                 }

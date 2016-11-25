@@ -74,9 +74,12 @@ namespace DS.CRM
                 {
                     // This statement is required to enable early-bound type support.
                       _serviceProxy.EnableProxyTypes();
+                    
+                   // GetRibbon();
                     CreateSiteMap();
-                   // AutoNumberGeneration.AutoNumber.CreateWorkFlow(_serviceProxy, _languageCode);
+                    // AutoNumberGeneration.AutoNumber.CreateWorkFlow(_serviceProxy, _languageCode);
                     CRMEvent.SetProxy(_serviceProxy, _languageCode);
+                   
                     // Call the method to create any data that this sample requires.
                     CreateRequiredRecords();
                 }
@@ -203,7 +206,7 @@ namespace DS.CRM
             
             _serviceProxy.Execute(createOptionSetRequest);
 
-            //delete configuration entity
+            //delete DotsEventCalendarEntity entity
             if (IsEntityExist(_customEntityName) > 0)
             {
                 DeleteEntityRequest customEntityNameFormField = new DeleteEntityRequest()
@@ -214,8 +217,8 @@ namespace DS.CRM
             }
 
 
-            // Create the dots_autonumber entity.
-            CRMEvent.DotsAutoNumberEntity();
+            // Create the DotsEventCalendarEntity entity.
+            CRMEvent.DotsEventCalendarEntity();
             // CreateTab();
 
 
@@ -231,7 +234,7 @@ namespace DS.CRM
 
 
             //for create dots_configuration entity           
-            CRMEvent.DotsAutoNumberConfigurationEntity();
+            CRMEvent.DotsEventCalendarConfigurationEntity();
 
 
             // assign dots_autonumber form entity to solution
@@ -436,10 +439,10 @@ namespace DS.CRM
             XDocument sitemapxml = XDocument.Parse(sitemapcontent);
 
            // create new area
- //           sitemapxml.Element("SiteMap")
- //.Elements("Area")
- //.Where(x => (string)x.Attribute("Id") == "DotsquaresPack")
- //.Remove();
+            sitemapxml.Element("SiteMap")
+ .Elements("Area")
+ .Where(x => (string)x.Attribute("Id") == "DotsquaresPack")
+ .Remove();
 
             XElement root = new XElement("Area");
             root.Add(new XAttribute("Id", "DotsquaresPack"),
@@ -451,17 +454,39 @@ namespace DS.CRM
             //   new XElement("SubArea", new XAttribute("Id", "SubArea_dots_autonumber"),
             //   new XAttribute("Entity", "dots_autonumber")
             //   )));
+
+            //root.Add(new XElement("Group",
+            //    new XAttribute("Id", "Group_SubDotsquaresCalendarEventsWebForm"),
+            //    new XAttribute("Title", "DotsquaresCalendarEvents"),
+            //    new XElement("SubArea", new XAttribute("Id", "SubArea_dots_eventcalendar"),
+            //    new XAttribute("Entity", _customEntityName),
+            //     new XElement("Privilege", new XAttribute("Entity", _customEntityName),
+            //    new XAttribute("Privilege", "Create")
+            //    ))));
+
+            //root.Add(new XElement("Group",
+            //   new XAttribute("Id", "Group_SubDotsquaresCalendarEventsWebForm"),
+            //   new XAttribute("Title", "DotsquaresCalendarEvents"),
+            //   new XElement("SubArea", new XAttribute("Id", "SubArea_dots_eventcalendar"),
+            //   new XAttribute("Url", "$webresource:new_hello.html")                            
+            //   )));
+
+            //root.Add(new XElement("SubArea",
+            // new XAttribute("Id", "Sub_DotsquaresCalendarEventsWebForm"),
+            // new XAttribute("Url", "$webresource:new_hello.html"),
+            // new XElement("Titles",new XElement("Title", new XAttribute("LCID", "1033"), new XAttribute("Title", "Calendar")))           
+
             root.Add(new XElement("Group",
-                new XAttribute("Id", "Group_SubDotsquaresAutoSMSWebForm"),
-                new XAttribute("Title", "DotsquaresAutoSMS"),
-                new XElement("SubArea", new XAttribute("Id", "SubArea_dots_autosms"),
-                new XAttribute("Entity", _customEntityName)
-                )));
+               new XAttribute("Id", "Group_SubDotsquaresCalendarEventsWebForm"),
+               new XAttribute("Title", "DotsquaresCalendarEvents"),
+               new XElement("SubArea", new XAttribute("Id", "SubArea_dots_eventcalendar"),
+               new XAttribute("Url", "$webresource:ec_/ImportWebResources/dots_EventsCalendar.html"),
+               new XElement("Titles", new XElement("Title", new XAttribute("LCID", "1033"), new XAttribute("Title", "Events Calendar")))
+               )));
 
+            sitemapxml.Element("SiteMap").Add(root);
 
-            sitemapxml.Element("SiteMap").Add(root);           
-
-
+            
             sitemap["sitemapxml"] = sitemapxml.ToString();
             _serviceProxy.Update(sitemap);
 
@@ -562,16 +587,50 @@ namespace DS.CRM
         public void GetRibbon()
         {
 
-            // assign entity to solution
+            //RetrieveApplicationRibbonRequest appribReq = new RetrieveApplicationRibbonRequest();
+
+            //RetrieveApplicationRibbonResponse appribResp = (RetrieveApplicationRibbonResponse)_serviceProxy.Execute(appribReq);
+           
+              RetrieveEntityRibbonRequest req = new RetrieveEntityRibbonRequest();
+            req.EntityName = "account";
+            RetrieveEntityRibbonResponse resp = (RetrieveEntityRibbonResponse)_serviceProxy.Execute(req);
+
+
+            var wb = resp.Results;
+
+
+
+
+            //assign entity to solution
             RetrieveEntityRequest retrievepowertEntityRequest = new RetrieveEntityRequest
             {
                 EntityFilters = EntityFilters.Entity,
                 LogicalName = SiteMap.EntityLogicalName,
             };
             RetrieveEntityResponse retrievepowerEntityResponse = (RetrieveEntityResponse)_serviceProxy.Execute(retrievepowertEntityRequest);
-            
-        }
 
+
+
+
+        }
+        //public byte[] unzipRibbon(byte[] data)
+        //{
+        //    System.IO.Packaging.ZipPackage package = null;
+        //    MemoryStream memStream = null;
+
+        //    memStream = new MemoryStream();
+        //    memStream.Write(data, 0, data.Length);
+        //    package = (ZipPackage)ZipPackage.Open(memStream, FileMode.Open);
+
+        //    ZipPackagePart part = (ZipPackagePart)package.GetPart(new Uri("/RibbonXml.xml", UriKind.Relative));
+        //    using (Stream strm = part.GetStream())
+        //    {
+        //        long len = strm.Length;
+        //        byte[] buff = new byte[len];
+        //        strm.Read(buff, 0, (int)len);
+        //        return buff;
+        //    }
+        //}
         public void CreateTab()
         {
 

@@ -75,22 +75,20 @@
     <Content Include="FilesToImport\CSS\Eventbootstrap.css" />
     <Content Include="FilesToImport\CSS\Eventbootstrap.min.css" />
     <Content Include="FilesToImport\CSS\Eventstyle.css" />
-    <Content Include="FilesToImport\CSS\fullcalendar.css" />
-    <Content Include="FilesToImport\CSS\fullcalendar.print.css" />
-    <Content Include="FilesToImport\EventsCalendar.html" />
-    <Content Include="FilesToImport\dots_AutoSMSConfiguration.html" />
-    <Content Include="FilesToImport\dots_AutoSMSEntitesAndattributes.html" />
-    <Content Include="FilesToImport\Images\AutoSMSdotsquares.png" />
-    <Content Include="FilesToImport\Images\AutoSMSsubmit.png" />
-    <Content Include="FilesToImport\Script\AutoSMSbootstrap.js" />
-    <Content Include="FilesToImport\Script\AutoSMSbootstrap.min.js" />
-    <Content Include="FilesToImport\Script\AutoSMSconfiguration.js" />
-    <Content Include="FilesToImport\Script\fullcalendar.min.js" />
-    <Content Include="FilesToImport\Script\jquery.min.js" />
-    <Content Include="FilesToImport\Script\moment.min.js" />
+    <Content Include="FilesToImport\CSS\Eventfullcalendar.css" />
+    <Content Include="FilesToImport\CSS\Eventfullcalendar.print.css" />
+    <Content Include="FilesToImport\dots_EventsCalendar.html" />
+    <Content Include="FilesToImport\dots_EventCalendarConfiguration.html" />
+    <Content Include="FilesToImport\Images\Eventdotsquares.png" />
+    <Content Include="FilesToImport\Images\Eventsubmit.png" />
+    <Content Include="FilesToImport\Script\Eventbootstrap.js" />
+    <Content Include="FilesToImport\Script\Eventbootstrap.min.js" />
+    <Content Include="FilesToImport\Script\Eventconfiguration.js" />
+    <Content Include="FilesToImport\Script\Eventfullcalendar.min.js" />
+    <Content Include="FilesToImport\Script\Eventjquery.min.js" />
+    <Content Include="FilesToImport\Script\Eventmoment.min.js" />
     <Content Include="FilesToImport\Script\npm.js" />
-    <Content Include="FilesToImport\Script\AutoSMSScript.js" />
-    <Content Include="FilesToImport\Script\AutoSMSSDK.MetaData.js" />
+    <Content Include="FilesToImport\Script\EventScript.js" />
     <Content Include="ImportJob.xml">
       <SubType>Designer</SubType>
     </Content>

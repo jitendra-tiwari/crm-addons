@@ -1,4 +1,6 @@
 ﻿$(document).ready(function () {
+
+
     $("#optradio_try").prop("checked", true);
     $("#registration-form_subscription").hide();
     $("#optradio_try").click(function () {
@@ -29,4 +31,22 @@
 
     });
 
+   
+
 });
+
+
+
+
+function disableIntialNumber() {
+
+  
+    var entityId = parent.Xrm.Page.data.entity.getId();
+    if (entityId) {
+        parent.Xrm.Page.getControl("new_initializenumber").setDisabled(true);
+
+    } else {
+        parent.Xrm.Page.getControl("new_initializenumber").setDisabled(false);
+    }
+   
+}
