@@ -352,8 +352,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e5e5e5', end
   box-shadow: 1px 1px 4px #eee;
   float: left;
   margin-bottom: 20px;
-  width: 218px;
-  margin-right: 20px;
+  width: 338px;
+  margin-right: 10px;
 }
 /* .lead-Integration-box:nth-child(n) {margin-right: 20px;}
 .lead-Integration-box:nth-child(n+1) {margin-right:0;} */
