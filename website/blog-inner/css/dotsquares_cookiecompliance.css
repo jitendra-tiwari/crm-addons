@@ -1,0 +1,18 @@
+/* CSS Document */
+
+#dotsquares { width:171px; position:absolute; left:0px; top:0px; z-index:2147483647;}
+#dotsquares #cookie-top { width:171px; float:left; position:absolute; height:173px; left:0px; top:0px; background:url(../images/cookie-top.png) left top no-repeat; z-index:2147483646;margin-left:5px;}
+#dotsquares #cookie-down { width:100%; float:left; position:absolute; top:135px; left:0px; background:url(../images/cookie-down-bg.png) left top repeat-y; padding:50px 10px 10px 10px; z-index:2147483645; margin-left:6px;}
+
+#dotsquares .cookie-logo { width:155px; float:left; padding:10px 0px 5px 8px;}
+#dotsquares .cookie-top-content { width:100%; float:left; padding:5px 10px; font-family:Arial, Helvetica, sans-serif; font-size:11px; color:#000000; line-height:14px; text-align:center;}
+#dotsquares .cookie-top-content a{font-family:Arial, Helvetica, sans-serif; font-size:11px; color:#2B4F7B; line-height:14px; text-align:center; text-decoration:underline;}
+#dotsquares .cookie-top-content a:hover{font-size:11px; color:#2B4F7B; line-height:14px; text-decoration:none;}
+
+#dotsquares .cookie-btn-zone { width:151px; float:left;}
+#dotsquares .cookie-btn-zone ul{ width:151px; float:left; padding:0px; margin:0px;}
+#dotsquares .cookie-btn-zone ul li { width:100%; float:left; padding:0px; margin:0px; list-style:none; margin-bottom:3px;}
+#dotsquares .cookie-btn-zone ul li a { width:100%; float:left; height:32px; font-family:Trebuchet MS, Arial, Helvetica, sans-serif; font-size:12px; color:#FFFFFF; line-height:32px; background:url(../images/cookie-btn-normal.png) left top no-repeat; padding:0px 0px 0px 20px; text-decoration:none;}
+#dotsquares .cookie-btn-zone ul li a:hover { color:#FFFFFF; line-height:32px; background:url(../images/cookie-btn-hover.png) left top no-repeat; padding:0px 0px 0px 20px;}
+#dotsquares .cookie-btn-zone ul li a.active { color:#FFFFFF; line-height:32px; background:url(../images/cookie-btn-hover.png) left top no-repeat; padding:0px 0px 0px 20px;}
+#dotsquares .cookie-btn-content { width:100%; float:left; padding:10px; border:1px solid #173B6E; font-family:Arial, Helvetica, sans-serif; color:#173B6E; font-size:11px; margin-top:-3px; background-color:#FFFFFF}
