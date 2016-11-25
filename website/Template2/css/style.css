@@ -357,7 +357,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e5e5e5', end
 }
 /* .lead-Integration-box:nth-child(n) {margin-right: 20px;}
 .lead-Integration-box:nth-child(n+1) {margin-right:0;} */
-.lead-Integration-box:nth-child(3n+1) { margin-right:0;}
+
+
+/* by developer
+.lead-Integration-box:nth-child(3n+1) { margin-right:0;} */
 
 .lead-Integration-box a { text-decoration: none; }
 .li-box-img {
