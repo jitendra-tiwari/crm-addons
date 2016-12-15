@@ -28,6 +28,13 @@
     <name>_/ImportWebResources/Script/AutoSMSSDK.MetaData.js</name>
     <type name="JScript">3</type>
   </webResource>
+  <webResource>
+    <path>FilesToImport\Script\AutoSMSjquery.min.js</path>
+    <displayName>Web Resource Import Sample AutoSMSjquery.min.js file</displayName>
+    <description>Provides the SDK.ImportWebResources JScript library for the sample_/ImportWebResources/dots_AutoSMSConfiguration.htm Web resource.</description>
+    <name>_/ImportWebResources/Script/AutoSMSjquery.min.js</name>
+    <type name="JScript">3</type>
+  </webResource>
 
   <webResource>
   <path>FilesToImport\Script\AutoSMSScript.js</path>

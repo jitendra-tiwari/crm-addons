@@ -82,6 +82,7 @@
     <Content Include="FilesToImport\Script\AutoSMSbootstrap.js" />
     <Content Include="FilesToImport\Script\AutoSMSbootstrap.min.js" />
     <Content Include="FilesToImport\Script\AutoSMSconfiguration.js" />
+    <Content Include="FilesToImport\Script\AutoSMSjquery.min.js" />
     <Content Include="FilesToImport\Script\npm.js" />
     <Content Include="FilesToImport\Script\AutoSMSScript.js" />
     <Content Include="FilesToImport\Script\AutoSMSSDK.MetaData.js" />

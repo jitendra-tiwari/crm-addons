@@ -1,0 +1,510 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!--<link rel="icon" href="../../favicon.ico">-->
+    <title>Bootstrap</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="CSS/Twitterbootstrap.min.css" rel="stylesheet">
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <!-- <link href="assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">-->
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <!-- <script src="assets/js/ie-emulation-modes-warning.js"></script>-->
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+          <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+    <!-- Custom styles for this template -->
+    <link href="CSS/Twitterstyle.css" rel="stylesheet">
+    <style>
+        .form-error {
+            position: absolute;
+            top: 94%;
+        }
+    </style>
+</head>
+
+<body>
+     <div class="loading" style="display:none;">&nbsp;</div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-6 col-md-6 col-lg-8 col-xs-12"> <img src="Images/Twitterdotsquares.png" /> </div>
+            <div class="col-sm-6 col-md-6 col-lg-4 col-xs-12 text-right" align="right">
+                <ul class="status">
+                    <li>
+                        Status <br>
+                        <strong id="solutionStatus"></strong></br>
+                    </li>
+                    <li>
+                        Expires <br>
+                        <strong id="solutionExpires"></strong></br>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="clearfix">&nbsp;</div>
+        <div class="row">
+            <div class="col-md-12">
+                <!-- Nav tabs -->
+                <div class="card">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Profile</a></li>
+                        <li style="display:none;" role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Setup</a></li>
+                    </ul>
+
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+
+                        <!--       <a href="#" class="blue"><img src="images/submit.png"/> Submit</a>&nbsp; | &nbsp;<a href="#" class="blue" data-toggle="modal" data-target="#myModal2">Test CRM Credentials</a>   -->
+                        <!-- Modal -->
+                        <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title" id="myModalLabel"></h4>
+
+                                    </div>
+                                    <div class="modal-body">
+                                        <h3>Test CRM Credentials</h3>
+                                        <p><i class="glyphicon glyphicon-ok success"></i> Testing Usernsme and Password - Success</p>
+
+                                        <p><i class="glyphicon glyphicon-remove fail"></i> Testing Usernsme and Password - Success</p>
+                                    </div>
+                                    <div class="modal-footer">
+
+                                        <button type="button" class="btn btn-primary">OK</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div role="tabpanel" class="tab-pane active" id="home">
+                            <label class="radio-inline" for="optradio_try">
+                                <input type="radio" name="optradio" id="optradio_try">
+                                Trial
+                            </label>
+                            <label style="display:none;" class="radio-inline" for="optradio_subscribe">
+                                <input type="radio" name="optradio" id="optradio_subscribe">
+                                Subscribe
+                            </label>
+                            <form action="#" id="registration-form" method="POST">
+                                <div style="display:none" id="tryalertdanger" class="alert alert-danger col-sm-12"></div>
+                                <div style="display:none" id="tryalertsuccess" class="alert alert-success col-sm-12"></div>
+                                <button type="submit" id="btn-try" class="blue"><img src="Images/Twittersubmit.png" /> Submit </button>
+
+                                <!--&nbsp; | &nbsp;<a href="#" class="blue" data-toggle="modal" data-target="#myModal2">Test CRM Credentials</a> <br />-->
+
+                                <h3 class="heading">General</h3>
+                                <div class="row">
+                                    <div class="col-sm-4 col-md-4 col-lg-4">
+                                        <label for="exampleInputEmail1">First Name<em class="red">*</em></label>
+                                        <input type="text" data-validation="required" data-validation-error-msg="Please Enter First Name." class="form-control" id="trytxtfirstname" placeholder="First Name">
+                                    </div>
+                                    <div class="col-sm-4 col-md-4 col-lg-4">
+                                        <label for="exampleInputEmail1">Last Name<em class="red">*</em></label>
+                                        <input type="text" data-validation="required" data-validation-error-msg="Please Enter Last Name." class="form-control" id="trytxtlastname" placeholder="Last Name">
+                                    </div>
+                                    <div class="col-sm-4 col-md-4 col-lg-4">
+                                        <label for="exampleInputEmail1">Email address<em class="red">*</em></label>
+                                        <input type="email" data-validation="email" data-validation-error-msg="Please Enter Valid Email." class="form-control" id="trytxtemail" placeholder="Email">
+                                    </div>
+                                    <DIV class="clearfix">&nbsp;</DIV>
+                                    <div class="col-sm-4 col-md-4 col-lg-4">
+                                        <label for="exampleInputEmail1">Company<em class="red">*</em></label>
+                                        <input type="text" data-validation="required" data-validation-error-msg="Please Enter Company Name." class="form-control" id="trytxtcompany" placeholder="Company">
+                                    </div>
+                                    <div class="col-sm-4 col-md-4 col-lg-4">
+                                        <label for="exampleInputEmail1">Phone No.<em class="red">*</em></label>
+                                        <input type="text" data-validation="required" data-validation-error-msg="Please Enter Phone Noumber." class="form-control" id="trytxtphonenumber" placeholder="Phone Noumber">
+                                    </div>
+                                    <div class="col-sm-4 col-md-4 col-lg-4">
+                                        <label for="exampleInputEmail1">Address<em class="red">*</em></label>
+                                        <input type="text" data-validation="required" data-validation-error-msg="Please Enter Address." class="form-control" id="trytxtaddress" placeholder="Address">
+                                    </div>
+                                    <DIV class="clearfix">&nbsp;</DIV>
+                                    <div class="col-sm-4 col-md-4 col-lg-4">
+                                        <label for="exampleInputEmail1">Country<em class="red">*</em></label>
+                                        <input type="text" data-validation="required" data-validation-error-msg="Please Enter Country." class="form-control" id="trytxtcountry" placeholder="Country">
+                                    </div>
+                                    <div class="col-sm-4 col-md-4 col-lg-4">
+                                        <label for="exampleInputEmail1">State<em class="red">*</em></label>
+                                        <input type="text" data-validation="required" data-validation-error-msg="Please Enter State." class="form-control" id="trytxtstate" placeholder="State">
+                                    </div>
+                                    <div class="col-sm-4 col-md-4 col-lg-4">
+                                        <label for="exampleInputEmail1">City<em class="red">*</em></label>
+                                        <input type="text" data-validation="required" data-validation-error-msg="Please Enter City." class="form-control" id="trytxtcity" placeholder="City">
+                                    </div>
+                                </div>
+                                <!--<h3 class="heading">CRM Credentials</h3>
+                                <div class="row">
+                                    <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12">
+                                        <label for="exampleInputEmail1">UserName <em class="red">*</em></label>
+                                        <input type="text" data-validation="required" data-validation-error-msg="Please Enter UserName." class="form-control" id="trytxtusername" placeholder="User Name ">
+                                    </div>
+                                    <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12">
+                                        <label for="exampleInputEmail1">Password <em class="red">*</em></label>
+                                        <input type="password" data-validation="required" data-validation-error-msg="Please Enter Password." class="form-control" id="trytxtpassword" placeholder="*******">
+                                    </div>
+
+                                </div>-->
+
+                            </form>
+                            <form action="#" id="registration-form_subscription" method="POST">
+                                <div style="display:none" id="subalertdanger" class="alert alert-danger col-sm-12"></div>
+                                <div style="display:none" id="subalertsuccess" class="alert alert-success col-sm-12"></div>
+                                <button type="submit" id="btn-subscription" class="blue"><img src="Images/Twittersubmit.png" /> Submit </button>
+                                <!--&nbsp; | &nbsp;<a href="#" class="blue" data-toggle="modal" data-target="#myModal2">Test CRM Credentials</a> <br />-->
+
+                                <h3 class="heading">General</h3>
+                                <div class="row">
+                                    <div class="col-sm-4 col-md-4 col-lg-4">
+                                        <label for="exampleInputEmail1">First Name<em class="red">*</em></label>
+                                        <input type="text" data-validation="required" data-validation-error-msg="Please Enter First Name." class="form-control" id="subtxtfirstname" placeholder="First Name">
+                                    </div>
+                                    <div class="col-sm-4 col-md-4 col-lg-4">
+                                        <label for="exampleInputEmail1">Last Name<em class="red">*</em></label>
+                                        <input type="text" data-validation="required" data-validation-error-msg="Please Enter Last Name." class="form-control" id="subtxtlastname" placeholder="Last Name">
+                                    </div>
+                                    <div class="col-sm-4 col-md-4 col-lg-4">
+                                        <label for="exampleInputEmail1">Email address<em class="red">*</em></label>
+                                        <input type="email" data-validation="email" data-validation-error-msg="Please Enter Valid Email." class="form-control" id="subtxtemail" placeholder="Email">
+                                    </div>
+                                    <DIV class="clearfix">&nbsp;</DIV>
+                                    <div class="col-sm-4 col-md-4 col-lg-4">
+                                        <label for="exampleInputEmail1">Company<em class="red">*</em></label>
+                                        <input type="text" data-validation="required" data-validation-error-msg="Please Enter Company Name." class="form-control" id="subtxtcompany" placeholder="Company">
+                                    </div>
+                                    <div class="col-sm-4 col-md-4 col-lg-4">
+                                        <label for="exampleInputEmail1">Phone No.<em class="red">*</em></label>
+                                        <input type="text" data-validation="required" data-validation-error-msg="Please Enter Phone Noumber." class="form-control" id="subtxtphonenumber" placeholder="Phone Noumber">
+                                    </div>
+                                    <div class="col-sm-4 col-md-4 col-lg-4">
+                                        <label for="exampleInputEmail1">Address<em class="red">*</em></label>
+                                        <input type="text" data-validation="required" data-validation-error-msg="Please Enter Address." class="form-control" id="subtxtaddress" placeholder="Address">
+                                    </div>
+                                    <DIV class="clearfix">&nbsp;</DIV>
+                                    <div class="col-sm-4 col-md-4 col-lg-4">
+                                        <label for="exampleInputEmail1">Country<em class="red">*</em></label>
+                                        <input type="text" data-validation="required" data-validation-error-msg="Please Enter Country." class="form-control" id="subtxtcountry" placeholder="Country">
+                                    </div>
+                                    <div class="col-sm-4 col-md-4 col-lg-4">
+                                        <label for="exampleInputEmail1">State<em class="red">*</em></label>
+                                        <input type="text" data-validation="required" data-validation-error-msg="Please Enter State." class="form-control" id="subtxtstate" placeholder="State">
+                                    </div>
+                                    <div class="col-sm-4 col-md-4 col-lg-4">
+                                        <label for="exampleInputEmail1">City<em class="red">*</em></label>
+                                        <input type="text" data-validation="required" data-validation-error-msg="Please Enter City." class="form-control" id="subtxtcity" placeholder="City">
+                                    </div>
+                                </div>
+                                <h3 class="heading">CRM Credentials</h3>
+                                <div class="row">
+                                    <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12">
+                                        <label for="exampleInputEmail1">UserName <em class="red">*</em></label>
+                                        <input type="text" data-validation="required" data-validation-error-msg="Please Enter UserName." class="form-control" id="subtxtusername" placeholder="User Name ">
+                                    </div>
+                                    <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12">
+                                        <label for="exampleInputEmail1">Password <em class="red">*</em></label>
+                                        <input type="password" data-validation="required" data-validation-error-msg="Please Enter Password." class="form-control" id="subtxtpassword" placeholder="*******">
+                                    </div>
+
+                                </div>
+                                <h3 class="heading">Payment Information</h3>
+                                <div class="row">
+                                    <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12">
+                                        <label for="exampleInputEmail1">Name on card <em class="red">*</em></label>
+                                        <input type="text" data-validation="required" data-validation-error-msg="Please Enter Name." class="form-control" id="subtxtcardonname" placeholder="Name on card">
+                                    </div>
+                                    <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12">
+                                        <label for="exampleInputEmail1">Card Type<em class="red">*</em></label>
+                                        <select class="form-control" name="sub-credit-card" id="sub-credit-card" data-validation="required" data-validation-error-msg="Please Select Card Type.">
+                                            <option value="">--Select--</option>
+                                            <option value="visa">Visa</option>
+                                            <option value="amex">Americal Express</option>
+                                            <option value="mastercard">Master Cared</option>
+                                            <option value="discover">Discover</option>
+                                        </select>
+
+                                    </div>
+                                    <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12">
+                                        <label for="exampleInputEmail1">Credit Card Number <em class="red">*</em></label>
+                                        <input type="text" name="subtxtcreditcardnumber" data-validation="creditcard" data-validation-allowing="visa" class="form-control" id="subtxtcreditcardnumber" placeholder="Credit Card Number">
+
+                                    </div>
+                                    <DIV class="clearfix">&nbsp;</DIV>
+                                    <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12">
+                                        <label for="exampleInputEmail1">CV Number <em class="red">*</em></label>
+                                        <input type="text" data-validation="cvv" class="form-control" id="subtxtcvvnumber" placeholder="CVV Number ">
+                                    </div>
+                                    <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12">
+                                        <label for="exampleInputEmail1">Expiration Year<em class="red">*</em></label>
+                                        <select name="sub-exp-year" id="sub-exp-year" data-validation="required" data-validation-error-msg="Please Select Expiration Year." class="form-control">
+                                            <option value="">--Select--</option>
+                                            <option value="16">2016</option>
+                                            <option value="17">2017</option>
+                                            <option value="18">2018</option>
+                                            <option value="19">2019</option>
+                                            <option value="20">2020</option>
+                                            <option value="21">2021</option>
+                                            <option value="22">2022</option>
+                                            <option value="23">2023</option>
+                                            <option value="24">2024</option>
+                                            <option value="25">2025</option>
+                                            <option value="26">2026</option>
+                                            <option value="27">2027</option>
+                                            <option value="28">2028</option>
+                                            <option value="29">2029</option>
+                                            <option value="30">2030</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12">
+                                        <label for="exampleInputEmail1">Expiration Month<em class="red">*</em></label>
+                                        <select data-validation="required" name="sub-exp-month" id="sub-exp-month" data-validation-error-msg="Please Select Expiration Month." class="form-control">
+                                            <option value="">--Select--</option>
+                                            <option value="1">01 January</option>
+                                            <option value="2">02 February</option>
+                                            <option value="3">03 March</option>
+                                            <option value="4">04 April</option>
+                                            <option value="5">05 May</option>
+                                            <option value="6">06 June</option>
+                                            <option value="7">07 July</option>
+                                            <option value="8">08 August</option>
+                                            <option value="9">09 September</option>
+                                            <option value="10">10 October</option>
+                                            <option value="11">11 November</option>
+                                            <option value="12">12 December</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <h3 class="heading">Billing Address</h3>
+                                <div class="row">
+                                    <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12">
+                                        <label for="exampleInputEmail1">Address <em class="red">*</em></label>
+                                        <textarea class="form-control" id="subtxtbillingaddress" data-validation="required" data-validation-error-msg="Please Enter Address."></textarea>
+                                    </div>
+                                    <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12">
+                                        <label for="exampleInputEmail1">State/Province <em class="red">*</em></label>
+                                        <input type="text" class="form-control" id="subtxtstate" data-validation="required" data-validation-error-msg="Please Enter State/Province." placeholder="State/Province" />
+                                    </div>
+                                    <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12">
+                                        <label for="exampleInputEmail1">City<em class="red">*</em></label>
+                                        <input type="text" class="form-control" id="subtxtcity" data-validation="required" data-validation-error-msg="Please Enter City." placeholder="City" />
+                                    </div>
+                                    <div class="clearfix">&nbsp;</div>
+                                    <div class="clearfix">&nbsp;</div>
+                                    <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12">
+                                        <label for="exampleInputEmail1">Postal Code<em class="red">*</em></label>
+                                        <input type="text" class="form-control" id="subtxtpostalcode" data-validation="number" data-validation-error-msg="Please Enter Postal Code." placeholder="Postal Code" />
+                                    </div>
+                                    <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12">
+                                        <label for="exampleInputEmail1">Country<em class="red">*</em></label>
+                                        <input type="text" class="form-control" id="subtxtcountry" data-validation="required" data-validation-error-msg="Please Enter Country." placeholder="Country" />
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+
+                        <div role="tabpanel" class="tab-pane" id="profile">
+                            <form action="#" id="setup-form" method="POST">
+                                <div style="display:none" id="setupalertdanger" class="alert alert-danger col-sm-12"></div>
+                                <div id="setupalertsuccess" style="display:none" class="alert alert-success col-sm-12"></div>
+                                <button type="submit" id="btn-setup" class="blue"><img src="Images/AutoSMSsubmit.png" /> Submit </button>
+                                <h3 class="heading" style="margin-top:0px !important;">Power Bank Config</h3>
+                                <div class="row">
+                                    <div class="col-sm-4 col-md-4 col-lg-4">
+                                        <label for="exampleInputEmail1">FieldSeparator<em class="red">*</em></label>
+                                        <input type="text" data-validation="required" data-validation-error-msg="Please Enter FieldSeparator." class="form-control" id="setuptxtfieldseprator" placeholder="FieldSeparator">
+                                    </div>
+                                </div>
+                                <h3 class="heading">Cloud Location</h3>
+                                <div class="row">
+                                    <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12">
+                                        <label for="exampleInputEmail1">Target Service <em class="red">*</em></label>
+                                        <select class="form-control" data-validation="required" data-validation-error-msg="Please Enter Target Service." id="setuptargetservice" name="setuptargetservice">
+                                            <option value="">---Select---</option>
+                                            <option value="1">Azure Central US</option>
+                                            <option value="2">Azure East Asia</option>
+                                            <option value="3">Azure West Europe</option>
+                                            <option value="4">Azure Brazil South</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <h3 class="heading">GoToMeeting Credentials</h3>
+                                <div class="row">
+                                    <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12">
+                                        <label for="exampleInputEmail1">UserName <em class="red">*</em></label>
+                                        <input type="text" data-validation="required" data-validation-error-msg="Please Enter User Name." class="form-control" id="setuptxtusername" placeholder="UserName">
+                                    </div>
+                                    <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12">
+                                        <label for="exampleInputEmail1">Password <em class="red">*</em></label>
+                                        <input type="password" data-validation="required" data-validation-error-msg="Please Enter Password." class="form-control" id="setuptxtpassword" placeholder="*******">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--<div class="popup_btn">
+                <a id="btn-login" href="#" class="btn btn-success" data-toggle="modal" data-target="#myModal">Popup Button</a>
+                
+                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title" id="myModalLabel">Entities</h4>
+                                <P>Select Entity from below list and click OK</P>
+                            </div>
+                            <div class="modal-body scrol">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr class="head_bg">
+                                            <th width="50%">Entity Name</th>
+                                            <th width="50%">Entity Logical Name</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row" width="50%">1</th>
+                                            <td width="50%">Mark</td>
+
+                                        </tr>
+
+                                        <tr>
+                                            <th scope="row" width="50%">1</th>
+                                            <td width="50%">Mark</td>
+
+                                        </tr>
+
+                                        <tr>
+                                            <th scope="row" width="50%">1</th>
+                                            <td width="50%">Mark</td>
+
+                                        </tr>
+
+                                        <tr>
+                                            <th scope="row" width="50%">1</th>
+                                            <td width="50%">Mark</td>
+
+                                        </tr>
+                                        <tr>
+                                            <th scope="row" width="50%">1</th>
+                                            <td width="50%">Mark</td>
+
+                                        </tr>
+                                        <tr>
+                                            <th scope="row" width="50%">1</th>
+                                            <td width="50%">Mark</td>
+
+                                        </tr>
+                                        <tr>
+                                            <th scope="row" width="50%">1</th>
+                                            <td width="50%">Mark</td>
+
+                                        </tr>
+                                        <tr>
+                                            <th scope="row" width="50%">1</th>
+                                            <td width="50%">Mark</td>
+
+                                        </tr>
+                                        <tr>
+                                            <th scope="row" width="50%">1</th>
+                                            <td width="50%">Mark</td>
+
+                                        </tr>
+                                        <tr>
+                                            <th scope="row" width="50%">1</th>
+                                            <td width="50%">Mark</td>
+
+                                        </tr>
+
+                                        <tr>
+                                            <th scope="row" width="50%">1</th>
+                                            <td width="50%">Mark</td>
+
+                                        </tr>
+                                        <tr>
+                                            <th scope="row" width="50%">1</th>
+                                            <td width="50%">Mark</td>
+
+                                        </tr>
+                                        <tr>
+                                            <th scope="row" width="50%">1</th>
+                                            <td width="50%">Mark</td>
+
+                                        </tr>
+                                        <tr>
+                                            <th scope="row" width="50%">1</th>
+                                            <td width="50%">Mark</td>
+
+                                        </tr>
+
+
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary">Save changes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>-->
+        </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript
+        ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/theme-default.min.css"
+          rel="stylesheet" type="text/css" />
+    <script src="Script/Twitterbootstrap.min.js"></script>
+    <script src="Script/TwitterScript.js"></script>
+    <script src="Script/Twitterconfiguration.js"></script>
+    <script>
+  //$.validate({
+  //  lang: 'es'
+    //});
+    $.validate({
+        form: '#registration-form',
+        //modules: 'security',
+
+    });
+
+    $.validate({
+        form: '#registration-form_subscription',
+        //modules: 'security',
+
+    });
+
+
+    $.validate({
+        modules: 'security',
+        onModulesLoaded: function () {
+            // Bind card type to card number validator
+            $('#sub-credit-card').change(function () {
+                var card = $(this).val();
+
+                $('input[name="subtxtcreditcardnumber"]').attr('data-validation-allowing', card);
+            });
+        }
+    });
+    </script>
+
+</body>
+</html>

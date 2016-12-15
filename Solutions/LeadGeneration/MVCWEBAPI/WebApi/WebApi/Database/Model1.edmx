@@ -31,8 +31,22 @@
           <Property Name="ExpireDate" Type="datetime" Nullable="false" />
           <Property Name="IsCreated" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="tbl_Twitter">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Row_Id" Type="varchar" MaxLength="50" />
+          <Property Name="UserID" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="OauthToken" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="OauthTokenSecret" Type="nvarchar" MaxLength="300" Nullable="false" />
+          <Property Name="ScreenName" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="Image_Url" Type="varchar(max)" />
+          <Property Name="AuthenticateDate" Type="datetime" Nullable="false" />
+        </EntityType>
         <EntityContainer Name="MicrosoftCRMModelStoreContainer">
           <EntitySet Name="tbl_Configuration" EntityType="Self.tbl_Configuration" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_Twitter" EntityType="Self.tbl_Twitter" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -40,6 +54,7 @@
       <Schema Namespace="MicrosoftCRMModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="MicrosoftCRMEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="tbl_Configuration" EntityType="MicrosoftCRMModel.tbl_Configuration" />
+          <EntitySet Name="tbl_Twitter" EntityType="MicrosoftCRMModel.tbl_Twitter" />
         </EntityContainer>
         <EntityType Name="tbl_Configuration">
           <Key>
@@ -66,6 +81,19 @@
           <Property Name="ModifyDate" Type="DateTime" Precision="3" />
           <Property Name="ExpireDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="IsCreated" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tbl_Twitter">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="Row_Id" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="UserID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="OauthToken" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="OauthTokenSecret" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="ScreenName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Image_Url" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="AuthenticateDate" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -96,6 +124,20 @@
                 <ScalarProperty Name="Company" ColumnName="Company" />
                 <ScalarProperty Name="LastName" ColumnName="LastName" />
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_Twitter">
+            <EntityTypeMapping TypeName="MicrosoftCRMModel.tbl_Twitter">
+              <MappingFragment StoreEntitySet="tbl_Twitter">
+                <ScalarProperty Name="AuthenticateDate" ColumnName="AuthenticateDate" />
+                <ScalarProperty Name="Image_Url" ColumnName="Image_Url" />
+                <ScalarProperty Name="ScreenName" ColumnName="ScreenName" />
+                <ScalarProperty Name="OauthTokenSecret" ColumnName="OauthTokenSecret" />
+                <ScalarProperty Name="OauthToken" ColumnName="OauthToken" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Row_Id" ColumnName="Row_Id" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

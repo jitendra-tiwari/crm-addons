@@ -26,5 +26,6 @@ namespace WebApi.Database
         }
     
         public virtual DbSet<tbl_Configuration> tbl_Configuration { get; set; }
+        public virtual DbSet<tbl_Twitter> tbl_Twitter { get; set; }
     }
 }

@@ -346,6 +346,7 @@ selectbox.options.add(optn);
 
       parent.Xrm.Page.getControl("new_targetentitylogicalname").setVisible(false);
       parent.Xrm.Page.getControl("new_targetattributelogicalname").setVisible(false);
+      parent.Xrm.Page.getControl("new_sdkmessageprocessingstepid").setVisible(false);
       parent.Xrm.Page.getControl("new_placeholder").setDisabled(true);
       parent.Xrm.Page.getControl("new_attributename").setDisabled(true);
       parent.Xrm.Page.getControl("new_maxlength").setDisabled(true);
@@ -370,7 +371,7 @@ selectbox.options.add(optn);
                   var output = data.d.results;
                   if (output.length == 0) {
                       parent.Xrm.Page.ui.tabs.get('{6fba3068-ed32-46f7-a0ab-31f17a43fc8a}').setVisible(false);
-                      alert("Please Register for autoNumber genrration!");
+                      alert("Please Register Goto-->Setting->Solutions-->select solution and register!");
 
                   }
                   else {

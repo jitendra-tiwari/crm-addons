@@ -33,7 +33,8 @@
 
 
   $(document).ready(function () {
-     // disabledFields();
+      // disabledFields();
+      SelectAutoSMSConfigurationDetails();
       $("#selectbox_AllEntites").change(function () {
           var targetEntityLogicalName = $(this).val();
           var targetEntityText = $("#selectbox_AllEntites option:selected").text();
@@ -142,9 +143,7 @@
 
    for (var i = 0; i < entityMetadataCollection.length; i++) {
 
-    var entity = entityMetadataCollection[i];
-	console.log("====hellio=======");
-console.log(entity);
+    var entity = entityMetadataCollection[i];	
 
 var optn = document.createElement("option");
 if (entity.DisplayName.UserLocalizedLabel != null)
@@ -215,9 +214,7 @@ selectbox.options.add(optn);
 
 
    for (var i = 0; i < entityMetadata.Attributes.length; i++) {
-       var attribute = entityMetadata.Attributes[i];
-       console.log("=====attr=======");
-       console.log(attribute);
+       var attribute = entityMetadata.Attributes[i];     
 
        var optn = document.createElement("option");
        if (attribute.DisplayName.UserLocalizedLabel != null && attribute.Format == "Text") {
@@ -316,11 +313,63 @@ selectbox.options.add(optn);
       parent.Xrm.Page.getControl("dots_currentnumber").setDisabled(true);
   }
   
+  function SelectAutoSMSConfigurationDetails() {
+
+      parent.Xrm.Page.ui.tabs.get('{8bcfce72-7693-44bd-8b75-5b96a4b848cf}').setVisible(false);
+      //var entityId = parent.Xrm.Page.data.entity.getId();    
+
+      parent.Xrm.Page.getControl("dots_targetentitylogicalname").setVisible(false);
+      parent.Xrm.Page.getControl("dots_targetattributelogicalname").setVisible(false);
+      parent.Xrm.Page.getControl("dots_sdkmessageprocessingstepid").setVisible(false);
+      parent.Xrm.Page.getControl("dots_placeholder").setDisabled(true);
+      parent.Xrm.Page.getControl("dots_attributename").setDisabled(true);
+      parent.Xrm.Page.getControl("dots_maxlength").setDisabled(true);
+      parent.Xrm.Page.getControl("dots_targetentityname").setDisabled(true);
+      parent.Xrm.Page.getControl("dots_targetattributename").setDisabled(true);     
+
+
+      var serverUrl = parent.Xrm.Page.context.getClientUrl();
+      try {
+
+          var oDataUri = serverUrl + "/XRMServices/2011/OrganizationData.svc/dots_autosmsconfigurationSet";
+
+          $.ajax({
+              type: "GET",
+              contentType: "application/json; charset=utf-8",
+              datatype: "json",
+              url: oDataUri,
+              beforeSend: function (XMLHttpRequest) { XMLHttpRequest.setRequestHeader("Accept", "application/json"); },
+              success: function (data, textStatus, XmlHttpRequest) {
+                  var output = data.d.results;                  
+                  if (output.length == 0) {
+                      parent.Xrm.Page.ui.tabs.get('{8bcfce72-7693-44bd-8b75-5b96a4b848cf}').setVisible(false);
+                      alert("Please Register Goto-->Setting->Solutions-->select solution and register!");
+
+                  }
+                  else {
+                      parent.Xrm.Page.ui.tabs.get('{8bcfce72-7693-44bd-8b75-5b96a4b848cf}').setVisible(true);
+                  }
+
+
+              },
+              error: function (XmlHttpRequest, textStatus, errorThrown) {
+
+                  alert("error has occured");
+
+
+              }
+          });
+      }
+      catch (err) {
+          alert(err);
+
+      }
+  }
     </script>
 
     <div id="message">
     </div>
-    <table style="width: 100%; margin-top: -33px;">
+    <table style="width: 100%; margin-top: -28px;">
         <tbody>
             <tr class="targetoptions">
                 <td class="tdtargetoptions" id="td1" style="width: 106px;">
@@ -335,7 +384,7 @@ selectbox.options.add(optn);
                 </td>
             </tr>
             <tr class="targetoptions">
-                <td class="tdtargetoptions" id="td3" style="width: 106px;">
+                <td class="tdtargetoptions" id="td3" style="width: 112px;">
                     <label id="attributeLabel" class="crm2013TextStyle">
                         Target Attribute<span style="color: Red;">*</span>
                     </label>

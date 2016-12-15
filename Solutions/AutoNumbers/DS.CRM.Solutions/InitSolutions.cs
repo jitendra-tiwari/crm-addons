@@ -73,8 +73,8 @@ namespace DS.CRM
                 {
                     // This statement is required to enable early-bound type support.
                       _serviceProxy.EnableProxyTypes();
-                   // CreateSiteMap();
-                    SiteMapCustomization.CreateSiteMap(_serviceProxy, _customEntityName);
+                    CreateSiteMap();
+                   // SiteMapCustomization.CreateSiteMap(_serviceProxy, _customEntityName);
                     // AutoNumberGeneration.AutoNumber.CreateWorkFlow(_serviceProxy, _languageCode);
                     AutoNumberGeneration.AutoNumber.SetProxy(_serviceProxy, _languageCode);
                     // Call the method to create any data that this sample requires.
@@ -438,7 +438,7 @@ namespace DS.CRM
             //create new area
             sitemapxml.Element("SiteMap")
  .Elements("Area")
- .Where(x => (string)x.Attribute("Id") == "WebPowerPack")
+ .Where(x => (string)x.Attribute("Id") == "DotsquaresPack")
  .Remove();
 
             XElement root = new XElement("Area");

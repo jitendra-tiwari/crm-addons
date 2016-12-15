@@ -23,10 +23,15 @@ using WebApi.Database;
 using System.Security.Cryptography;
 using System.IO;
 
+
+using System.Configuration;
+using LinqToTwitter;
+using System.Threading.Tasks;
+
 namespace WebApi.Controllers
 {
     //[Authorize]
-    [EnableCors(origins: "*", headers: "*", methods: "*")]
+    //[EnableCors(origins: "*", headers: "*", methods: "*")] 
     public class ValuesController : ApiController
     {
         int trialTimePeriodInDays = Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["trialTimePeriodInDays"]);
@@ -44,6 +49,83 @@ namespace WebApi.Controllers
 
         //private OrganizationService _service;
 
+       [HttpGet]
+        public async Task<IHttpActionResult> BeginAsync(string pathUrl)
+        {
+           
+            //var auth = new MvcSignInAuthorizer
+            var auth = new MvcAuthorizer
+            {
+                CredentialStore = new SessionStateCredentialStore
+                {
+                    ConsumerKey = ConfigurationManager.AppSettings["consumerKey"],
+                    ConsumerSecret = ConfigurationManager.AppSettings["consumerSecret"]
+                }
+            };
+
+           string twitterCallbackUrl = Request.RequestUri.ToString().Replace("Begin", "Complete");
+           //string twitterCallbackUrl = pathUrl.Replace("Begin", "Complete");
+            await auth.BeginAuthorizationAsync(new Uri(twitterCallbackUrl));
+            return Ok<string>("https://api.twitter.com/oauth/authorize?oauth_token='"+ auth.Parameters["oauth_token"] + "'"); 
+           // string url= "https://api.twitter.com/oauth/authorize?oauth_token='" + auth.Parameters["oauth_token"] + "'";
+           
+            
+        }
+        public async Task<IHttpActionResult> CompleteAsync()
+        {
+            var auth = new MvcAuthorizer
+            {
+                CredentialStore = new SessionStateCredentialStore()
+            };
+
+            await auth.CompleteAuthorizeAsync(Request.RequestUri);
+
+
+            return Ok();
+        }
+
+        [HttpGet]
+        public TwitterAPISuccesModel TwitterUser(string rowId)
+        {
+            var model = new TwitterAPISuccesModel();
+            try
+            {
+                if (rowId != null)
+                {
+                    var objtbl_Twitter = Obj.tbl_Twitter.SingleOrDefault(o => o.Row_Id == rowId);
+                    if (objtbl_Twitter != null)
+                    {
+                        model.Id = objtbl_Twitter.Id;
+                        model.Row_Id = objtbl_Twitter.Row_Id;
+                        model.IsSuccess = true;
+                        model.Message = "Success";
+                        return model;
+                    }
+                    else
+                    {
+                        model.Message = "Failed";
+                        model.IsSuccess = false;
+                        return model;
+                    }
+                }
+                else
+                {
+                    model.Message = "InValidRowId";
+                    model.IsSuccess = false;
+                    return model;
+                }
+            }
+            catch(Exception ex)
+            {
+                model.Message = ex.Message;
+                model.IsSuccess = false;
+                return model;
+            }
+
+           
+        }
+            
+    
 
         [HttpGet]
         public StringBuilder GetForm()

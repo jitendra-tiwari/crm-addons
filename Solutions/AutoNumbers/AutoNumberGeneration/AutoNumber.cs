@@ -382,6 +382,24 @@ namespace AutoNumberGeneration
             };
 
             _serviceProxy.Execute(createFieldFormatRequest);
+
+
+            CreateAttributeRequest createFieldPluginRequest = new CreateAttributeRequest
+            {
+                EntityName = _customEntityName,
+                Attribute = new StringAttributeMetadata
+                {
+                    SchemaName = "new_sdkmessageprocessingstepid",
+                    RequiredLevel = new AttributeRequiredLevelManagedProperty(AttributeRequiredLevel.None),
+                    MaxLength = 100,
+                    FormatName = StringFormatName.Text,
+                    DisplayName = new Label("SdkMessageProcessingStepId", 1033),
+                    Description = new Label("This field for to store step id of plugin to resolve uninstall problem on solution", 1033),
+
+                }
+            };
+
+            _serviceProxy.Execute(createFieldPluginRequest);
         }
 
         public static void DotsAutoNumberConfigurationEntity()

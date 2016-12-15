@@ -4,6 +4,7 @@ using System.Linq;
 // Microsoft Dynamics CRM namespace(s)
 using Microsoft.Xrm.Sdk;
 using Microsoft.Crm.Sdk.Messages;
+using Microsoft.Xrm.Sdk.Query;
 
 namespace Dotsquares.DCRM.Plugins
 {
@@ -75,37 +76,67 @@ namespace Dotsquares.DCRM.Plugins
             OrganizationService = service.CreateOrganizationService(context.UserId);
 
             // The InputParameters collection contains all the data passed in the message request.
-            if (context.InputParameters.Contains("Target") &&
-                context.InputParameters["Target"] is Entity)
+            if (context.InputParameters.Contains("Target") && context.InputParameters["Target"] is Entity)
             {
                 // Obtain the target entity from the input parameters.
                 Entity entity = (Entity)context.InputParameters["Target"];
-                //</snippetAssignAutoNumberPlugin2>                
+                //</snippetAssignAutoNumberPlugin2>   
+                string messageName = context.MessageName;
 
                 if (entity.LogicalName == "dots_autonumber")
                 {
-                    SdkMessageProcessingStep step = new SdkMessageProcessingStep
+                    if (messageName == "Create")
                     {
-                        AsyncAutoDelete = false,
-                        Mode = new OptionSetValue((int)CrmPluginStepMode.Synchronous),
-                        Name = _pluginTypeName + ": " + entity.Attributes["new_name"].ToString(),
-                        EventHandler = new EntityReference("plugintype", GetPluginTypeId()),
-                        Rank = 1,
-                        SdkMessageId = new EntityReference("sdkmessage", GetMessageId()),
-                        Stage = new OptionSetValue((int)CrmPluginStepStage.PreOperation),
-                        SupportedDeployment = new OptionSetValue((int)CrmPluginStepDeployment.ServerOnly),
-                        SdkMessageFilterId = new EntityReference("sdkmessagefilter", GetSdkMessageFilterId(entity.Attributes["new_targetentitylogicalname"].ToString())),
-                        Description = entity.Attributes["new_targetattributelogicalname"].ToString()
-                    };
-                    OrganizationService.Create(step);
+                        //for check duplicate field
+                        if (IsFieldExist(entity.LogicalName, entity.Attributes["new_targetattributelogicalname"].ToString()))
+                            throw new InvalidPluginExecutionException(string.Format("Field {0} already exist in Entity {1}!", entity.Attributes["new_targetattributelogicalname"].ToString(), entity.LogicalName));
+
+                        SdkMessageProcessingStep step = new SdkMessageProcessingStep
+                        {
+                            AsyncAutoDelete = false,
+                            Mode = new OptionSetValue((int)CrmPluginStepMode.Synchronous),
+                            Name = _pluginTypeName + ": " + entity.Attributes["new_name"].ToString(),
+                            EventHandler = new EntityReference("plugintype", GetPluginTypeId()),
+                            Rank = 1,
+                            SdkMessageId = new EntityReference("sdkmessage", GetMessageId()),
+                            Stage = new OptionSetValue((int)CrmPluginStepStage.PreOperation),
+                            SupportedDeployment = new OptionSetValue((int)CrmPluginStepDeployment.ServerOnly),
+                            SdkMessageFilterId = new EntityReference("sdkmessagefilter", GetSdkMessageFilterId(entity.Attributes["new_targetentitylogicalname"].ToString())),
+                            Description = entity.Attributes["new_targetattributelogicalname"].ToString()
+                        };
+                        var SdkMessageProcessingStepId = OrganizationService.Create(step);
+
+                        entity.Attributes.Add("new_sdkmessageprocessingstepid", SdkMessageProcessingStepId.ToString());
+                    }
+                   
+
                 }
                 else
                 {
+
                     var entityDetail = GetEntityByName(entity.LogicalName);
                     if (entity.Attributes.Contains(entityDetail.TargetAttributeLogicalName) == false)
                     {
-                        entity.Attributes.Add(entityDetail.TargetAttributeLogicalName, GetNewCode(entityDetail));
+                        var InitalValue = GetNewCode(entityDetail);
+                        var setValue = (InitalValue == null || InitalValue == "") ? "0" : GetNewCode(entityDetail);
+
+                        entity.Attributes.Add(entityDetail.TargetAttributeLogicalName, setValue);
                         IncreaseCurrentNumber(entity.LogicalName);
+                    }
+                }
+            }
+            else if (context.InputParameters["Target"] is EntityReference)
+            {
+                if (context.PrimaryEntityName == "dots_autonumber")
+                {
+                    if (context.MessageName == "Delete")
+                    {
+
+                        Guid id = ((EntityReference)context.InputParameters["Target"]).Id;
+                        DSAutoNumber entity2 = OrganizationService.Retrieve("dots_autonumber", ((EntityReference)context.InputParameters["Target"]).Id, new ColumnSet(true)).ToEntity<DSAutoNumber>();
+                        OrganizationService.Delete("sdkmessageprocessingstep", new Guid(entity2.SdkMessageProcessingStepId.ToString()));
+
+
                     }
                 }
             }
@@ -135,7 +166,29 @@ namespace Dotsquares.DCRM.Plugins
             }
             return newCode;
         }
+        private bool IsFieldExist(String entityName, String fieldName)
+        {
+            QueryExpression query = new QueryExpression();
+            query.EntityName = entityName;
+            query.ColumnSet = new Microsoft.Xrm.Sdk.Query.ColumnSet(true);
 
+            EntityCollection col = OrganizationService.RetrieveMultiple(query);
+
+            Entity EntityName = null;
+            if (col != null && col.Entities.Count > 0)
+            {
+                EntityName = col.Entities[0];
+
+                var result = EntityName.Attributes.Where(o => o.Value.ToString() == fieldName).ToList();
+
+                if (result.Count() > 0)
+                    return true;
+                else
+                    return false;
+            }
+            return false;
+
+        }
         private DSAutoNumber GetEntityByName(string entityName)
         {
             using (XrmServiceContext context = new XrmServiceContext(OrganizationService))

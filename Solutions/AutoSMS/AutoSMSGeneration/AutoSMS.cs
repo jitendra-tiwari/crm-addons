@@ -382,6 +382,24 @@ namespace AutoSMSGeneration
             };
 
             _serviceProxy.Execute(createFieldFormatRequest);
+
+
+            CreateAttributeRequest createFieldSMSPluginRequest = new CreateAttributeRequest
+            {
+                EntityName = _customEntityName,
+                Attribute = new StringAttributeMetadata
+                {
+                    SchemaName = "dots_sdkmessageprocessingstepid",
+                    RequiredLevel = new AttributeRequiredLevelManagedProperty(AttributeRequiredLevel.None),
+                    MaxLength = 100,
+                    FormatName = StringFormatName.Text,
+                    DisplayName = new Label("SdkMessageProcessingStepId", 1033),
+                    Description = new Label("This field for to store step id of plugin to resolve uninstall problem of solution", 1033),
+
+                }
+            };
+
+            _serviceProxy.Execute(createFieldSMSPluginRequest);
         }
 
         public static void DotsAutoNumberConfigurationEntity()

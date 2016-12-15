@@ -273,6 +273,24 @@ namespace Dotsquares.DCRM.Plugins
         }
 
         /// <summary>
+        /// new_sdkmessageprocessingstepid
+        /// </summary>
+        [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("new_sdkmessageprocessingstepid")]
+        public string SdkMessageProcessingStepId
+        {
+            get
+            {
+                return this.GetAttributeValue<string>("new_sdkmessageprocessingstepid");
+            }
+            set
+            {
+                this.OnPropertyChanging("SdkMessageProcessingStepId");
+                this.SetAttributeValue("new_sdkmessageprocessingstepid", value);
+                this.OnPropertyChanged("SdkMessageProcessingStepId");
+            }
+        }
+
+        /// <summary>
         /// Version number of the account.
         /// </summary>
         [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("versionnumber")]

@@ -1,10 +1,12 @@
-﻿using Microsoft.Xrm.Client;
+﻿using LinqToTwitter;
+using Microsoft.Xrm.Client;
 using Microsoft.Xrm.Client.Services;
 using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Query;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -14,16 +16,160 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Http.Cors;
 using System.Web.Mvc;
 using WebApi.Database;
 using WebApi.Models;
 
 namespace WebApi.Controllers
 {
+    //[EnableCors(origins: "*", headers: "*", methods: "*")]
     public class HomeController : Controller
     {
+       MicrosoftCRMEntities Obj = new MicrosoftCRMEntities();
         public object MessageBox { get; private set; }
 
+      
+
+        //[EnableCors(origins: "*", headers: "*", methods: "*")]
+        public async Task<ActionResult> BeginAsync(string rowId)
+        {
+            //var auth = new MvcSignInAuthorizer          
+           
+            string pathurl = "";
+
+           
+                if (!string.IsNullOrEmpty(rowId))
+                {
+
+                    string[] CurrentUrl = Request.Url.ToString().Split('?');
+                    var auth = new MvcAuthorizer
+                    {
+                        CredentialStore = new SessionStateCredentialStore
+                        {
+                            ConsumerKey = ConfigurationManager.AppSettings["consumerKey"],
+                            ConsumerSecret = ConfigurationManager.AppSettings["consumerSecret"]
+
+                        }
+                    };
+
+                    // string twitterCallbackUrl = Request.Url.ToString().Replace("Begin", "Complete");
+                    string twitterCallbackUrl = CurrentUrl[0].Replace("Begin", "Complete");
+                    // auth.Callback = new Uri(twitterCallbackUrl);
+                    await auth.BeginAuthorizationAsync(new Uri(twitterCallbackUrl + "?rowId=" + rowId));
+
+                    pathurl = "https://api.twitter.com/oauth/authorize?oauth_token=" + auth.Parameters["oauth_token"] + "";
+                    return Json(pathurl, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    pathurl = "Error";
+                    return Json(pathurl, JsonRequestBehavior.AllowGet);
+                }
+            
+        }
+
+        public async Task<ActionResult> CompleteAsync()
+        {
+            try
+            {
+               
+                string rowId = Request.QueryString["rowId"].ToString();
+                var auth = new MvcAuthorizer
+                {
+                    CredentialStore = new SessionStateCredentialStore()
+                };
+                var oauth_consumer_key = Request.QueryString["oauth_consumer_key"];
+                var oauth_token = Request.QueryString["oauth_token"];
+                auth.Parameters["oauth_consumer_key"] = oauth_consumer_key;
+                auth.Parameters["oauth_token"] = oauth_token;
+               await auth.CompleteAuthorizeAsync(Request.Url);
+               // await auth.CompleteAuthorizeAsync(new Uri( CurrentUrl[0]));
+
+               
+                tbl_Twitter tbltwr = new tbl_Twitter();
+                Guid newId = Guid.NewGuid();
+                tbltwr.Id = newId;
+                tbltwr.Row_Id = rowId;
+                tbltwr.UserID = auth.CredentialStore.UserID.ToString();
+                tbltwr.OauthToken = auth.CredentialStore.OAuthToken;
+                tbltwr.OauthTokenSecret = auth.CredentialStore.OAuthTokenSecret;
+                tbltwr.ScreenName = auth.CredentialStore.ScreenName;
+                tbltwr.Image_Url = null;
+                tbltwr.AuthenticateDate = DateTime.Now;
+                Obj.tbl_Twitter.Add(tbltwr);
+                Obj.SaveChanges();
+
+               return RedirectToAction("Success", "Home");
+                //return RedirectToAction("BeginAsync", new { rowId = "Done" });
+                //return Json(new { Id= newId.ToString(),IsSucces=true,Message="Success" }, JsonRequestBehavior.AllowGet);
+            }
+            catch(Exception ex)
+            {
+                return Json(new { IsSucces=false , Message = ex.Message.ToString()}, JsonRequestBehavior.AllowGet);
+            }
+            //return RedirectToAction("Index", "Home");
+        }
+
+
+        [HttpGet]
+        [ActionName("Tweet")]
+        public async Task<ActionResult> TweetAsync(string text ,string rowId)
+        {
+           
+            try
+            {
+                if (!string.IsNullOrEmpty(text) && !string.IsNullOrEmpty(rowId))
+                {
+
+                    var auth = new MvcAuthorizer
+                    {
+                        CredentialStore = new SessionStateCredentialStore()
+                    };
+
+
+                    var credentials = auth.CredentialStore;                  
+                    var twitterUser = Obj.tbl_Twitter.SingleOrDefault(o => o.Row_Id == rowId);
+                    credentials.ConsumerKey = ConfigurationManager.AppSettings["consumerKey"];
+                    credentials.ConsumerSecret = ConfigurationManager.AppSettings["consumerSecret"];                    
+                    credentials.OAuthToken = twitterUser.OauthToken;
+                    credentials.OAuthTokenSecret = twitterUser.OauthTokenSecret;
+                    credentials.ScreenName = twitterUser.ScreenName;                    
+                    credentials.UserID = Convert.ToUInt64(twitterUser.UserID);
+
+                 
+                    auth.CredentialStore = credentials;
+                    var ctx = new TwitterContext(auth);
+                  
+                    Status responseTweet = await ctx.TweetAsync(text);
+                  
+                    if (responseTweet != null)
+                    {
+
+                        return Json(new { IsSuccess = true, Message = "Success" }, JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+
+                        return Json(new { IsSuccess = false, Message = "Failed" }, JsonRequestBehavior.AllowGet);
+                    }
+                }
+                else
+                {
+                    return Json(new { IsSuccess = false, Message = "Failed" }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch(Exception ex)
+            {
+                
+                return Json(new { IsSuccess = false, Message = ex.Message.ToString() }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public ActionResult Success()
+        {
+            return View();
+        }
         public ActionResult Index()
         {
           

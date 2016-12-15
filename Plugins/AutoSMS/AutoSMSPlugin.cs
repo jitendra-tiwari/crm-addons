@@ -6,6 +6,7 @@ using Microsoft.Xrm.Sdk;
 using Microsoft.Crm.Sdk.Messages;
 using System.Net;
 using System.Text;
+using Microsoft.Xrm.Sdk.Query;
 
 namespace Dotsquares.DCRM.Plugins
 {
@@ -86,6 +87,13 @@ namespace Dotsquares.DCRM.Plugins
 
                 if (entity.LogicalName == "dots_autosms")
                 {
+                    if(IsEntityExist(entity.LogicalName,entity.Attributes["dots_targetentitylogicalname"].ToString()))
+                        throw new InvalidPluginExecutionException(string.Format("Already created SendSMS field for Entity {0}!", entity.Attributes["dots_targetentitylogicalname"].ToString()));
+
+                    //for check duplicate field
+                    if (IsFieldExist(entity.LogicalName, entity.Attributes["dots_targetattributelogicalname"].ToString()))
+                        throw new InvalidPluginExecutionException(string.Format("Field {0} already exist in Entity {1}!", entity.Attributes["dots_targetattributelogicalname"].ToString(), entity.LogicalName));
+
                     SdkMessageProcessingStep step = new SdkMessageProcessingStep
                     {
                         AsyncAutoDelete = false,
@@ -99,7 +107,9 @@ namespace Dotsquares.DCRM.Plugins
                         SdkMessageFilterId = new EntityReference("sdkmessagefilter", GetSdkMessageFilterId(entity.Attributes["dots_targetentitylogicalname"].ToString())),
                         Description = entity.Attributes["dots_targetattributelogicalname"].ToString()
                     };
-                    OrganizationService.Create(step);
+                    var SdkMessageProcessingStepId = OrganizationService.Create(step);
+                    entity.Attributes.Add("dots_sdkmessageprocessingstepid", SdkMessageProcessingStepId.ToString());
+
                 }
                 else
                 {
@@ -116,52 +126,75 @@ namespace Dotsquares.DCRM.Plugins
                     }
                 }
             }
+            else if(context.InputParameters["Target"] is EntityReference)
+            {
+                if(context.PrimaryEntityName== "dots_autosms")
+                {
+                    if (context.MessageName == "Delete")
+                    {
+                        Guid id = ((EntityReference)context.InputParameters["Target"]).Id;
+                        DSAutoSMS dots_autosms = OrganizationService.Retrieve("dots_autosms", ((EntityReference)context.InputParameters["Target"]).Id, new ColumnSet(true)).ToEntity<DSAutoSMS>();
+                        OrganizationService.Delete("sdkmessageprocessingstep", new Guid(dots_autosms.SdkMessageProcessingStepId.ToString()));
+                    }
+                   
+                }
+            }
         }
 
-        private string GetNewCode(DSAutoSMS entityDetail)
+        private bool IsEntityExist(String mainEntityName,String AssignedentityName)
         {
-            string newCode=entityDetail.FieldFormat;
-            if (string.IsNullOrEmpty(entityDetail.FieldFormat))
+            QueryExpression query = new QueryExpression();
+            query.EntityName = mainEntityName;
+            query.ColumnSet = new Microsoft.Xrm.Sdk.Query.ColumnSet(true);
+            EntityCollection col = OrganizationService.RetrieveMultiple(query);
+
+            Entity EntityName = null;
+            if (col != null && col.Entities.Count > 0)
             {
-                return entityDetail.CurrentNumber;
-            }
+                EntityName = col.Entities[0];
+
+                var result = EntityName.Attributes.Where(o => o.Value.ToString() == AssignedentityName).ToList();
+                if (result.Count() > 0)
+                    return true;
+                else
+                    return false;
+            }               
             else
+                return false;
+
+        }
+        private bool IsFieldExist(String entityName, String fieldName)
+        {
+            QueryExpression query = new QueryExpression();
+            query.EntityName = entityName;
+            query.ColumnSet = new Microsoft.Xrm.Sdk.Query.ColumnSet(true);
+
+            EntityCollection col = OrganizationService.RetrieveMultiple(query);
+
+            Entity EntityName = null;
+            if (col != null && col.Entities.Count > 0)
             {
-                if (entityDetail.FieldFormat.Contains("{dd}"))
-                    newCode = newCode.Replace("{dd}", DateTime.UtcNow.ToString("dd"));
-                if (entityDetail.FieldFormat.Contains("{MM}"))
-                    newCode = newCode.Replace("{MM}", DateTime.UtcNow.ToString("MM"));
-                if (entityDetail.FieldFormat.Contains("{MMM}"))
-                    newCode = newCode.Replace("{MMM}", DateTime.UtcNow.ToString("MMM"));
-                if (entityDetail.FieldFormat.Contains("{yy}"))
-                    newCode = newCode.Replace("{yy}", DateTime.UtcNow.ToString("yy"));
-                if (entityDetail.FieldFormat.Contains("{yyyy}"))
-                    newCode = newCode.Replace("{yyyy}", DateTime.UtcNow.ToString("yyyy"));
-                if (entityDetail.FieldFormat.Contains("{0}"))
-                    newCode = newCode.Replace("{0}", entityDetail.CurrentNumber);
+                EntityName = col.Entities[0];
+
+                var result = EntityName.Attributes.Where(o => o.Value.ToString() == fieldName).ToList();
+
+                if (result.Count() > 0)
+                    return true;
+                else
+                    return false;
             }
-            return newCode;
+            return false;
+
         }
 
         private DSAutoSMS GetEntityByName(string entityName)
         {
             using (XrmServiceContext context = new XrmServiceContext(OrganizationService))
             {
-                var autoNumberDetail = context.dots_autosmsSet.FirstOrDefault(w => w.TargetEntityLogicalName == entityName);
-                return autoNumberDetail;
+                var autoSMSDetail = context.dots_autosmsSet.FirstOrDefault(w => w.TargetEntityLogicalName == entityName);
+                return autoSMSDetail;
             }
-        }
-
-        private void IncreaseCurrentNumber(string entityName)
-        {
-            using (XrmServiceContext context = new XrmServiceContext(OrganizationService))
-            {
-                var autoNumberDetail = context.dots_autosmsSet.FirstOrDefault(w => w.TargetEntityLogicalName == entityName);
-                autoNumberDetail.CurrentNumber = (Convert.ToInt32(autoNumberDetail.CurrentNumber) + 1).ToString();
-                context.UpdateObject(autoNumberDetail);
-                context.SaveChanges();
-            }
-        }
+        }    
 
         private Guid GetSdkMessageFilterId(string entityName)
         {

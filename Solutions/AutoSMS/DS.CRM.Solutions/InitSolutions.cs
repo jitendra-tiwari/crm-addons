@@ -435,11 +435,11 @@ namespace DS.CRM
             string sitemapcontent = sitemap["sitemapxml"].ToString();
             XDocument sitemapxml = XDocument.Parse(sitemapcontent);
 
-           // create new area
- //           sitemapxml.Element("SiteMap")
- //.Elements("Area")
- //.Where(x => (string)x.Attribute("Id") == "DotsquaresPack")
- //.Remove();
+            // create new area
+            sitemapxml.Element("SiteMap")
+ .Elements("Area")
+ .Where(x => (string)x.Attribute("Id") == "DotsquaresPack")
+ .Remove();
 
             XElement root = new XElement("Area");
             root.Add(new XAttribute("Id", "DotsquaresPack"),
