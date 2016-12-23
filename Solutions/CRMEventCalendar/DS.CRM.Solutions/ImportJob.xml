@@ -1,26 +1,26 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <job>
- <webResource>
-  <path>FilesToImport\CSS\Eventstyle.css</path>
-  <displayName>Web Resource Import Sample style.css file</displayName>
-  <description>Provides CSS styles for the sample_/ImportWebResources/dots_EventCalendarConfiguration.html Web resource.</description>
-  <name>_/ImportWebResources/CSS/Eventstyle.css</name>
-  <type name="Css">2</type>
- </webResource>
-   <webResource>
-  <path>FilesToImport\CSS\Eventbootstrap.css</path>
-  <displayName>Web Resource Import Sample bootstrap.css file</displayName>
-  <description>Provides CSS styles for the sample_/ImportWebResources/dots_EventCalendarConfiguration.htm Web resource.</description>
-  <name>_/ImportWebResources/CSS/Eventbootstrap.css</name>
-  <type name="Css">2</type>
- </webResource>
-     <webResource>
-  <path>FilesToImport\CSS\Eventbootstrap.min.css</path>
-  <displayName>Web Resource Import Sample bootstrap.min.css file</displayName>
-  <description>Provides CSS styles for the sample_/ImportWebResources/dots_EventCalendarConfiguration.htm Web resource.</description>
-  <name>_/ImportWebResources/CSS/Eventbootstrap.min.css</name>
-  <type name="Css">2</type>
- </webResource>
+  <webResource>
+    <path>FilesToImport\CSS\Eventstyle.css</path>
+    <displayName>Web Resource Import Sample style.css file</displayName>
+    <description>Provides CSS styles for the sample_/ImportWebResources/dots_EventCalendarConfiguration.html Web resource.</description>
+    <name>_/ImportWebResources/CSS/Eventstyle.css</name>
+    <type name="Css">2</type>
+  </webResource>
+  <webResource>
+    <path>FilesToImport\CSS\Eventbootstrap.css</path>
+    <displayName>Web Resource Import Sample bootstrap.css file</displayName>
+    <description>Provides CSS styles for the sample_/ImportWebResources/dots_EventCalendarConfiguration.htm Web resource.</description>
+    <name>_/ImportWebResources/CSS/Eventbootstrap.css</name>
+    <type name="Css">2</type>
+  </webResource>
+  <webResource>
+    <path>FilesToImport\CSS\Eventbootstrap.min.css</path>
+    <displayName>Web Resource Import Sample bootstrap.min.css file</displayName>
+    <description>Provides CSS styles for the sample_/ImportWebResources/dots_EventCalendarConfiguration.htm Web resource.</description>
+    <name>_/ImportWebResources/CSS/Eventbootstrap.min.css</name>
+    <type name="Css">2</type>
+  </webResource>
   <webResource>
     <path>FilesToImport\CSS\Eventfullcalendar.css</path>
     <displayName>Web Resource Import Sample Eventfullcalendar.css file</displayName>
@@ -35,36 +35,34 @@
     <name>_/ImportWebResources/CSS/Eventfullcalendar.print.css</name>
     <type name="Css">2</type>
   </webResource>
-
   <webResource>
-  <path>FilesToImport\Script\EventScript.js</path>
-  <displayName>Web Resource Import Sample Script.js file</displayName>
-  <description>Provides the SDK.ImportWebResources JScript library for the sample_/ImportWebResources/dots_EventCalendarConfiguration.htm Web resource.</description>
-  <name>_/ImportWebResources/Script/EventScript.js</name>
-  <type name="JScript">3</type>
- </webResource>
-   <webResource>
-  <path>FilesToImport\Script\Eventconfiguration.js</path>
-  <displayName>Web Resource Import Sample configuration.js file</displayName>
-  <description>Provides the SDK.ImportWebResources JScript library for the sample_/ImportWebResources/dots_EventCalendarConfiguration.htm Web resource.</description>
-  <name>_/ImportWebResources/Script/Eventconfiguration.js</name>
-  <type name="JScript">3</type>
- </webResource>
-   <webResource>
-  <path>FilesToImport\Script\Eventbootstrap.js</path>
-  <displayName>Web Resource Import Sample bootstrap.js file</displayName>
-  <description>Provides the SDK.ImportWebResources JScript library for the sample_/ImportWebResources/dots_EventCalendarConfiguration.htm Web resource.</description>
-  <name>_/ImportWebResources/Script/Eventbootstrap.js</name>
-  <type name="JScript">3</type>
- </webResource>
-    <webResource>
-  <path>FilesToImport\Script\Eventbootstrap.min.js</path>
-  <displayName>Web Resource Import Sample bootstrap.min.js file</displayName>
-  <description>Provides the SDK.ImportWebResources JScript library for the sample_/ImportWebResources/dots_EventCalendarConfiguration.htm Web resource.</description>
-  <name>_/ImportWebResources/Script/Eventbootstrap.min.js</name>
-  <type name="JScript">3</type>
- </webResource>
-
+    <path>FilesToImport\Script\EventScript.js</path>
+    <displayName>Web Resource Import Sample Script.js file</displayName>
+    <description>Provides the SDK.ImportWebResources JScript library for the sample_/ImportWebResources/dots_EventCalendarConfiguration.htm Web resource.</description>
+    <name>_/ImportWebResources/Script/EventScript.js</name>
+    <type name="JScript">3</type>
+  </webResource>
+  <webResource>
+    <path>FilesToImport\Script\Eventconfiguration.js</path>
+    <displayName>Web Resource Import Sample configuration.js file</displayName>
+    <description>Provides the SDK.ImportWebResources JScript library for the sample_/ImportWebResources/dots_EventCalendarConfiguration.htm Web resource.</description>
+    <name>_/ImportWebResources/Script/Eventconfiguration.js</name>
+    <type name="JScript">3</type>
+  </webResource>
+  <webResource>
+    <path>FilesToImport\Script\Eventbootstrap.js</path>
+    <displayName>Web Resource Import Sample Eventbootstrap.js file</displayName>
+    <description>Provides the SDK.ImportWebResources JScript library for the sample_/ImportWebResources/dots_EventCalendarConfiguration.htm Web resource.</description>
+    <name>_/ImportWebResources/Script/Eventbootstrap.js</name>
+    <type name="JScript">3</type>
+  </webResource>
+  <webResource>
+    <path>FilesToImport\Script\Eventbootstrap.min.js</path>
+    <displayName>Web Resource Import Sample Eventbootstrap.min.js file</displayName>
+    <description>Provides the SDK.ImportWebResources JScript library for the sample_/ImportWebResources/dots_EventCalendarConfiguration.htm Web resource.</description>
+    <name>_/ImportWebResources/Script/Eventbootstrap.min.js</name>
+    <type name="JScript">3</type>
+  </webResource>
   <webResource>
     <path>FilesToImport\Script\Eventfullcalendar.min.js</path>
     <displayName>Web Resource Import Sample Eventfullcalendar.min.js file</displayName>
@@ -72,7 +70,6 @@
     <name>_/ImportWebResources/Script/Eventfullcalendar.min.js</name>
     <type name="JScript">3</type>
   </webResource>
-
   <webResource>
     <path>FilesToImport\Script\Eventjquery.min.js</path>
     <displayName>Web Resource Import Sample Eventjquery.min.js file</displayName>
@@ -80,7 +77,6 @@
     <name>_/ImportWebResources/Script/Eventjquery.min.js</name>
     <type name="JScript">3</type>
   </webResource>
-
   <webResource>
     <path>FilesToImport\Script\Eventmoment.min.js</path>
     <displayName>Web Resource Import Sample Eventmoment.min.js file</displayName>
@@ -88,16 +84,14 @@
     <name>_/ImportWebResources/Script/Eventmoment.min.js</name>
     <type name="JScript">3</type>
   </webResource>
-
-
   <webResource>
     <path>FilesToImport\dots_EventsCalendar.html</path>
     <displayName>Web Resource Import Sample dots_EventsCalendar.html file</displayName>
     <description>The HTML Web resource for the sample.</description>
     <name>_/ImportWebResources/dots_EventsCalendar.html</name>
     <type name="Html">1</type>
-  </webResource> 
-<webResource>
+  </webResource>
+  <webResource>
     <path>FilesToImport\Images\Eventsubmit.png</path>
     <displayName>Web Resource Import Sample Eventsubmit.png image</displayName>
     <description>The IMAGE Web resource for the sample.</description>

@@ -1,0 +1,54 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" >
+<head xmlns="http://www.w3.org/1999/xhtml">
+    <meta charset="utf-8" />
+     <script src="Script/Twitterjquery.min.js" type="text/javascript"></script>
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>-->
+    <script src="Script/SocialMediaPost.js" type="text/javascript"></script>
+
+    <title></title>
+</head>
+<body>
+    <table>
+        <tbody>
+            <tr class="tweetoptions">
+                <td class="tdtargetoptions" id="td1" style="width: 106px;">
+                    <label id="optionLabel" class="crm2016TextStyle">
+                        Publisher<span style="color: Red;">*</span>
+                    </label>
+                </td>
+                <td>
+                    <select id="selectbox_Publisher" style="width:300px;" name="CRM_Publisher">
+                        <option value="">---Select Publisher---</option>
+                    </select>
+                </td>
+                <td class="tdtargetoptions" id="td1" style="width: 106px;">
+                    <label id="optionLabel" class="crm2016TextStyle">
+                        Media Type<span style="color: Red;">*</span>
+                    </label>
+                </td>
+                <td>
+                    <select id="selectbox_Media" style="width:300px;" name="CRM_Media">
+                        <option value="">---Select Media---</option>
+                        <option value="1">Twitter</option>
+                        <option value="2">Linkdin</option>
+                    </select>
+                </td>
+                <td>
+                    <input type="button" id="btn-twitter-result" value="Submit" onclick="getMediaResponse();" />
+                </td>
+            </tr>
+
+            
+            
+        </tbody>
+    </table>
+    <div id="media-tweet">
+        <div id="media_rows"></div>
+
+    </div>
+
+
+</body>
+</html>

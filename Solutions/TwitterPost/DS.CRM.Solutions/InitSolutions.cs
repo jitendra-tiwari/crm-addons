@@ -513,10 +513,13 @@ namespace DS.CRM
                new XAttribute("Id", "Group_SubDotsquaresSocialPublisherWebForm"),
                new XAttribute("Title", "DotsquaresSocialPublisher"),
                new XElement("SubArea", new XAttribute("Id", "SubArea_dots_twitterpublisher"),new XAttribute("Entity", _customPublisherEntityName)),            
-               new XElement("SubArea", new XAttribute("Id", "SubArea_dots_twitterpost"),
-               new XAttribute("Entity", _customEntityName)
+               new XElement("SubArea", new XAttribute("Id", "SubArea_dots_twitterpost"),new XAttribute("Entity", _customEntityName)),
+               new XElement("SubArea", new XAttribute("Id", "SubArea_dots_mediaposts"), new XAttribute("Url", "$webresource:ta_/ImportWebResources/dots_TweetList.html"),
+                new XElement("Titles", new XElement("Title", new XAttribute("LCID", "1033"), new XAttribute("Title", "Media Post")))
 
-               )));
+               )
+
+               ));
           
 
             sitemapxml.Element("SiteMap").Add(root);

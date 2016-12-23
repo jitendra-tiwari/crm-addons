@@ -76,7 +76,7 @@ namespace DS.CRM
                       _serviceProxy.EnableProxyTypes();
                     
                    // GetRibbon();
-                    CreateSiteMap();
+                   CreateSiteMap();
                     // AutoNumberGeneration.AutoNumber.CreateWorkFlow(_serviceProxy, _languageCode);
                     CRMEvent.SetProxy(_serviceProxy, _languageCode);
                    
@@ -97,7 +97,7 @@ namespace DS.CRM
         /// This method creates any entity records that this sample requires.
         /// </summary>
         public void CreateRequiredRecords()
-        {
+        {           
             // Create a managed solution for the Install or upgrade a solution sample
 
             Guid _tempPublisherId = new Guid();
@@ -206,21 +206,23 @@ namespace DS.CRM
             
             _serviceProxy.Execute(createOptionSetRequest);
 
-            //delete DotsEventCalendarEntity entity
-            if (IsEntityExist(_customEntityName) > 0)
-            {
-                DeleteEntityRequest customEntityNameFormField = new DeleteEntityRequest()
-                {
-                    LogicalName = _customEntityName,
-                };
-                _serviceProxy.Execute(customEntityNameFormField);
-            }
+            //#################### Note need of this entity #####################
+
+            ////delete DotsEventCalendarEntity entity
+            //if (IsEntityExist(_customEntityName) > 0)
+            //{
+            //    DeleteEntityRequest customEntityNameFormField = new DeleteEntityRequest()
+            //    {
+            //        LogicalName = _customEntityName,
+            //    };
+            //    _serviceProxy.Execute(customEntityNameFormField);
+            //}
 
 
-            // Create the DotsEventCalendarEntity entity.
-            CRMEvent.DotsEventCalendarEntity();
-            // CreateTab();
+            //// Create the DotsEventCalendarEntity entity.
+            //CRMEvent.DotsEventCalendarEntity();
 
+            //#################### Note need of this END #####################
 
             //delete dots_configuration entity
             if (IsEntityExist(_customConfigurationEntityName) > 0)
@@ -237,27 +239,29 @@ namespace DS.CRM
             CRMEvent.DotsEventCalendarConfigurationEntity();
 
 
-            // assign dots_autonumber form entity to solution
-            RetrieveEntityRequest retrievepowertEntityRequest = new RetrieveEntityRequest
-            {
-                EntityFilters = EntityFilters.Entity,
-                LogicalName = _customEntityName
-            };
+            //###################### Now not need to assign ###############################
+            //// assign eventcalendar form entity to solution
+            //RetrieveEntityRequest retrievepowertEntityRequest = new RetrieveEntityRequest
+            //{
+            //    EntityFilters = EntityFilters.Entity,
+            //    LogicalName = _customEntityName
+            //};
 
 
-            RetrieveEntityResponse retrievepowerEntityResponse = (RetrieveEntityResponse)_serviceProxy.Execute(retrievepowertEntityRequest);
+            //RetrieveEntityResponse retrievepowerEntityResponse = (RetrieveEntityResponse)_serviceProxy.Execute(retrievepowertEntityRequest);
 
-            AddSolutionComponentRequest addReq = new AddSolutionComponentRequest()
-            {
-                ComponentType = 1,
-                ComponentId = (Guid)retrievepowerEntityResponse.EntityMetadata.MetadataId,
-                SolutionUniqueName = solution.UniqueName,
-                AddRequiredComponents = true
-            };
-            _serviceProxy.Execute(addReq);
+            //AddSolutionComponentRequest addReq = new AddSolutionComponentRequest()
+            //{
+            //    ComponentType = 1,
+            //    ComponentId = (Guid)retrievepowerEntityResponse.EntityMetadata.MetadataId,
+            //    SolutionUniqueName = solution.UniqueName,
+            //    AddRequiredComponents = true
+            //};
+            //_serviceProxy.Execute(addReq);
 
+            //###################### Now not need to assign END ###############################
 
-            //assign dots_configuration entity to solution
+            //assign eventconfiguration entity to solution
             RetrieveEntityRequest retrieveconfigurationtEntityRequest = new RetrieveEntityRequest
             {
                 EntityFilters = EntityFilters.Entity,
@@ -291,6 +295,7 @@ namespace DS.CRM
             byte[] exportXml = exportSolutionResponse.ExportSolutionFile;
             System.IO.Directory.CreateDirectory(_outputDir);
             File.WriteAllBytes(_managedSolutionLocation, exportXml);
+
 
             // Delete the solution and the components so it can be installed.
 

@@ -27,14 +27,17 @@ function GetToken() {
     //var userUrl = "https://crmwebapi.24livehost.com/Home/BeginAsync";
     
     var entityId = parent.Xrm.Page.data.entity.getId();
-   
+    var serverUrl = parent.Xrm.Page.context.getClientUrl();
+    //var publisher = parent.Xrm.Page.getControl('dots_alias').getValue();
+    var publisher = parent.Xrm.Page.getAttribute('dots_alias').getValue();
+    var mediaOptionsetValue = parent.Xrm.Page.getAttribute('dots_media').getValue();
 
     $.ajax({
 
         url: "https://crmwebapi.24livehost.com/Home/BeginAsync",
         type: "get", //send it through get method
         // data: { serverUrl: myserverUrl, orgName: myorgUniqueName },
-        data: { rowId: entityId },
+        data: { rowId: entityId, url: serverUrl, publisher: publisher, media: mediaOptionsetValue },
         success: function (response) {
            
             if (response != "Error") {
@@ -87,8 +90,9 @@ function CheckConfigurationDetails(entityId) {
             success: function (response) {
                
                 if (response.IsSuccess) {
+                   
                     $("#twr_button").html("");
-                    $("#twr_button").html('<div><img id="twitterImg" src="Images/Twitter.png"></div>');
+                    $("#twr_button").html('<div><img id="twitterImg" src="Images/Twitter.png"> <img id="twitterProfileImg" src=' + response.Image_Url + '></div>');
                     //refreshWebresource();
                 }
                 else if(response.IsSuccess==false && response.Message=="Failed") {

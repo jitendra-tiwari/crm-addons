@@ -21,6 +21,9 @@ function getValidUser()
     var serverUrl = parent.Xrm.Page.context.getClientUrl();
     var orgUniqueName = parent.Xrm.Page.context.getOrgUniqueName();
 
+    //var serverUrl = "https://dotsquares4.crm.dynamics.com";
+    //var orgUniqueName = "org47578482";
+
     trialId = $("input[id='optradio_try']:checked").attr("id");
     subId = $("input[id='optradio_subscribe']:checked").attr("id");
    
@@ -106,7 +109,7 @@ function CallConfigurationService(firstname, lastname, company, phonenumber, ema
   
     $.ajax({
         url: "https://crmwebapi.24livehost.com/api/values/UserAuthenticate",
-        //url: "http://localhost:54126/api/values/UserAuthenticate",
+       // url: "http://localhost:54126/api/values/UserAuthenticate",
         type: "get", //send it through get method
         data: { FirstName: firstname, LastName: lastname, Company: company, ContactNo: phonenumber, Email: email, Address: address, Country: country, State: state, City: city, PostalCode: postalcode, SubscriptionType: type, orgName: orgUniqueName, ServerUrl: serverUrl, UserName: username, Password: password, RegisterId: registrationId },
         success: function (response) {

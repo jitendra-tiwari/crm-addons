@@ -64,6 +64,15 @@
   <name>_/ImportWebResources/Script/Twitterbootstrap.min.js</name>
   <type name="JScript">3</type>
  </webResource>
+
+  <webResource>
+    <path>FilesToImport\Script\SocialMediaPost.js</path>
+    <displayName>Web Resource Import Sample SocialMediaPost.js file</displayName>
+    <description>Provides the SDK.ImportWebResources JScript library for the sample_/ImportWebResources/dots_TwitterConfiguration.htm Web resource.</description>
+    <name>_/ImportWebResources/Script/SocialMediaPost.js</name>
+    <type name="JScript">3</type>
+  </webResource>
+  
   <webResource>
     <path>FilesToImport\dots_LinkTwitter.html</path>
     <displayName>Web Resource Import Sample dots_LinkTwitter.html file</displayName>
@@ -79,6 +88,15 @@
     <name>_/ImportWebResources/dots_MessageBox.html</name>
     <type name="Html">1</type>
   </webResource>
+
+  <webResource>
+    <path>FilesToImport\dots_TweetList.html</path>
+    <displayName>Web Resource Import Sample dots_TweetList.html file</displayName>
+    <description>The HTML Web resource for the sample.</description>
+    <name>_/ImportWebResources/dots_TweetList.html</name>
+    <type name="Html">1</type>
+  </webResource>
+  
   <webResource>
     <path>FilesToImport\Images\Twittersubmit.png</path>
     <displayName>Web Resource Import Sample Twittersubmit.png image</displayName>

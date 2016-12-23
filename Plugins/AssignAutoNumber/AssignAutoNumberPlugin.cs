@@ -87,9 +87,16 @@ namespace Dotsquares.DCRM.Plugins
                 {
                     if (messageName == "Create")
                     {
+                       
                         //for check duplicate field
                         if (IsFieldExist(entity.LogicalName, entity.Attributes["new_targetattributelogicalname"].ToString()))
                             throw new InvalidPluginExecutionException(string.Format("Field {0} already exist in Entity {1}!", entity.Attributes["new_targetattributelogicalname"].ToString(), entity.LogicalName));
+
+                        // allow one fields for one entity
+                        if (IsEntityExist(entity.LogicalName, entity.Attributes["new_targetentitylogicalname"].ToString()))
+                            throw new InvalidPluginExecutionException(string.Format("Already created AutoNumber field for Entity {0}!", entity.Attributes["new_targetentitylogicalname"].ToString()));
+
+
 
                         SdkMessageProcessingStep step = new SdkMessageProcessingStep
                         {
@@ -118,10 +125,22 @@ namespace Dotsquares.DCRM.Plugins
                     if (entity.Attributes.Contains(entityDetail.TargetAttributeLogicalName) == false)
                     {
                         var InitalValue = GetNewCode(entityDetail);
-                        var setValue = (InitalValue == null || InitalValue == "") ? "0" : GetNewCode(entityDetail);
+                        var setValue = (InitalValue == null || InitalValue == "") ? "0" : InitalValue;
+                        string[] splitValues;
+                        if (setValue.Contains("#"))
+                        {
+                            splitValues = setValue.Split('#');
+                            entity.Attributes.Add(entityDetail.TargetAttributeLogicalName, splitValues[0] + "" + splitValues[1]);
+                            int incrementValue = Convert.ToInt32(splitValues[1]);
+                            IncreaseCurrentNumber(entity.LogicalName, incrementValue);
+                        }
+                        else
+                        {
 
-                        entity.Attributes.Add(entityDetail.TargetAttributeLogicalName, setValue);
-                        IncreaseCurrentNumber(entity.LogicalName);
+                            entity.Attributes.Add(entityDetail.TargetAttributeLogicalName, setValue);
+                            int incrementValue = Convert.ToInt32(setValue);
+                            IncreaseCurrentNumber(entity.LogicalName, incrementValue);
+                        }
                     }
                 }
             }
@@ -144,12 +163,35 @@ namespace Dotsquares.DCRM.Plugins
 
         private string GetNewCode(DSAutoNumber entityDetail)
         {
-            string newCode=entityDetail.FieldFormat;
-            if (string.IsNullOrEmpty(entityDetail.FieldFormat))
+              string newCode=entityDetail.FieldFormat;
+             string InitializeNumber = entityDetail.InitializeNumber.ToString();
+
+            if (string.IsNullOrEmpty(entityDetail.FieldFormat) && string.IsNullOrEmpty(entityDetail.InitializeNumber.ToString()))
             {
-                return entityDetail.CurrentNumber;
+                int currentNumber;
+                currentNumber=(entityDetail.CurrentNumber == null) ? 1 : entityDetail.CurrentNumber.Value;
+                return currentNumber.ToString();
             }
-            else
+           else if (!string.IsNullOrEmpty(entityDetail.FieldFormat) && !string.IsNullOrEmpty(entityDetail.InitializeNumber.ToString()))
+            {
+                if (entityDetail.FieldFormat.Contains("{dd}"))
+                    newCode = newCode.Replace("{dd}", DateTime.UtcNow.ToString("dd"));
+                if (entityDetail.FieldFormat.Contains("{MM}"))
+                    newCode = newCode.Replace("{MM}", DateTime.UtcNow.ToString("MM"));
+                if (entityDetail.FieldFormat.Contains("{MMM}"))
+                    newCode = newCode.Replace("{MMM}", DateTime.UtcNow.ToString("MMM"));
+                if (entityDetail.FieldFormat.Contains("{yy}"))
+                    newCode = newCode.Replace("{yy}", DateTime.UtcNow.ToString("yy"));
+                if (entityDetail.FieldFormat.Contains("{yyyy}"))
+                    newCode = newCode.Replace("{yyyy}", DateTime.UtcNow.ToString("yyyy"));              
+
+                int currentNumber;
+              currentNumber = (entityDetail.CurrentNumber == null) ? entityDetail.InitializeNumber.Value : entityDetail.CurrentNumber.Value;               
+                var result = newCode + "#" + currentNumber.ToString();
+
+                return result;
+            }
+            else if(!string.IsNullOrEmpty(entityDetail.FieldFormat) && string.IsNullOrEmpty(entityDetail.InitializeNumber.ToString()))
             {
                 if (entityDetail.FieldFormat.Contains("{dd}"))
                     newCode = newCode.Replace("{dd}", DateTime.UtcNow.ToString("dd"));
@@ -161,10 +203,21 @@ namespace Dotsquares.DCRM.Plugins
                     newCode = newCode.Replace("{yy}", DateTime.UtcNow.ToString("yy"));
                 if (entityDetail.FieldFormat.Contains("{yyyy}"))
                     newCode = newCode.Replace("{yyyy}", DateTime.UtcNow.ToString("yyyy"));
-                if (entityDetail.FieldFormat.Contains("{0}"))
-                    newCode = newCode.Replace("{0}", entityDetail.CurrentNumber);
+              
+                int currentNumber;
+                currentNumber = (entityDetail.InitializeNumber == null && entityDetail.CurrentNumber == null) ? 1 : entityDetail.CurrentNumber.Value;
+                var result = newCode + "#" + currentNumber.ToString();
+                return result;
             }
-            return newCode;
+         
+            else // if entityDetail.FieldFormat null and entityDetail.InitializeNumber not null
+            {
+                int currentNumber;
+                currentNumber = (entityDetail.InitializeNumber!= null && entityDetail.CurrentNumber == null) ? entityDetail.InitializeNumber.Value : entityDetail.CurrentNumber.Value;
+                return currentNumber.ToString();
+                                
+            }
+           
         }
         private bool IsFieldExist(String entityName, String fieldName)
         {
@@ -189,6 +242,28 @@ namespace Dotsquares.DCRM.Plugins
             return false;
 
         }
+        private bool IsEntityExist(String mainEntityName, String AssignedentityName)
+        {
+            QueryExpression query = new QueryExpression();
+            query.EntityName = mainEntityName;
+            query.ColumnSet = new Microsoft.Xrm.Sdk.Query.ColumnSet(true);
+            EntityCollection col = OrganizationService.RetrieveMultiple(query);
+
+            Entity EntityName = null;
+            if (col != null && col.Entities.Count > 0)
+            {
+                EntityName = col.Entities[0];
+
+                var result = EntityName.Attributes.Where(o => o.Value.ToString() == AssignedentityName).ToList();
+                if (result.Count() > 0)
+                    return true;
+                else
+                    return false;
+            }
+            else
+                return false;
+
+        }
         private DSAutoNumber GetEntityByName(string entityName)
         {
             using (XrmServiceContext context = new XrmServiceContext(OrganizationService))
@@ -198,12 +273,14 @@ namespace Dotsquares.DCRM.Plugins
             }
         }
 
-        private void IncreaseCurrentNumber(string entityName)
+        private void IncreaseCurrentNumber(string entityName,int InitalValue)
         {
             using (XrmServiceContext context = new XrmServiceContext(OrganizationService))
             {
                 var autoNumberDetail = context.dots_autonumberSet.FirstOrDefault(w => w.TargetEntityLogicalName == entityName);
-                autoNumberDetail.CurrentNumber = (Convert.ToInt32(autoNumberDetail.CurrentNumber) + 1).ToString();
+                //autoNumberDetail.CurrentNumber = (Convert.ToInt32(autoNumberDetail.CurrentNumber) + 1).ToString();
+                int currentNumber = ((autoNumberDetail.CurrentNumber == null) ? InitalValue : autoNumberDetail.CurrentNumber.Value);
+                autoNumberDetail.CurrentNumber = ((currentNumber) + 1);
                 context.UpdateObject(autoNumberDetail);
                 context.SaveChanges();
             }

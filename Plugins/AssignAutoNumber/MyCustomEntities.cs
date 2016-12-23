@@ -222,11 +222,11 @@ namespace Dotsquares.DCRM.Plugins
         /// new_initializenumber
         /// </summary>
         [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("new_initializenumber")]
-        public string InitializeNumber
+        public System.Nullable<int> InitializeNumber
         {
             get
             {
-                return this.GetAttributeValue<string>("new_initializenumber");
+                return this.GetAttributeValue<System.Nullable<int>>("new_initializenumber");
             }
             set
             {
@@ -240,11 +240,11 @@ namespace Dotsquares.DCRM.Plugins
         /// new_currentnumber
         /// </summary>
         [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("new_currentnumber")]
-        public string CurrentNumber
+        public System.Nullable<int> CurrentNumber
         {
             get
             {
-                return this.GetAttributeValue<string>("new_currentnumber");
+                return this.GetAttributeValue<System.Nullable<int>>("new_currentnumber");
             }
             set
             {

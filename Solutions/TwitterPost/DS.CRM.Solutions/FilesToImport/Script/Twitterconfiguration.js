@@ -242,7 +242,7 @@ function SelectConfigurationDetails(serverUrl)
                     //for update
                     // console.log(output[0].new_type);
                     // var tblconfigId = output[0].dots_configuration001Id;
-                   
+                    deleteSocialMedia();
                     $(".loading").hide();
                 }
                 else {
@@ -269,4 +269,40 @@ function SelectConfigurationDetails(serverUrl)
 }
 
 
+function deleteSocialMedia()
+{
+   
+        $(".loading").show();
+       
+        var myserverUrl = parent.Xrm.Page.context.getClientUrl();       
 
+        $.ajax({
+            // url: "https://crmwebapi.24livehost.com/api/values/LoadDetailsDotsCommon",
+            url: "https://crmwebapi.24livehost.com/api/values/DeleteSocialMediaPublisher",
+            type: "get", //send it through get method
+            // data: { serverUrl: myserverUrl, orgName: myorgUniqueName },
+            data: { CrmUrl: myserverUrl },
+            success: function (response) {
+               
+                if (response.IsSuccess) {                   
+                    $(".loading").hide();
+                }
+                else {
+                   // $("#tryalertdanger").show();
+                   // $("#tryalertdanger").text(response.Message);
+                    $(".loading").hide();
+                }
+
+            },
+            error: function (xhr) {
+                $(".loading").hide();
+                //Do Something to handle error
+                $("#tryalertdanger").show();
+                $("#tryalertdanger").text(xhr.responseText);
+            }
+        });
+
+
+
+   
+}
