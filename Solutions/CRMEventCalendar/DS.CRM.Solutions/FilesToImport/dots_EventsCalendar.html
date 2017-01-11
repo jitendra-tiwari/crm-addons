@@ -10,39 +10,60 @@
 
     <script src='Script/Eventfullcalendar.min.js'></script>
     <script>
-        var appoinmentObject = new Array();
-        var taskObject = new Array();
-        var phoneCallObject = new Array();
 
+        var currntUserId = parent.Xrm.Page.context.getUserId();       
+        
+        var filterDate = new Array();
+        
+        //var sD1 = new Date("2017-01-02");
+        //var SDate = "2017-01-02T00:00:00.000Z";
+        //var eD1 = new Date("2017-01-31");
+        //var EDate = "2017-01-31T00:00:00.000Z";
+     
+        //===========================
+        var newappoinmentObject = new Array();
+        var newtaskObject = new Array();
+        var newphoneCallObject = new Array();
+
+      
         $(document).ready(function () {
+            var serverUrl1 = parent.Xrm.Page.context.getClientUrl();
             $("#chk_appoint").change(function () {
+                
+                //var appointmentUrl = serverUrl1 + "/XRMServices/2011/OrganizationData.svc/AppointmentSet?$filter=OwnerId/Id eq guid'" + currntUserId + "' and ScheduledStart ge datetime'" + filterDate[0].StartDate + "' and ScheduledEnd le datetime'" + filterDate[0].EndDate + "'";    
+                var appointmentUrl = serverUrl1 + "/XRMServices/2011/OrganizationData.svc/AppointmentSet?$filter=(ScheduledStart ge datetime'" + filterDate[0].StartDate + "' and ScheduledEnd le datetime'" + filterDate[0].EndDate + "') or (ScheduledStart ge datetime'" + filterDate[0].StartDate + "' and ScheduledStart le datetime'" + filterDate[0].EndDate + "') or (ScheduledEnd ge datetime'" + filterDate[0].StartDate + "' and ScheduledEnd le datetime'" + filterDate[0].EndDate + "')";
+              
                 if ($("#chk_appoint").prop("checked")) {
-                    getAppointment();
+                    getAppointment(appointmentUrl);
                 }
                 else {
-                    removeEvents(appoinmentObject);
-                    appoinmentObject = [];
+                    removeEvents(newappoinmentObject);
+                    newappoinmentObject = [];
 
                 }
             });
             $("#chk_task").change(function () {
                 if ($("#chk_task").prop("checked")) {
-                    getTasks();
+                    //var taskUrl = serverUrl1 + "/XRMServices/2011/OrganizationData.svc/TaskSet?$filter=ActualStart ge datetime'" + filterDate[0].StartDate + "' and ActualEnd le datetime'" + filterDate[0].EndDate + "'";
+                    var taskUrl = serverUrl1 + "/XRMServices/2011/OrganizationData.svc/TaskSet?$filter=(ActualStart ge datetime'" + filterDate[0].StartDate + "' and ActualEnd le datetime'" + filterDate[0].EndDate + "') or (ActualStart ge datetime'" + filterDate[0].StartDate + "' and ActualStart le datetime'" + filterDate[0].EndDate + "') or (ActualEnd ge datetime'" + filterDate[0].StartDate + "' and ActualEnd le datetime'" + filterDate[0].EndDate + "')";
+                    getTasks(taskUrl);
                 }
                 else {
-                    removeEvents(taskObject);
-                    taskObject = [];
+                    removeEvents(newtaskObject);
+                    newtaskObject = [];
 
                 }
             });
 
             $("#chk_phonecall").change(function () {
                 if ($("#chk_phonecall").prop("checked")) {
-                    getPhoneCall();
+                   // var phoneCallUrl = serverUrl1 + "/XRMServices/2011/OrganizationData.svc/PhoneCallSet?$filter=ActualStart ge datetime'" + filterDate[0].StartDate + "' and ActualEnd le datetime'" + filterDate[0].EndDate + "'";
+                    var phoneCallUrl = serverUrl1 + "/XRMServices/2011/OrganizationData.svc/PhoneCallSet?$filter=(ScheduledStart ge datetime'" + filterDate[0].StartDate + "' and ScheduledStart le datetime'" + filterDate[0].EndDate + "') or (ScheduledStart ge datetime'" + filterDate[0].StartDate + "' and ScheduledStart le datetime'" + filterDate[0].EndDate + "') or (ScheduledStart ge datetime'" + filterDate[0].StartDate + "' and ScheduledStart le datetime'" + filterDate[0].EndDate + "') ";
+                    getPhoneCall(phoneCallUrl);
                 }
                 else {
-                    removeEvents(phoneCallObject);
-                    phoneCallObject = [];
+                    removeEvents(newphoneCallObject);
+                    newphoneCallObject = [];
 
                 }
             });
@@ -56,11 +77,11 @@
 
                     //appointment
                     if ($("#chk_appoint").prop("checked")) {
-                        getAppointment();
+                        getAppointment(appointmentUrl);
                     }
                     else {
-                        removeEvents(appoinmentObject);
-                        appoinmentObject = [];
+                        removeEvents(newappoinmentObject);
+                        newappoinmentObject = [];
 
                     }
 
@@ -68,21 +89,21 @@
 
                     //task
                     if ($("#chk_task").prop("checked")) {
-                        getTasks();
+                        getTasks(taskUrl);
                     }
                     else {
-                        removeEvents(taskObject);
-                        taskObject = [];
+                        removeEvents(newtaskObject);
+                        newtaskObject = [];
 
                     }
                     //phonecall
 
                     if ($("#chk_phonecall").prop("checked")) {
-                        getPhoneCall();
+                        getPhoneCall(phoneCallUrl);
                     }
                     else {
-                        removeEvents(phoneCallObject);
-                        phoneCallObject = [];
+                        removeEvents(newphoneCallObject);
+                        newphoneCallObject = [];
 
                     }
 
@@ -104,9 +125,11 @@
             $('#calendar').fullCalendar({
                 header: { center: 'month,basicWeek,basicDay' },
                 //defaultDate: '2016-09-12',
-                editable: true,
+                //editable: true,
+                editable: false,
                 eventLimit: true, // allow "more" link when too many events
                 events: eventData,
+                //disableDragging: false,               
                 eventClick: function (event) {
                     if (event.id && event.url) {
                         var entityName = event.url;
@@ -114,6 +137,70 @@
                         openWindowPopup(entityName, id);
                         return false;
                     }
+                },
+                viewRender: function (view, element) {
+                    
+                    filterDate = [];
+                    var sD=view.start.format("YYYY-MM-DD");
+                    var SDate = sD + "T00:00:00.000Z";
+                    var eD = view.end.format("YYYY-MM-DD");                 
+                    var EDate = eD + "T00:00:00.000Z";
+                    var LD = view.end.format();
+                  
+                    var obj = { StartDate: SDate, EndDate: EDate };
+                    filterDate.push(obj);                  
+                    var Appointment = $("#chk_appoint").prop("checked");
+                    var Task = $("#chk_task").prop("checked");
+                    var PhoneCall = $("#chk_phonecall").prop("checked");
+                    var serverUrl1 = parent.Xrm.Page.context.getClientUrl();
+                    if (Appointment) {
+                        
+                        removeEvents(newappoinmentObject);
+                       newappoinmentObject = [];
+                       // var appointmentUrl = serverUrl1 + "/XRMServices/2011/OrganizationData.svc/AppointmentSet?$filter=ScheduledStart ge datetime'" + SDate + "' and ScheduledEnd le datetime'" + EDate + "'  ";
+                       var appointmentUrl = serverUrl1 + "/XRMServices/2011/OrganizationData.svc/AppointmentSet?$filter=(ScheduledStart ge datetime'" + SDate + "' and ScheduledEnd le datetime'" + EDate + "') or (ScheduledStart ge datetime'" + SDate + "' and ScheduledStart le datetime'" + EDate + "') or (ScheduledEnd ge datetime'" + SDate + "' and ScheduledEnd le datetime'" + EDate + "')";
+                       getAppointment(appointmentUrl);
+                    }
+
+                    if (Task) {
+                        
+                        removeEvents(newtaskObject);
+                        newtaskObject = [];                        
+                        // taskUrl = serverUrl1 + "/XRMServices/2011/OrganizationData.svc/TaskSet?$filter=ActualStart ge datetime'" + SDate + "' and ActualEnd le datetime'" + EDate + "' ";
+                       var taskUrl = serverUrl1 + "/XRMServices/2011/OrganizationData.svc/TaskSet?$filter=(ActualStart ge datetime'" + SDate + "' and ActualEnd le datetime'" + EDate + "') or (ActualStart ge datetime'" + SDate + "' and ActualStart le datetime'" + EDate + "') or (ActualEnd ge datetime'" + SDate + "' and ActualEnd le datetime'" + EDate + "')";
+                        
+                       getTasks(taskUrl);
+                    }
+
+
+                    if (PhoneCall) {
+                        removeEvents(newphoneCallObject);
+                       newphoneCallObject = [];
+                       // var phoneCallUrl = serverUrl1 + "/XRMServices/2011/OrganizationData.svc/PhoneCallSet?$filter=ActualStart ge datetime'" + SDate + "' and ActualEnd le datetime'" + EDate + "' ";
+                       var phoneCallUrl = serverUrl1 + "/XRMServices/2011/OrganizationData.svc/PhoneCallSet?$filter=(ScheduledStart ge datetime'" + SDate + "' and ScheduledStart le datetime'" + EDate + "') or (ScheduledStart ge datetime'" + SDate + "' and ScheduledStart le datetime'" + EDate + "') or (ScheduledStart ge datetime'" + SDate + "' and ScheduledStart le datetime'" + EDate + "')";
+                       
+                        getPhoneCall(phoneCallUrl);
+                    }
+                    //else {
+                    //    removeEvents(newappoinmentObject);
+                    //    newappoinmentObject = [];
+                    //}
+
+                    //var serverUrl1 = parent.Xrm.Page.context.getClientUrl();
+                    //var appointmentUrl = serverUrl1 + "/XRMServices/2011/OrganizationData.svc/AppointmentSet?$filter=OwnerId/Id eq guid'" + currntUserId + "' and ScheduledStart ge datetime'" + SDate + "' and ScheduledEnd le datetime'" + EDate + "'  ";
+                    //var taskUrl = serverUrl1 + "/XRMServices/2011/OrganizationData.svc/TaskSet?$filter=OwnerId/Id eq guid'" + currntUserId + "'";
+                    //var phoneCallUrl = serverUrl1 + "/XRMServices/2011/OrganizationData.svc/PhoneCallSet?$filter=OwnerId/Id eq guid'" + currntUserId + "'";
+
+                    //getAppointment(appointmentUrl);
+                    //getTasks(taskUrl);
+                    //getPhoneCall(phoneCallUrl);
+
+                  
+                    //console.log("change");
+                    //console.log(filterDate);
+                    //console.log("The view's is " + view);
+                    //console.log("The view's title is " + view.intervalStart.format());
+                    //console.log("The view's title is " + view.name);
                 }
 
 
@@ -142,87 +229,93 @@
         var Appointment=    $("#chk_appoint").prop("checked", true);
         var Task = $("#chk_task").prop("checked", true);
         var PhoneCall = $("#chk_phonecall").prop("checked", true);
+
+        var serverUrl11 = parent.Xrm.Page.context.getClientUrl();
+            //var appointmentUrl2 = serverUrl11 + "/XRMServices/2011/OrganizationData.svc/AppointmentSet?$filter=ScheduledStart ge datetime'" + filterDate[0].StartDate + "' and ScheduledEnd le datetime'" + filterDate[0].EndDate + "'";
+        var appointmentUrl2 = serverUrl11 + "/XRMServices/2011/OrganizationData.svc/AppointmentSet?$filter=(ScheduledStart ge datetime'" + filterDate[0].StartDate + "' and ScheduledEnd le datetime'" + filterDate[0].EndDate + "') or (ScheduledStart ge datetime'" + filterDate[0].StartDate + "' and ScheduledStart le datetime'" + filterDate[0].EndDate + "') or (ScheduledEnd ge datetime'" + filterDate[0].StartDate + "' and ScheduledEnd le datetime'" + filterDate[0].EndDate + "')";
+       // var taskUrl2 = serverUrl11 + "/XRMServices/2011/OrganizationData.svc/TaskSet?$filter=ActualStart ge datetime'" + filterDate[0].StartDate + "' and ActualEnd le datetime'" + filterDate[0].EndDate + "'";
+        var taskUrl2 = serverUrl11 + "/XRMServices/2011/OrganizationData.svc/TaskSet?$filter=(ActualStart ge datetime'" + filterDate[0].StartDate + "' and ActualEnd le datetime'" + filterDate[0].EndDate + "') or (ActualStart ge datetime'" + filterDate[0].StartDate + "' and ActualStart le datetime'" + filterDate[0].EndDate + "') or (ActualEnd ge datetime'" + filterDate[0].StartDate + "' and ActualEnd le datetime'" + filterDate[0].EndDate + "') ";
+        
+       // var phoneCallUrl2 = serverUrl11 + "/XRMServices/2011/OrganizationData.svc/PhoneCallSet?$filter=ActualStart ge datetime'" + filterDate[0].StartDate + "' and ActualEnd le datetime'" + filterDate[0].EndDate + "'";
+        var phoneCallUrl2 = serverUrl11 + "/XRMServices/2011/OrganizationData.svc/PhoneCallSet?$filter=(ScheduledStart ge datetime'" + filterDate[0].StartDate + "' and ScheduledStart le datetime'" + filterDate[0].EndDate + "') or (ScheduledStart ge datetime'" + filterDate[0].StartDate + "' and ScheduledStart le datetime'" + filterDate[0].EndDate + "') or (ScheduledStart ge datetime'" + filterDate[0].StartDate + "' and ScheduledStart le datetime'" + filterDate[0].EndDate + "')";
+        
         if (Appointment && Task && PhoneCall) {
-            getAppointment();
-            getTasks();
-            getPhoneCall();
+            getAppointment(appointmentUrl2);
+            getTasks(taskUrl2);
+            getPhoneCall(phoneCallUrl2);
         }
         }
-        function getAppointment() {
-            var serverUrl = parent.Xrm.Page.context.getClientUrl();
-            $.getJSON(serverUrl + "/XRMServices/2011/OrganizationData.svc/AppointmentSet", {}, function (data) {
-
-                appoinmentObject = [];
-                // taskObject = [];
-
-                $.each(data.d.results, function (i, field) {
-                    var scheduledStart = oDataDateToDate(field.ScheduledStart);
-                    var scheduledEnd = oDataDateToDate(field.ScheduledEnd);
-                    if (scheduledStart != null && scheduledEnd != null) {
-                        var o = { id: field.ActivityId, title: field.Subject, start: scheduledStart, end: scheduledEnd, url: "appointment" };
-                        appoinmentObject.push(o);
+        function getAppointment(url) {
+            
+            jQuery.ajax({
+                type: "GET",
+                contentType: "application/json; charset=utf-8",
+                datatype: "json",
+                url: url,
+                async: false,
+                beforeSend: function (XMLHttpRequest) {
+                    XMLHttpRequest.setRequestHeader("Accept", "application/json");
+                },
+                success: function (data, textStatus, XmlHttpRequest) {
+                    if (data && data.d != null && data.d.results != null) {
+                        addToArray(data.d.results, "appointmet");
+                        appointmentCallback(data.d);                        
                     }
-
-                    else if (scheduledStart != null && scheduledEnd == null) {
-                        var o = { id: field.ActivityId, title: field.Subject, start: scheduledStart, url: "appointment" };
-                        appoinmentObject.push(o);
-                    }
-                });
-                refreshCalendar(appoinmentObject);
+                },
+                error: function (XmlHttpRequest, textStatus, errorThrown) {
+                    alert("Error :  has occured during retrieval of the records ");
+                }
             });
 
         }
 
-        function getTasks() {
-            var serverUrl = parent.Xrm.Page.context.getClientUrl();
-            $.getJSON(serverUrl + "/XRMServices/2011/OrganizationData.svc/TaskSet", {}, function (data) {
-                taskObject = [];
-                // appoinmentObject = [];
-
-                $.each(data.d.results, function (i, field) {
-
-                    var actualStart = oDataDateToDate(field.ActualStart);
-                    var actualEnd = oDataDateToDate(field.ActualEnd);
-                    if (actualStart != null && actualEnd != null) {
-
-                        var o = { id: field.ActivityId, title: field.Subject, start: actualStart, end: actualEnd, url: "task" };
-                        taskObject.push(o);
+        function getTasks(url) {
+           
+            
+            jQuery.ajax({
+                type: "GET",
+                contentType: "application/json; charset=utf-8",
+                datatype: "json",
+                url: url,
+                async: false,
+                beforeSend: function (XMLHttpRequest) {
+                    XMLHttpRequest.setRequestHeader("Accept", "application/json");
+                },
+                success: function (data, textStatus, XmlHttpRequest) {
+                    if (data && data.d != null && data.d.results != null) {                     
+                        addToArray(data.d.results, "task");
+                        taskCallback(data.d);
+                       
                     }
-                    else if (actualStart != null && actualEnd == null) {
-
-                        var o = { id: field.ActivityId, title: field.Subject, start: actualStart, url: "task" };
-                        taskObject.push(o);
-                    }
-                });
-                refreshCalendar(taskObject);
+                },
+                error: function (XmlHttpRequest, textStatus, errorThrown) {
+                    alert("Error :  has occured during retrieval of the records ");
+                }
             });
+           
         }
 
-        function getPhoneCall() {
-            var serverUrl = parent.Xrm.Page.context.getClientUrl();
-            $.getJSON(serverUrl + "/XRMServices/2011/OrganizationData.svc/PhoneCallSet", {}, function (data) {
-                phoneCallObject = [];
-                // appoinmentObject = [];
+        function getPhoneCall(url) {                   
 
-                $.each(data.d.results, function (i, field) {
-
-                    var actualStart = oDataDateToDate(field.ActualStart);
-                    var actualEnd = oDataDateToDate(field.ActualEnd);
-                    if (actualStart != null && actualEnd != null) {
-                        var o = { id: field.ActivityId, title: field.Subject, start: actualStart, end: actualEnd, url: "phonecall" };
-                        phoneCallObject.push(o);
-
+            jQuery.ajax({
+                type: "GET",
+                contentType: "application/json; charset=utf-8",
+                datatype: "json",
+                url: url,
+                async: false,
+                beforeSend: function (XMLHttpRequest) {
+                    XMLHttpRequest.setRequestHeader("Accept", "application/json");
+                },
+                success: function (data, textStatus, XmlHttpRequest) {
+                    if (data && data.d != null && data.d.results != null) {
+                        addToArray(data.d.results, "phonecall");
+                        phoneCallback(data.d);
+                       
                     }
-                    else if (actualStart != null && actualEnd == null) {
-
-                        var o = { id: field.ActivityId, title: field.Subject, start: actualStart, url: "phonecall" };
-                        phoneCallObject.push(o);
-                    }
-
-                });
-
-                refreshCalendar(phoneCallObject);
-
+                },
+                error: function (XmlHttpRequest, textStatus, errorThrown) {
+                    alert("Error :  has occured during retrieval of the records ");
+                }
             });
         }
         function oDataDateToDate(odataDate) {
@@ -270,8 +363,10 @@
                     else {
                         //if user has register  
                         $("#side-panel").show();
-                        initCalendar(appoinmentObject);
+                        //initCalendar(appoinmentObject);
+                        initCalendar(newappoinmentObject);
                         ShowSelectedCheckBox();
+                        
 
                     }
                    
@@ -286,8 +381,187 @@
            
 
         }
-       
 
+         function getMonthName(dt) {
+            var mlist = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            console.log('dt.getMonth()');
+            console.log(dt.getMonth());
+            return mlist[dt.getMonth()];
+        }
+       
+        function addToArray(objs, type) {
+            if (type == "task") {
+                $.each(objs, function (i, field) {
+
+                    var actualStart = oDataDateToDate(field.ActualStart);
+                    var actualEnd = oDataDateToDate(field.ActualEnd);
+                   
+                    //var actualStart = oDataDateToDate(field.ScheduledStart);
+                    //var actualEnd = oDataDateToDate(field.ScheduledEnd);
+                   
+                    if (actualStart != null && actualEnd != null) {
+
+                        var myStart = actualStart.split(' ');
+                        var myEnd = actualEnd.split(' ');
+                        myStart = (myStart[0] + " 12:00:00");
+                        myEnd=   (myEnd[0] + " 12:00:00");
+                        //var actualStartArray = actualStart.split('-');
+                        //var actualEndArray = actualEnd.split('-');
+                        ////var dt1 = $.fullCalendar.moment(actualStart);
+                        ////var dt2 = $.fullCalendar.moment(actualEnd);
+                        //console.log(actualStartArray[0] + '=' + actualStartArray[1] + '=' + actualStartArray[2].split(' ')[0]);
+                        //var dt1 = new Date(actualStartArray[0], parseInt(actualStartArray[1])-1, actualStartArray[2].split(' ')[0], 0, 0, 0, 0);
+                        //var dt2 = new Date(actualEndArray[0], parseInt(actualEndArray[1])-1, actualEndArray[2].split(' ')[0], 0, 0, 0, 0);
+
+                        //console.log('dt1 = ' + dt1);
+
+                        //// var dt = new Date(actualEnd);
+                        ////var newdate = new Date(dt);
+
+                        ////newdate.setDate(newdate.getDate() + 1);                       
+
+                       
+                        //var yyyy = dt1.getFullYear().toString();
+                        //var dd = (dt1.getDate()).toString();
+                        //var mm = (dt1.getMonth() + 1).toString(); // month in JS start from 0
+                        
+                        
+                        //var mmChars = mm.split('');
+                        //var ddChars = dd.split('');
+                        //var STDate = (yyyy + '-' + (mmChars[1] ? mm : "0" + mmChars[0]) + '-' + (ddChars[1] ? dd : "0" + ddChars[0])) + " 12:00:00";
+                        ////var STDate = (yyyy + ' ' + mm + ' ' + (ddChars[1] ? dd : "0" + ddChars[0])) + " 12:00:00";
+                        
+                        //var yyyy1 = dt2.getFullYear().toString();
+                        //var dd1 = (dt2.getDate()).toString();
+                        // var mm1 = (dt2.getMonth() + 1).toString(); // month in JS start from 0
+                        
+
+                        //var mmChars1 = mm1.split('');
+                        //var ddChars1 = dd1.split('');
+
+                        //var EDate = (yyyy1 + '-' + (mmChars1[1] ? mm1 : "0" + mmChars1[0]) + '-' + (ddChars[1] ? dd1 : "0" + ddChars1[0])) + " 12:00:00";
+                        ////var EDate = (yyyy1 + ' ' + mm1+ ' ' + (ddChars[1] ? dd1 : "0" + ddChars1[0])) + " 12:00:00";
+                        ////var dtt1 = $.fullCalendar.moment(STDate);
+                        ////var dtt2 = $.fullCalendar.moment(EDate);
+
+                        var dtt1 = $.fullCalendar.moment(myStart);
+                        var dtt2 = $.fullCalendar.moment(myEnd);
+                        
+                        var o = { id: field.ActivityId, title: field.Subject, start: dtt1, end: dtt2, url: "task" };
+                        newtaskObject.push(o);
+                    }
+                    else if (actualStart != null && actualEnd == null) {
+                        var myStart = actualStart.split(' ');
+                        myStart = (myStart[0] + " 12:00:00");
+                        var dtt1 = $.fullCalendar.moment(myStart);
+                       
+                        var o = { id: field.ActivityId, title: field.Subject, start: dtt1, url: "task" };
+                        newtaskObject.push(o);
+                    }
+
+                    else if (actualStart == null && actualEnd != null) {
+                        var myEnd = actualEnd.split(' ');                      
+                        myEnd = (myEnd[0] + " 12:00:00");
+
+                        var dtt2 = $.fullCalendar.moment(myEnd);
+                        var o = { id: field.ActivityId, title: field.Subject, start: dtt2, url: "task" };
+                        newtaskObject.push(o);
+                    }
+                });
+                
+               // refreshCalendar(newtaskObject);
+               
+            }
+
+            if (type == "appointmet")
+            {
+                $.each(objs, function (i, field) {
+                    var scheduledStart = oDataDateToDate(field.ScheduledStart);
+                    var scheduledEnd = oDataDateToDate(field.ScheduledEnd);
+                    if (scheduledStart != null && scheduledEnd != null) {
+                        var o = { id: field.ActivityId, title: field.Subject, start: scheduledStart, end: scheduledEnd, url: "appointment" };
+                        newappoinmentObject.push(o);
+                    }
+
+                    else if (scheduledStart != null && scheduledEnd == null) {
+                        var o = { id: field.ActivityId, title: field.Subject, start: scheduledStart, url: "appointment" };
+                        newappoinmentObject.push(o);
+                    }
+                    else if (scheduledStart == null && scheduledEnd!= null) {
+                        var o = { id: field.ActivityId, title: field.Subject, start: scheduledEnd, url: "appointment" };
+                        newappoinmentObject.push(o);
+                    }
+                });
+                // refreshCalendar(newappoinmentObject);
+                
+            }
+
+            if (type == "phonecall") {
+                $.each(objs, function (i, field) {
+
+                  // var actualStart = oDataDateToDate(field.ActualStart);
+                   // var actualEnd = oDataDateToDate(field.ActualEnd);
+                    var actualStart = oDataDateToDate(field.ScheduledStart);
+                    var actualEnd = oDataDateToDate(field.ScheduledEnd);
+                    console.log("==============PhoneCall=====================");
+                    console.log(actualStart + "      " + actualEnd);
+                    if (actualStart != null && actualEnd != null) {
+                        var o = { id: field.ActivityId, title: field.Subject, start: actualStart, end: actualEnd, url: "phonecall" };
+                        newphoneCallObject.push(o);
+
+                    }
+                    else if (actualStart != null && actualEnd == null) {
+
+                        var o = { id: field.ActivityId, title: field.Subject, start: actualEnd, url: "phonecall" };
+                        newphoneCallObject.push(o);
+                    }
+                    else if (actualStart== null && actualEnd!= null) {
+
+                        var o = { id: field.ActivityId, title: field.Subject, start: actualEnd, url: "phonecall" };
+                        newphoneCallObject.push(o);
+                    }
+
+                });
+
+               // refreshCalendar(newphoneCallObject);
+
+
+            }
+        }
+
+        function taskCallback(records) {
+
+            if (records.__next != null) {
+                var url = records.__next;
+                getTasks(url);
+            }
+            else {
+                refreshCalendar(newtaskObject);
+            }
+           
+        }
+
+        function appointmentCallback(records) {
+           
+            if (records.__next != null) {
+                var url = records.__next;
+                getAppointment(url);
+            }
+            else {
+                refreshCalendar(newappoinmentObject);
+            }
+        }
+
+        function phoneCallback(records) {
+            if (records.__next != null) {
+                var url = records.__next;
+                getPhoneCall(url);
+            }
+            else {
+                refreshCalendar(newphoneCallObject);
+            }
+                       
+        }
     </script>
     <style>
         body {

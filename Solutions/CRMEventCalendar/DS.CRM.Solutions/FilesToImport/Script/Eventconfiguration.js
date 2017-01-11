@@ -66,8 +66,8 @@ function getValidUser()
                     if (response.IsCreated) {
                         SaveConfigurationDetails(serverUrl, response.Id, "test");
                         $(".loading").hide();
-                        $("#tryalertsuccess").show();
-                        $("#tryalertsuccess").text("User registration is successfull. !");
+                        $("#tryalertsuccess").show();                       
+                        $("#tryalertsuccess").text("User is registired  successfully.");
                     }
                     else {
                         $(".loading").hide();

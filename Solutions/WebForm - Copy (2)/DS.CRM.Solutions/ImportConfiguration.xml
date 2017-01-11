@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<job>
+ <webResource>
+  <path>FilesToImport\dots_configuration_pageOFDots.html</path>
+  <displayName>Web Resource Import Sample dots_configuration_pageOFDots.htm file</displayName>
+  <description>The HTML Web resource for the configuration.</description>
+  <name>_/ImportWebResources/dots_configuration_pageOFDots.html</name>
+  <type name="Html">1</type>
+ </webResource>
+ 
+</job>

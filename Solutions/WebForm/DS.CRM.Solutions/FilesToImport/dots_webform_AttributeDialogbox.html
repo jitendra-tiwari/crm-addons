@@ -1,0 +1,285 @@
+﻿<html>
+<head>
+    <title></title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script type="text/javascript" src="../../ClientGlobalContext.js.aspx"></script>
+    <script src="Script/SDK.MetaData.js" type="text/javascript"></script>
+    <script>
+     
+        function   getSelectedAttribute(value)
+        {
+           $('.attrchk').not(value).prop('checked', false);                 
+           
+            if ($(value).prop("checked")) {
+                var chkvalue = $(value).val();
+                $("#btnOK").attr("onclick", "getAttrSelected('" + chkvalue + "'); closeWindow();");
+            }
+            else {
+                $('.attrchk').prop('checked', false);
+                $("#btnOK").attr("onclick", "getAttrSelected('null'); closeWindow();");
+               // $("#btnOK").removeAttr("onclick");
+            }
+            //if ($(value).prop('checked', true)) {
+            //    $('.attrchk').not(value).prop('checked', false);
+            //    var chkvalue = $(value).val();              
+                             
+            //    $("#btnOK").attr("onclick", "getAttrSelected('" + chkvalue + "'); closeWindow();")
+               
+               
+                
+                
+            //} else {
+            //    $('.attrchk').prop('checked', false);
+            //    $("#btnOK").removeAttr("onclick");
+            //}
+                      
+
+           
+        }
+
+        function getAttrSelected(attribute) {
+            Mscrm.Utilities.setReturnValue(attribute);
+        }
+
+        function ParseQueryString(query) {
+            var result = {};
+
+            if (typeof query == "undefined" || query == null) {
+                return result;
+            }
+
+            var queryparts = query.split("&");
+            for (var i = 0; i < queryparts.length; i++) {
+                var params = queryparts[i].split("=");
+                result[params[0]] = params.length > 1 ? params[1] : null;
+            }
+            return result;
+        }
+      
+        function retrieveAttributes() {
+
+            var passedparams = ParseQueryString(GetGlobalContext().getQueryStringParameters()["Data"]);           
+            
+            ///<summary>
+            /// Retrieves attributes for the entity list item that is clicked
+            ///</summary>
+
+            // clear first time attributes of entity
+
+            var logicalEntityName = passedparams.name;
+
+            if (logicalEntityName != "") {
+
+                var entityLogicalName = logicalEntityName;
+
+                // setText(notification, "   Retrieving attributes for " + getText(this) + "...");
+
+                SDK.Metadata.RetrieveEntity(SDK.Metadata.EntityFilters.Attributes,
+                logicalEntityName,
+                null,
+                false,
+                function (entityMetadata) { successRetrieveEntity(entityLogicalName, entityMetadata); },
+                errorRetrieveEntity);
+            }
+
+
+        }
+
+        function successRetrieveEntity(logicalName, entityMetadata) {
+            ///<summary>
+            /// Retrieves attributes for the entity list item that is clicked
+            ///</summary>
+
+            // Update the entity list item notification when data is retrieved.
+
+            entityMetadata.Attributes.sort(function (a, b) {
+                if (a.LogicalName < b.LogicalName)
+                { return -1 }
+                if (a.LogicalName > b.LogicalName)
+                { return 1 }
+                return 0;
+            });
+
+            var result;
+            for (var i = 0; i < entityMetadata.Attributes.length; i++) {
+                var attribute = entityMetadata.Attributes[i];
+
+                if (attribute.DisplayName.UserLocalizedLabel != null && attribute.Format == "Text") {
+                   // optn.text = attribute.DisplayName.UserLocalizedLabel.Label;
+                   // optn.value = attribute.LogicalName;
+                    var html = "<tr><td><input type='checkbox' class='attrchk' id=attrchk_"+ attribute.LogicalName + " onclick='getSelectedAttribute(this);' value=" + attribute.LogicalName + " /></td><td>" + attribute.DisplayName.UserLocalizedLabel.Label + "</td><td>" + attribute.LogicalName + "</td></tr>";
+                    result += html;
+
+                }
+            }
+            var tbl = "<table class='table pop_up_table'><tr class='t-head'><th class='sel'>Select</th><th class='sel2'> Display Name</th><th class='sel'>Logical Name</th><th></th></tr>" + result + "</table>";
+            $("#DlgHdBodyContainer").text(" ");
+            $("#DlgHdBodyContainer").html(tbl);
+        }
+        function errorRetrieveEntity(error) {
+            ///<summary>
+            /// Displays the error returned from SDK.Metadata.RetrieveEntity if it fails.
+            ///</summary>
+            setText(message, error.message);
+            if (alertFlag.checked == true)
+                alert("Error!");
+        }
+
+
+    </script>
+    <style type="text/css">
+        body {
+            direction: LTR;
+            margin: 0px;
+            border: 0px;
+            cursor: default;
+            font-family: Segoe UI,Tahoma,Arial;
+            font-size: 11px;
+        }
+
+        .ms-crm-RefreshDialog-Header {
+            top: 0px;
+            position: absolute;
+            width: 96%;
+            height: 75px;
+            padding-top: 10px;
+            background-color: #FFFFFF;
+            border-bottom-color: #A4ABB2;
+        }
+
+        DIV.ms-crm-RefreshDialog-Header-Title {
+            font-weight: Lighter;
+            font-size: 27px;
+            font-family: Segoe UI Light, Segoe UI, Tahoma, Arial;
+            margin-left: 30px;
+            margin-right: 30px;
+            color: #262626;
+        }
+
+        .ms-crm-TextAutoEllipsis {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .ms-crm-RefreshDialog-Header-Desc {
+            padding-top: 4px;
+            font-family: Segoe UI,Tahoma,Arial;
+            margin-left: 30px;
+            margin-right: 30px;
+            color: #666666;
+            font-size: 12px;
+        }
+
+        .ms-crm-RefreshDialog-Main {
+            font-size: 12px;
+            top: 90px;
+            position: absolute;
+            bottom: 49px;
+            vertical-align: top;
+            width: 95%;
+            font-family: Segoe UI,Tahoma,Arial;
+            color: #444444;
+            background-color: #FFFFFF;
+            border-bottom-color: #A4ABB2;
+            right: 30px;
+            left: 30px;
+        }
+
+        .ms-crm-RefreshDialog-Footer {
+            -moz-border-bottom-colors: none;
+            -moz-border-left-colors: none;
+            -moz-border-right-colors: none;
+            -moz-border-top-colors: none;
+            background-color: #f1f1f1;
+            border-color: #ccc #f8f8f8 #f8f8f8;
+            border-image: none;
+            border-style: solid none none;
+            border-width: 1px medium medium;
+            bottom: 0;
+            height: 44px;
+            min-width: 288px;
+            position: fixed;
+            text-align: right;
+            width: 100%;
+        }
+
+        .ms-crm-RefreshDialog-Button {
+            color: #444444;
+            background-color: #FFFFFF;
+            height: 24px;
+            font-family: Segoe UI,Tahoma,Arial;
+            border: 1px solid #C6C6C6;
+            background-image: none;
+            margin-top: 10px;
+            width: auto;
+            min-width: 80px;
+            white-space: nowrap;
+            font-size: 12px;
+            line-height: 16px;
+            width: 84px;
+            text-align: center;
+            cursor: pointer;
+            background-repeat: repeat-x;
+            padding-left: 5px;
+            padding-right: 5px;
+        }
+
+        table.table.pop_up_table tr td {
+            font-size: 12px;
+            border-bottom: 1px solid #f5f5f5;
+            color: #666 !important;
+        }
+
+        .t-head th {
+            background: #f5f5f5 none repeat scroll 0 0;
+            border-bottom: 1px solid #ddd;
+            border-top: 1px solid #ddd;
+            font-size: 13px;
+            font-weight: normal;
+            text-align: left;
+        }
+
+        .sel {
+            width: 12%;
+        }
+
+        .sel2 {
+            width: 45%;
+        }
+
+        .ms-crm-DialogChrome {
+            padding: 20px;
+        }
+    </style>
+
+
+</head>
+<body onload="retrieveAttributes();">
+    <div class="ms-crm-RefreshDialog-Main-Container">
+        <div class="ms-crm-RefreshDialog-Header" id="tdDialogHeader">
+            <div id="dialogHeaderTitle" class="ms-crm-RefreshDialog-Header-Title ms-crm-TextAutoEllipsis"
+                 title="Your dialog header" style="width: 75%;">Attribute</div>
+            <div id="dialogHeaderDesc" class="ms-crm-RefreshDialog-Header-Desc"
+                 title="Your dialog additional description">Select Entity from list and click OK.</div>
+            <div id="DlgHdBodyContainer" class="ms-crm-RefreshDialog-Main">
+
+            </div>
+        </div>
+        <div class="ms-crm-RefreshDialog-Footer" id="tdDialogFooter">
+            <!--<button id="btnOK" onclick="Mscrm.Utilities.setReturnValue(true); closeWindow();" type="button"
+                    class="ms-crm-RefreshDialog-Button" tabindex="1" style="margin-left: 8px;">
+                OK
+            </button>-->
+            <button id="btnOK"  type="button"
+                    class="ms-crm-RefreshDialog-Button" tabindex="1" style="margin-left: 8px;">
+                OK
+            </button>
+            <button id="cmdDialogCancel" onclick="closeWindow();" type="button" class="ms-crm-RefreshDialog-Button"
+                    tabindex="1" style="margin-left: 8px; margin-right: 30px">
+                Cancel
+            </button>
+        </div>
+    </div>
+</body>
+</html>

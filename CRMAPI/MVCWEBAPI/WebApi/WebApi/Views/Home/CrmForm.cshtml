@@ -1,0 +1,75 @@
+﻿
+@{
+
+    Layout = null;
+}
+
+@{ 
+    if (ViewBag.message != null)
+    {
+<h1 style="text-align:center;color:red;">@ViewBag.message</h1>
+    }
+    <div class="loading" style="display:none;">&nbsp;</div>
+    <div style="text-align: center;display:none" id="tryalertdanger" class="alert alert-danger col-sm-12"></div>
+    <div style="text-align: center;display:none" id="tryalertsuccess" class="alert alert-success col-sm-12"></div>
+    if (ViewBag.result != null)
+    {
+
+       @Html.Raw(ViewBag.result);
+
+
+    }
+
+  
+
+}
+
+<script>
+   
+    $(document).ready(function () {
+        // getValidUser();  
+
+        $("#leadform_Id").submit(function (event) {           
+            event.preventDefault();
+
+            $(".loading").show();
+            var model = new Object();
+            model.new_firstname = $("#new_firstname").val();
+            model.new_lastname = $("#new_lastname").val();
+            model.new_email = $("#new_email").val();
+            model.new_description = $("#new_description").val();
+            model.Id = $("#Id").val();
+            
+            var url = $("#leadform_Id").attr("action");
+            
+           // var model = { new_firstname: $("#new_firstname").val(), new_lastname: $("#new_lastname").val(), new_email: $("#new_email").val(), new_description: $("#new_description").val(), Id: $("#Id").val() };
+            $.ajax({
+                type: "POST",
+                data: JSON.stringify(model),
+                url: url,
+                contentType: "application/json"
+            }).done(function (res) {
+               
+                if(res.IsSuccess)
+                {
+                    $("#new_firstname").val(' ');
+                    $("#new_lastname").val(' ');
+                    $("#new_email").val(' ');
+                    $("#new_description").val(' ');
+                    $(".loading").hide();
+                    $("#tryalertsuccess").show();
+                    $("#tryalertsuccess").text("Record submitted to CRM Successfully!!!");
+                }
+                else
+                {
+                    
+                    $(".loading").hide();
+                    $("#tryalertdanger").show();
+                    $("#tryalertdanger").text(res.Error);
+                }
+               
+            });
+        });
+
+    });
+</script>

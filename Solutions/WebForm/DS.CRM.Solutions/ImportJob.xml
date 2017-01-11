@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<job>
+ <webResource>
+  <path>FilesToImport\CSS\webformstyle.css</path>
+  <displayName>Web Resource Import Sample webformstyle.css file</displayName>
+  <description>Provides CSS styles for the sample_/ImportWebResources/dots_webform_configuration.htm Web resource.</description>
+  <name>_/ImportWebResources/CSS/webformstyle.css</name>
+  <type name="Css">2</type>
+ </webResource>
+   <webResource>
+  <path>FilesToImport\CSS\webformbootstrap.css</path>
+  <displayName>Web Resource Import Sample webformbootstrap.css file</displayName>
+  <description>Provides CSS styles for the sample_/ImportWebResources/dots_webform_configuration.htm Web resource.</description>
+  <name>_/ImportWebResources/CSS/webformbootstrap.css</name>
+  <type name="Css">2</type>
+ </webResource>
+     <webResource>
+  <path>FilesToImport\CSS\webformbootstrap.min.css</path>
+  <displayName>Web Resource Import Sample webformbootstrap.min.css file</displayName>
+  <description>Provides CSS styles for the sample_/ImportWebResources/dots_webform_configuration.htm Web resource.</description>
+  <name>_/ImportWebResources/CSS/webformbootstrap.min.css</name>
+  <type name="Css">2</type>
+ </webResource>    
+ <webResource>
+  <path>FilesToImport\Script\webformScript.js</path>
+  <displayName>Web Resource Import Sample webformScript.js file</displayName>
+  <description>Provides the SDK.ImportWebResources JScript library for the sample_/ImportWebResources/dots_webform_configuration.htm Web resource.</description>
+  <name>_/ImportWebResources/Script/webformScript.js</name>
+  <type name="JScript">3</type>
+ </webResource>
+   <webResource>
+  <path>FilesToImport\Script\webformconfiguration.js</path>
+  <displayName>Web Resource Import Sample webformconfiguration.js file</displayName>
+  <description>Provides the SDK.ImportWebResources JScript library for the sample_/ImportWebResources/dots_webform_configuration.htm Web resource.</description>
+  <name>_/ImportWebResources/Script/webformconfiguration.js</name>
+  <type name="JScript">3</type>
+ </webResource>
+   <webResource>
+  <path>FilesToImport\Script\webformbootstrap.js</path>
+  <displayName>Web Resource Import Sample webformbootstrap.js file</displayName>
+  <description>Provides the SDK.ImportWebResources JScript library for the sample_/ImportWebResources/dots_webform_configuration.htm Web resource.</description>
+  <name>_/ImportWebResources/Script/webformbootstrap.js</name>
+  <type name="JScript">3</type>
+ </webResource>
+    <webResource>
+  <path>FilesToImport\Script\webformbootstrap.min.js</path>
+  <displayName>Web Resource Import Sample webformbootstrap.min.js file</displayName>
+  <description>Provides the SDK.ImportWebResources JScript library for the sample_/ImportWebResources/dots_webform_configuration.htm Web resource.</description>
+  <name>_/ImportWebResources/Script/webformbootstrap.min.js</name>
+  <type name="JScript">3</type>
+ </webResource>
+
+  <webResource>
+    <path>FilesToImport\Script\SDK.MetaData.js</path>
+    <displayName>Web Resource Import Sample SDK.MetaData.js file</displayName>
+    <description>Provides the SDK.ImportWebResources JScript library for the sample_/ImportWebResources/dots_webform_configuration.htm Web resource.</description>
+    <name>_/ImportWebResources/Script/SDK.MetaData.js</name>
+    <type name="JScript">3</type>
+  </webResource>
+  
+  <webResource>
+    <path>FilesToImport\dots_webform_EntityDialogbox.html</path>
+    <displayName>Web Resource Import Sample dots_webform_EntityDialogbox.htm file</displayName>
+    <description>The HTML Web resource for the sample.</description>
+    <name>_/ImportWebResources/dots_webform_EntityDialogbox.html</name>
+    <type name="Html">1</type>
+  </webResource>
+
+  <webResource>
+    <path>FilesToImport\dots_webform_AttributeDialogbox.html</path>
+    <displayName>Web Resource Import Sample dots_webform_AttributeDialogbox.htm file</displayName>
+    <description>The HTML Web resource for the sample.</description>
+    <name>_/ImportWebResources/dots_webform_AttributeDialogbox.html</name>
+    <type name="Html">1</type>
+  </webResource>
+
+  <webResource>
+    <path>FilesToImport\dots_webform_EntityButton.html</path>
+    <displayName>Web Resource Import Sample dots_webform_EntityButton.htm file</displayName>
+    <description>The HTML Web resource for the sample.</description>
+    <name>_/ImportWebResources/dots_webform_EntityButton.html</name>
+    <type name="Html">1</type>
+  </webResource>
+  <webResource>
+    <path>FilesToImport\dots_webform_AttributeButton.html</path>
+    <displayName>Web Resource Import Sample dots_webform_AttributeButton.htm file</displayName>
+    <description>The HTML Web resource for the sample.</description>
+    <name>_/ImportWebResources/dots_webform_AttributeButton.html</name>
+    <type name="Html">1</type>
+  </webResource>
+
+  <webResource>
+    <path>FilesToImport\dots_webform_DialogBox.html</path>
+    <displayName>Web Resource Import Sample dots_webform_DialogBox.htm file</displayName>
+    <description>The HTML Web resource for the sample.</description>
+    <name>_/ImportWebResources/dots_webform_DialogBox.html</name>
+    <type name="Html">1</type>
+  </webResource>
+
+  <webResource>
+    <path>FilesToImport\Images\webformsubmit.png</path>
+    <displayName>Web Resource Import Sample webformsubmit.png image</displayName>
+    <description>The HTML Web resource for the sample.</description>
+    <name>_/ImportWebResources/Images/webformsubmit.png</name>
+    <type name="PNG format">5</type>
+  </webResource>
+  <webResource>
+    <path>FilesToImport\Images\webformdotsquares.png</path>
+    <displayName>Web Resource Import Sample webformdotsquares.png image</displayName>
+    <description>The HTML Web resource for the sample.</description>
+    <name>_/ImportWebResources/Images/webformdotsquares.png</name>
+    <type name="PNG format">5</type>
+  </webResource>
+</job>

@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script>
+       
+
+       
+
+        function getDialogBox()
+        {
+            var ei = parent.Xrm.Page.data.entity.getId();
+            alert(ei);
+            //Passing parameters to webresource
+            //var addParams = "Param1=" + param1 + "&Param2=" + param2;
+            //var webresourceurl = "/webresources/new_/webresource.htm?Data=" + encodeURIComponent(addParams);
+
+            //If you don't need to pass any parameters use following code instead:
+            var webresourceurl = "/webresources/wf_/ImportWebResources/dots_webform_EntityDialogbox.html";
+
+            var DialogOptions = new parent.Xrm.DialogOptions();
+            DialogOptions.width = 500;
+            DialogOptions.height = 500;
+
+            //parent.Xrm.Internal.openDialog(Mscrm.CrmUri.create(webresourceurl), DialogOptions, null, null, callBackFunction);
+            parent.Xrm.Internal.openDialog(webresourceurl, DialogOptions, null, null, callBackFunction);
+        }
+
+        function callBackFunction(result) {
+            if (result != null) {
+                parent.Xrm.Page.getAttribute("dots_relatedentity").setValue(result);
+            }
+            else {
+                parent.Xrm.Page.getAttribute("dots_relatedentity").setValue(null);
+            }
+        }
+
+        function ParseQueryString(query) {
+            var result = {};
+
+            if (typeof query == "undefined" || query == null) {
+                return result;
+            }
+
+            var queryparts = query.split("&");
+            for (var i = 0; i < queryparts.length; i++) {
+                var params = queryparts[i].split("=");
+                result[params[0]] = params.length > 1 ? params[1] : null;
+            }
+            return result;
+        }
+
+
+        //To get parameters,
+        //var passedparams = ParseQueryString(GetGlobalContext().getQueryStringParameters()["Data"]);
+        //alert(passedparams.Param1);
+        //alert(passedparams.Param2);
+
+    </script>
+</head>
+<body style="margin:0px;">
+    <input type="button" id="btn_entity" value="Lookup Entity" onclick="getDialogBox();"/>
+</body>
+</html>
