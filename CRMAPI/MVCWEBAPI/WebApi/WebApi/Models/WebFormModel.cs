@@ -24,6 +24,7 @@ namespace WebApi.Models
         public bool Captcha { get; set; }
         public string RedirectUrl { get; set; }
         public string RedirectMode { get; set; }
+        public string LinkButtonText { get; set; }
         public string CSS { get; set; }
 
         public List<SecoundFormFieldsModel> SecoundFormFields { get; set; }
@@ -51,7 +52,8 @@ namespace WebApi.Models
         //public Dictionary<string, string> FieldRequired { get; set; }
 
         public string MapField { get; set; }
-        public string DisplayOrder { get; set; }
+        //public string DisplayOrder { get; set; }
+        public int DisplayOrder { get; set; }
         public string FieldLabel { get; set; }
         public string FieldToolTip { get; set; }
         public string FieldType { get; set; }
@@ -59,4 +61,6 @@ namespace WebApi.Models
         public string FieldLength { get; set; }
         public string FieldRequired { get; set; }
     }
+
+    
 }

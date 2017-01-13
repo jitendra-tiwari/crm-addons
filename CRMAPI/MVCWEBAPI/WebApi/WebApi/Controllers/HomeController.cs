@@ -368,37 +368,17 @@ namespace WebApi.Controllers
         public FormModel GetEntityFields(Guid Id, Guid entityId)
         {
             var FormModel = new FormModel();
-            //string Id = "58EB3029-E870-4132-8AE7-2E9294276BD7";
-            //string entityid = "{5AC551A1-3FD3-E611-8101-C4346BAC0A3C}";
-            //Guid Ids = Guid.Empty;
-            //if(Ids!=null)
-            //    Ids = Guid.Parse(Id);
 
-            //Guid EIds = Guid.Empty;
-            //if (EIds != null)
-            //    EIds = Guid.Parse(entityid);
 
             var tbl = Obj.tbl_Configuration.SingleOrDefault(o => o.Id == Id);
             OrganizationService _service;
             CrmConnection connection = CrmConnection.Parse("Url='" + tbl.ServerUrl + "'; Username='" + tbl.UserName + "'; Password='" + tbl.Password + "'");
-            //OrganizationServiceProxy orgserv;
-            //ClientCredentials clientCreds = new ClientCredentials();
-
-            //clientCreds.Windows.ClientCredential.UserName = tbl.UserName;
-            //clientCreds.Windows.ClientCredential.Password = tbl.Password;
-            //clientCreds.Windows.ClientCredential.Domain = tbl.ServerUrl;
-            //IServiceConfiguration<IOrganizationService> orgConfigInfo = ServiceConfigurationFactory.CreateConfiguration<IOrganizationService>(connection.ServiceUri);
-
-            //orgserv = new OrganizationServiceProxy(orgConfigInfo, clientCreds);
-            //orgserv.EnableProxyTypes();
 
             using (_service = new OrganizationService(connection))
             {
-
-
                 Entity webform = new Entity("dots_webform");
                 //ColumnSet attributes = new ColumnSet(new string[] { "name", "address1_postalcode", "lastusedincampaign", "versionnumber" });
-                ColumnSet attributes = new ColumnSet("dots_name", "dots_email", "dots_relatedentity", "dots_labelposition", "dots_submitmessage", "dots_submitbutton", "dots_redirecturl", "new_redirectmode", "dots_css");
+                ColumnSet attributes = new ColumnSet("dots_name", "dots_email", "dots_relatedentity", "dots_labelposition", "dots_submitmessage", "dots_submitbutton", "dots_redirecturl", "new_redirectmode", "dots_linkbuttontext", "dots_css");
                 // Retrieve the dots_webform and its name and attributes.
                 var retrievedwebform = _service.Retrieve(webform.LogicalName, entityId, attributes);
 
@@ -422,8 +402,6 @@ namespace WebApi.Controllers
                     if (retrievedwebform.Attributes.Keys.Contains("dots_labelposition") == true)
                     {
 
-
-
                         //int value = ((OptionSetValue)retrievedwebform.Attributes["dots_labelposition"]).Value;
 
                         //var dots_labelposition = retrievedwebform.Attributes["dots_labelposition"];
@@ -433,7 +411,8 @@ namespace WebApi.Controllers
                         //var OptionsetValue = CRMHelper.getOptionSetValue("dots_webform", "dots_labelposition", labelvalue, _service);
                         //strText = CRMHelper.getOptionSetText("dots_webform", "dots_labelposition", OptionsetValue, _service);
 
-                        strText = retrievedwebform.Attributes["dots_labelposition"].ToString();
+                        // strText = retrievedwebform.Attributes["dots_labelposition"].ToString();
+                        strText = retrievedwebform.FormattedValues["dots_labelposition"];
                         FormModel.LabelPosition = strText;
                     }
 
@@ -445,17 +424,23 @@ namespace WebApi.Controllers
                         FormModel.RedirectUrl = retrievedwebform.Attributes["dots_redirecturl"].ToString();
                     if (retrievedwebform.Attributes.Keys.Contains("new_redirectmode") == true)
                     {
-                        string redirectMode = "";
-                        int OptionsetValue = ((Microsoft.Xrm.Sdk.OptionSetValue)retrievedwebform.Attributes["new_redirectmode"]).Value;
-                        if (OptionsetValue == 1)
-                            redirectMode = "Auto";
-                        else if (OptionsetValue == 2)
-                            redirectMode = "Link";
-                        else if (OptionsetValue == 3)
-                            redirectMode = "Button";
+                        //int plainValue = (int)retrievedwebform.Attributes["new_redirectmode"];
 
-                        FormModel.RedirectMode = redirectMode;
+
+                        int OptionsetValue = ((Microsoft.Xrm.Sdk.OptionSetValue)retrievedwebform.Attributes["new_redirectmode"]).Value;
+                        var OptionsetText = retrievedwebform.FormattedValues["new_redirectmode"];
+                        //string redirectMode = "";
+                        //if (OptionsetValue == 1)
+                        //    redirectMode = "Auto";
+                        //else if (OptionsetValue == 2)
+                        //    redirectMode = "Link";
+                        //else if (OptionsetValue == 3)
+                        //    redirectMode = "Button";
+
+                        FormModel.RedirectMode = OptionsetText;
                     }
+                    if (retrievedwebform.Attributes.Keys.Contains("dots_linkbuttontext") == true)
+                        FormModel.LinkButtonText = retrievedwebform.Attributes["dots_linkbuttontext"].ToString();
                     if (retrievedwebform.Attributes.Keys.Contains("dots_css") == true)
                         FormModel.CSS = retrievedwebform.Attributes["dots_css"].ToString();
 
@@ -475,40 +460,29 @@ namespace WebApi.Controllers
 
                     string strFieldType = null;
 
+                    int displayNo = 1000;
                     foreach (Entity act in results.Entities)
                     {
 
                         //secoundModellst.Add(new SecoundFormFieldsModel { FieldLabel = act["dots_fieldlabel"].ToString(), DisplayOrder = act["dots_displayorder"].ToString(), FieldToolTip = act["dots_fieldtooltip"].ToString(), FieldType = act["dots_fieldtype"].ToString(), FieldDefaultValue = act["dots_fielddefaultvalue"].ToString(), FieldLength = act["dots_fieldlength"].ToString(), FieldRequired = act["dots_fieldrequired"].ToString(), MapField = act["dots_mapfield"].ToString() });
 
-                        if (act.Attributes.Keys.Contains("dots_fieldtype") == true)
-                        {
-                            int OptionsetValue = ((Microsoft.Xrm.Sdk.OptionSetValue)act.Attributes["dots_fieldtype"]).Value;
-                            //strFieldType = CRMHelper.getOptionSetText("dots_webform", "dots_fieldtype", OptionsetValue, _service);
-                            if (OptionsetValue == 1)
-                                strFieldType = "Text";
-                            else if (OptionsetValue == 2)
-                                strFieldType = "MultiLineText";
-                            else if (OptionsetValue == 3)
-                                strFieldType = "CheckBox";
-                            else if (OptionsetValue == 4)
-                                strFieldType = "Date";
-                            else if (OptionsetValue == 5)
-                                strFieldType = "EmailAddress";
-                            else if (OptionsetValue == 6)
-                                strFieldType = "Hidden";
-                            else if (OptionsetValue == 7)
-                                strFieldType = "ZipCode";
-                            else if (OptionsetValue == 8)
-                                strFieldType = "PhoneNumber";
+                        //if (act.Attributes.Keys.Contains("dots_fieldtype") == true)
+                        //{
+                        //   // int plainValue = (int)retrievedwebform["new_redirectmode"];
 
-                        }
+                        //    int OptionsetValue = ((Microsoft.Xrm.Sdk.OptionSetValue)act.Attributes["dots_fieldtype"]).Value;
+                        //    var OptionsetText = act.FormattedValues["dots_fieldtype"];
+                        //    //strFieldType = CRMHelper.getOptionSetText("dots_webform", "dots_fieldtype", OptionsetValue, _service);
+                        //    strFieldType = OptionsetText;
+
+                        //}
 
                         secoundModellst.Add(new SecoundFormFieldsModel
                         {
-                            DisplayOrder = (act.Attributes.Keys.Contains("dots_displayorder") == false ? null : act["dots_displayorder"].ToString()),
+                            DisplayOrder = (act.Attributes.Keys.Contains("dots_displayorder") == false ? displayNo : Convert.ToInt32(act["dots_displayorder"].ToString())),
                             FieldLabel = act["dots_fieldlabel"].ToString(),
                             FieldToolTip = (act.Attributes.Keys.Contains("dots_fieldtooltip") == false ? null : act["dots_fieldtooltip"].ToString()),
-                            FieldType = strFieldType,
+                            FieldType = (act.Attributes.Keys.Contains("dots_fieldtype") == false ? "Text" : act.FormattedValues["dots_fieldtype"]),
                             FieldDefaultValue = (act.Attributes.Keys.Contains("dots_fielddefaultvalue") == false ? null : act["dots_fielddefaultvalue"].ToString()),
                             FieldLength = (act.Attributes.Keys.Contains("dots_fieldlength") == false ? null : act["dots_fieldlength"].ToString()),
                             //FieldRequired= ((act.Attributes.Keys.Contains("dots_fieldrequired") == true) ? "true" : "false"),
@@ -516,6 +490,7 @@ namespace WebApi.Controllers
                             MapField = act["dots_mapfield"].ToString(),
 
                         });
+                        displayNo += 1;
                     }
 
 
@@ -530,17 +505,21 @@ namespace WebApi.Controllers
 
             return FormModel;
         }
-
-        public async Task<ActionResult> CrmForm(Guid rId, Guid entityId)
-        {
-
-            WebApi.Database.MicrosoftCRMEntities Obj = new Database.MicrosoftCRMEntities();
+        [HttpGet]
+        public  ActionResult CrmForm(string rId, string entityId,string Type)
+        {          
+                     
             try
             {
                 string message = "";
-                if (rId != Guid.Empty)
+                // if (rId != Guid.Empty)
+                if (!String.IsNullOrEmpty(rId) && !String.IsNullOrEmpty(entityId) && !String.IsNullOrEmpty(Type))
                 {
-                    var objtbl_Configuration = Obj.tbl_Configuration.SingleOrDefault(o => o.Id == rId);
+                    WebApi.Database.MicrosoftCRMEntities Obj = new Database.MicrosoftCRMEntities();
+                    var registerId = Guid.Parse(rId);
+                    var currentEntityId = Guid.Parse(entityId);
+
+                    var objtbl_Configuration = Obj.tbl_Configuration.SingleOrDefault(o => o.Id == registerId);
 
                     if (objtbl_Configuration != null)
                     {
@@ -552,7 +531,7 @@ namespace WebApi.Controllers
                                 StringBuilder sb = new StringBuilder();
                                 FormModel formFieldsModel = new FormModel();
 
-                                formFieldsModel = GetEntityFields(rId, entityId);
+                                formFieldsModel = GetEntityFields(registerId, currentEntityId);
 
 
                                 String strPathAndQuery = HttpContext.Request.Url.PathAndQuery;
@@ -567,6 +546,9 @@ namespace WebApi.Controllers
                                 sb.Append("<head>");
                                 sb.Append("<meta charset='utf-8'><meta http-equiv='X-UA-Compatible' content='IE=edge'><meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='' ><meta name='author' content='' ><link rel='icon' href = '../../favicon.ico'>");
                                 sb.Append("<title>Dotsquares</title>");
+                                if (formFieldsModel.CSS != null)
+                                    sb.Append("<style type='text/css'>"+ formFieldsModel.CSS + "</style>");
+
                                 sb.Append("<link href='" + sd + "/CSS/bootstrap.min.css' rel='stylesheet'><link href='" + sd + "/CSS/style.css' rel='stylesheet'>");
                                 sb.Append("</head>");
                                 sb.Append("<body>");
@@ -588,9 +570,38 @@ namespace WebApi.Controllers
                                     //sb.Append("</div>");
                                     sb.AppendLine();
                                 }
+                                //for submit mesage
+                                if (formFieldsModel.SubmitMessage!=null)
+                                {
+                                    sb.Append("<input id='submitMessage' name='submitMessage' type='Hidden' value = '"+formFieldsModel.SubmitMessage+"' >");
+                                   // sb.Append("<input id='submitMessage' name='submitMessage' type='Hidden' value = 'Record saved successfully!' >");
+                                    //sb.Append("</div>");
+                                    sb.AppendLine();
+                                }
+                                //for submit button text
+                                if (formFieldsModel.RedirectUrl != null)
+                                {
+                                    sb.Append("<input id='redirectUrl' name='redirectUrl' type='Hidden' value = " + formFieldsModel.RedirectUrl + " >");
+                                    //sb.Append("</div>");
+                                    sb.AppendLine();
+                                }
+
+                                if (formFieldsModel.RedirectMode != null)
+                                {
+                                    sb.Append("<input id='redirectMode' name='redirectMode' type='Hidden' value = " + formFieldsModel.RedirectMode + " >");
+                                    //sb.Append("</div>");
+                                    sb.AppendLine();
+                                }
+                                if (formFieldsModel.LinkButtonText != null)
+                                {
+                                    sb.Append("<input id='linkButtonText' name='linkButtonText' type='Hidden' value = " + formFieldsModel.LinkButtonText + " >");
+                                    //sb.Append("</div>");
+                                    sb.AppendLine();
+                                }
                                 //form setting end
 
-                                foreach (var fields in formFieldsModel.SecoundFormFields)
+
+                                foreach (var fields in formFieldsModel.SecoundFormFields.ToList().OrderBy(o=>o.DisplayOrder))
                                 {
 
                                     if (fields.FieldType == "Hidden")
@@ -604,27 +615,35 @@ namespace WebApi.Controllers
                                     }
                                     else if (fields.FieldType == "Text")
                                     {
-                                       
-                                        sb.Append("<div style='margin-bottom: 25px ; width:100%;' class='input-group'>");
-                                        sb.Append("<label for=" + fields.FieldLabel + ">" + fields.FieldLabel + "<em class='red'>*</em></label>");
-                                        if (fields.FieldRequired == "True")
-                                            sb.Append("<input id=" + fields.MapField + " name=" + fields.MapField + " type=" + fields.FieldType + " "+(fields.FieldDefaultValue==null ?"": "value="+fields.FieldDefaultValue)+"  data-validation='required' data-validation-error-msg='This is a required field.' class='form-control'  maxlength=" + (fields.FieldLength == null ? "100" : fields.FieldLength) + " placeholder=" + (fields.FieldLabel == null ? "" : fields.FieldLabel) + ">");
-                                        else
-                                            sb.Append("<input id=" + fields.MapField + " name=" + fields.MapField + " type=" + fields.FieldType + " " + (fields.FieldDefaultValue == null ? "" : "value=" + fields.FieldDefaultValue) + " class='form-control'   maxlength=" + (fields.FieldLength == null ? "" : fields.FieldLength) + " placeholder=" + (fields.FieldLabel == null ? "" : fields.FieldLabel) + ">");
 
+                                        sb.Append("<div style='margin-bottom: 25px ; width:100%;' class='input-group'>");
+                                        //sb.Append("<label style='float:'"+ formFieldsModel.LabelPosition+" for=" + fields.FieldLabel + ">" + fields.FieldLabel + "<em class='red'>*</em></label>");
+                                        if (fields.FieldRequired == "True") {                                         
+                                            sb.Append("<label style='float:"+formFieldsModel.LabelPosition+"' for=" + fields.FieldLabel + ">" + fields.FieldLabel + "<em class='red'>*</em></label>");
+                                            sb.Append("<input id=" + fields.MapField + " name=" + fields.MapField + " type=" + fields.FieldType + " " + (fields.FieldDefaultValue == null ? "" : "value=" + fields.FieldDefaultValue) + "  data-validation='required' data-validation-error-msg='This is a required field.' class='form-control'  maxlength=" + (fields.FieldLength == null ? "100" : fields.FieldLength) + " placeholder=" + (fields.FieldLabel == null ? "" : fields.FieldLabel) + ">");
+                                        }
+                                        else {                                         
+                                            sb.Append("<label style='float:" + formFieldsModel.LabelPosition + "' for=" + fields.FieldLabel + ">" + fields.FieldLabel + "</label>");
+                                            sb.Append("<input id=" + fields.MapField + " name=" + fields.MapField + " type=" + fields.FieldType + " " + (fields.FieldDefaultValue == null ? "" : "value=" + fields.FieldDefaultValue) + " class='form-control'   maxlength=" + (fields.FieldLength == null ? "" : fields.FieldLength) + " placeholder=" + (fields.FieldLabel == null ? "" : fields.FieldLabel) + ">");
+                                        }
                                         sb.Append("</div>");
                                         sb.AppendLine();
                                     }
                                     else if (fields.FieldType == "MultiLineText")
                                     {
                                         sb.Append("<div style='margin-bottom: 25px ; width:100%;' class='input-group'>");
-                                        sb.Append("<label for=" + fields.FieldLabel + ">" + fields.FieldLabel + "<em class='red'>*</em></label>");
-                                        // sb.Append("<input id=" + fields.MapField + " name=" + fields.MapField + " type=" + fields.FieldType + " data-validation=" + (fields.FieldRequired == null ? "" : fields.FieldRequired) + " data-validation-error-msg='This is a required field.' class='form-control' maxlength=" + (fields.FieldLength == null ? "1000" : fields.FieldLength) + " placeholder=" + (fields.FieldLabel == null ? "" : fields.FieldLabel) + ">");
+                                        //sb.Append("<label style='float:'" + formFieldsModel.LabelPosition + " for=" + fields.FieldLabel + ">" + fields.FieldLabel + "<em class='red'>*</em></label>");
+
                                         if (fields.FieldRequired == "True")
-                                            sb.Append("<textarea id ="+fields.MapField + " name = " + fields.MapField + " data-validation='required' data-validation-error-msg='This is a required field.' class='form-control'  maxlength=" + (fields.FieldLength == null ? "1000" : fields.FieldLength) + " placeholder=" + (fields.FieldLabel == null ? "" : fields.FieldLabel) + "></textarea>");
+                                        {
+                                            sb.Append("<label style='float:" + formFieldsModel.LabelPosition + "' for=" + fields.FieldLabel + ">" + fields.FieldLabel + "<em class='red'>*</em></label>");
+                                            sb.Append("<textarea id =" + fields.MapField + " name = " + fields.MapField + " data-validation='required' data-validation-error-msg='This is a required field.' class='form-control'  maxlength=" + (fields.FieldLength == null ? "1000" : fields.FieldLength) + " placeholder=" + (fields.FieldLabel == null ? "" : fields.FieldLabel) + "></textarea>");
+                                        }
                                         else
+                                        {
+                                            sb.Append("<label style='float:" + formFieldsModel.LabelPosition + "' for=" + fields.FieldLabel + ">" + fields.FieldLabel + "</label>");
                                             sb.Append("<textarea id =" + fields.MapField + " name = " + fields.MapField + " class='form-control'  maxlength=" + (fields.FieldLength == null ? "1000" : fields.FieldLength) + " placeholder=" + (fields.FieldLabel == null ? "" : fields.FieldLabel) + "></textarea>");
-                                      
+                                        }
                                         sb.Append("</div>");
                                         sb.AppendLine();
                                     }
@@ -632,13 +651,18 @@ namespace WebApi.Controllers
                                     else if (fields.FieldType == "CheckBox")
                                     {
                                         sb.Append("<div style='margin-bottom: 25px ; width:100%;' class='input-group'>");
-                                        sb.Append("<label for=" + fields.FieldLabel + ">" + fields.FieldLabel + "<em class='red'>*</em></label>");
-                                        // sb.Append("<input id=" + fields.MapField + " name=" + fields.MapField + " type=" + fields.FieldType + " data-validation=" + (fields.FieldRequired == null ? "" : fields.FieldRequired) + " data-validation-error-msg='This is a required field.' class='form-control'  placeholder=" + (fields.FieldLabel == null ? "" : fields.FieldLabel) + ">");
-                                        if (fields.FieldRequired == "True")
-                                            sb.Append("<input id=" + fields.MapField + " name=" + fields.MapField + " type=" + fields.FieldType.ToLower() + " data-validation='required' data-validation-error-msg='This is a required field.'   maxlength=" + (fields.FieldLength == null ? "1000" : fields.FieldLength) + " placeholder=" + (fields.FieldLabel == null ? "" : fields.FieldLabel) + ">");
-                                        else
-                                            sb.Append("<input id=" + fields.MapField + " name=" + fields.MapField + " type=" + fields.FieldType.ToLower() + "    maxlength=" + (fields.FieldLength == null ? "" : fields.FieldLength) + " placeholder=" + (fields.FieldLabel == null ? "" : fields.FieldLabel) + ">");
+                                        //sb.Append("<label style='float:'" + formFieldsModel.LabelPosition + " for=" + fields.FieldLabel + ">" + fields.FieldLabel + "<em class='red'>*</em></label>");
 
+                                        if (fields.FieldRequired == "True")
+                                        {
+                                            sb.Append("<label style='float:" + formFieldsModel.LabelPosition + "' for=" + fields.FieldLabel + ">" + fields.FieldLabel + "<em class='red'>*</em></label>");
+                                            sb.Append("<input id=" + fields.MapField + " name=" + fields.MapField + " type=" + fields.FieldType.ToLower() + " data-validation='required' data-validation-error-msg='This is a required field.'   maxlength=" + (fields.FieldLength == null ? "1000" : fields.FieldLength) + " placeholder=" + (fields.FieldLabel == null ? "" : fields.FieldLabel) + ">");
+                                        }
+                                        else
+                                        {
+                                            sb.Append("<label style='float:" + formFieldsModel.LabelPosition + "' for=" + fields.FieldLabel + ">" + fields.FieldLabel + "</label>");
+                                            sb.Append("<input id=" + fields.MapField + " name=" + fields.MapField + " type=" + fields.FieldType.ToLower() + "    maxlength=" + (fields.FieldLength == null ? "" : fields.FieldLength) + " placeholder=" + (fields.FieldLabel == null ? "" : fields.FieldLabel) + ">");
+                                        }
                                         sb.Append("</div>");
                                         sb.AppendLine();
                                     }
@@ -646,12 +670,18 @@ namespace WebApi.Controllers
                                     else if (fields.FieldType == "Date")
                                     {
                                         sb.Append("<div style='margin-bottom: 25px ; width:100%;' class='input-group'>");
-                                        sb.Append("<label for=" + fields.FieldLabel + ">" + fields.FieldLabel + "<em class='red'>*</em></label>");
-                                        // sb.Append("<input id=" + fields.MapField + " name=" + fields.MapField + " type=" + (fields.FieldType == "Date") ?? "Text" + " data-validation=" + (fields.FieldRequired == null ? "" : "date") + " data-validation-error-msg='This is a required field.' class='form-control'  placeholder=" + (fields.FieldLabel == null ? "" : fields.FieldLabel) + ">");
-                                        if(fields.FieldRequired=="True")
-                                            sb.Append("<input id=" + fields.MapField + " name=" + fields.MapField + " type=" + (fields.FieldType == "Date") ?? "text" + "  data-validation='date' data-validation-format='dd/mm/yyyy'   class='form-control'  placeholder=" + (fields.FieldLabel == null ? "" : fields.FieldLabel) + ">");
+                                       // sb.Append("<label style='float:'" + formFieldsModel.LabelPosition + " for=" + fields.FieldLabel + ">" + fields.FieldLabel + "<em class='red'>*</em></label>");
+
+                                        if (fields.FieldRequired == "True")
+                                        {
+                                            sb.Append("<label style='float:" + formFieldsModel.LabelPosition + "' for=" + fields.FieldLabel + ">" + fields.FieldLabel + "<em class='red'>*</em></label>");
+                                            sb.Append("<input id=" + fields.MapField + " name=" + fields.MapField + " type='text'  data-validation='date' data-validation-format='dd/mm/yyyy' data-validation-error-msg='This is a required field with(dd/mm/yyyy).' class='form-control' >");
+                                        }
                                         else
-                                            sb.Append("<input id=" + fields.MapField + " name=" + fields.MapField + " type=" + (fields.FieldType == "Date") ?? "text" + " data-validation-format='dd/mm/yyyy' class='form-control' placeholder=" + (fields.FieldLabel == null ? "" : fields.FieldLabel) + ">");
+                                        {
+                                            sb.Append("<label style='float:" + formFieldsModel.LabelPosition + "' for=" + fields.FieldLabel + ">" + fields.FieldLabel + "</em></label>");
+                                            sb.Append("<input id=" + fields.MapField + " name=" + fields.MapField + " type='text' data-validation-format='dd/mm/yyyy' class='form-control' >");
+                                        }
 
                                         sb.Append("</div>");
                                         sb.AppendLine();
@@ -659,12 +689,18 @@ namespace WebApi.Controllers
                                     else if (fields.FieldType == "EmailAddress")
                                     {
                                         sb.Append("<div style='margin-bottom: 25px ; width:100%;' class='input-group'>");
-                                        sb.Append("<label for=" + fields.FieldLabel + ">" + fields.FieldLabel + "<em class='red'>*</em></label>");
-                                        //sb.Append("<input id=" + fields.MapField + " name=" + fields.MapField + " type=" + (fields.FieldType == "EmailAddress") ?? "Text" + " data-validation=" + (fields.FieldRequired == null ? "" : "email") + " data-validation-error-msg='This is a required field.' class='form-control' maxlength=" + (fields.FieldLength == null ? "" : fields.FieldLength) + "  placeholder=" + (fields.FieldLabel == null ? "" : fields.FieldLabel) + ">");
-                                        if(fields.FieldRequired=="True")
-                                            sb.Append("<input id=" + fields.MapField + " name=" + fields.MapField + " type="+(fields.FieldType== "EmailAddress" ? "Text":"Text")+"  data-validation='email'  class='form-control' maxlength=" + (fields.FieldLength == null ? "200" : fields.FieldLength) + "  placeholder=" + (fields.FieldLabel == null ? "" : fields.FieldLabel) + ">");
+                                        // sb.Append("<label style='float:'" + formFieldsModel.LabelPosition + " for=" + fields.FieldLabel + ">" + fields.FieldLabel + "<em class='red'>*</em></label>");
+
+                                        if (fields.FieldRequired == "True")
+                                        {
+                                            sb.Append("<label style='float:" + formFieldsModel.LabelPosition + "' for=" + fields.FieldLabel + ">" + fields.FieldLabel + "<em class='red'>*</em></label>");
+                                            sb.Append("<input id=" + fields.MapField + " name=" + fields.MapField + " type=" + (fields.FieldType == "EmailAddress" ? "Text" : "Text") + "  data-validation='email'  class='form-control' maxlength=" + (fields.FieldLength == null ? "200" : fields.FieldLength) + "  placeholder=" + (fields.FieldLabel == null ? "" : fields.FieldLabel) + ">");
+                                        }
                                         else
+                                        {
+                                            sb.Append("<label style='float:" + formFieldsModel.LabelPosition + "' for=" + fields.FieldLabel + ">" + fields.FieldLabel + "</label>");
                                             sb.Append("<input id=" + fields.MapField + " name=" + fields.MapField + " type=" + (fields.FieldType == "EmailAddress" ? "Text" : "Text") + "  class='form-control' maxlength=" + (fields.FieldLength == null ? "200" : fields.FieldLength) + "  placeholder=" + (fields.FieldLabel == null ? "" : fields.FieldLabel) + ">");
+                                        }
 
                                         sb.Append("</div>");
                                         sb.AppendLine();
@@ -673,8 +709,19 @@ namespace WebApi.Controllers
                                     else if (fields.FieldType == "ZipCode")
                                     {
                                         sb.Append("<div style='margin-bottom: 25px ; width:100%;' class='input-group'>");
-                                        sb.Append("<label for=" + fields.FieldLabel + ">" + fields.FieldLabel + "<em class='red'>*</em></label>");
-                                        sb.Append("<input id=" + fields.MapField + " name=" + fields.MapField + " type=" + (fields.FieldType == "ZipCode") ?? "Text" + " data-validation=" + (fields.FieldRequired == null ? "" : "required") + " data-validation-error-msg='This is a required field.' class='form-control' maxlength=" + (fields.FieldLength == null ? "" : fields.FieldLength) + "  placeholder=" + (fields.FieldLabel == null ? "" : fields.FieldLabel) + ">");
+                                        //sb.Append("<label style='float:'" + formFieldsModel.LabelPosition + " for=" + fields.FieldLabel + ">" + fields.FieldLabel + "<em class='red'>*</em></label>");
+
+
+                                        if (fields.FieldRequired == "True")
+                                        {
+                                            sb.Append("<label style='float:" + formFieldsModel.LabelPosition + "' for=" + fields.FieldLabel + ">" + fields.FieldLabel + "<em class='red'>*</em></label>");
+                                            sb.Append("<input id=" + fields.MapField + " name=" + fields.MapField + " type='Text' data-validation='required' data-validation-error-msg='This is a required field.' class='form-control' maxlength=" + (fields.FieldLength == null ? "6" : fields.FieldLength) + "  placeholder=" + (fields.FieldLabel == null ? "" : fields.FieldLabel) + ">");
+                                        }
+                                        else
+                                        {
+                                            sb.Append("<label style='float:" + formFieldsModel.LabelPosition + "' for=" + fields.FieldLabel + ">" + fields.FieldLabel + "<em class='red'>*</em></label>");
+                                            sb.Append("<input id=" + fields.MapField + " name=" + fields.MapField + " type='text' class='form-control' maxlength=" + (fields.FieldLength == null ? "6" : fields.FieldLength) + "  placeholder=" + (fields.FieldLabel == null ? "" : fields.FieldLabel) + ">");
+                                        }
                                         sb.Append("</div>");
                                         sb.AppendLine();
                                     }
@@ -682,78 +729,95 @@ namespace WebApi.Controllers
                                     else if (fields.FieldType == "PhoneNumber")
                                     {
                                         sb.Append("<div style='margin-bottom: 25px ; width:100%;' class='input-group'>");
-                                        sb.Append("<label for=" + fields.FieldLabel + ">" + fields.FieldLabel + "<em class='red'>*</em></label>");
-                                        sb.Append("<input id=" + fields.MapField + " name=" + fields.MapField + " type=" + (fields.FieldType == "ZipCode") ?? "Text" + " data-validation=" + (fields.FieldRequired == null ? "" : "required") + " data-validation-error-msg='This is a required field.' class='form-control' maxlength=" + (fields.FieldLength == null ? "" : fields.FieldLength) + "  placeholder=" + (fields.FieldLabel == null ? "" : fields.FieldLabel) + ">");
+                                        // sb.Append("<label style='float:'" + formFieldsModel.LabelPosition + " for=" + fields.FieldLabel + ">" + fields.FieldLabel + "<em class='red'>*</em></label>");
+
+                                        if (fields.FieldRequired == "True")
+                                        {
+                                            sb.Append("<label style='float:" + formFieldsModel.LabelPosition + "' for=" + fields.FieldLabel + ">" + fields.FieldLabel + "<em class='red'>*</em></label>");
+                                            sb.Append("<input id=" + fields.MapField + " name=" + fields.MapField + " type='text' data-validation='required' data-validation-error-msg='This is a required field.' class='form-control' maxlength=" + (fields.FieldLength == null ? "13" : fields.FieldLength) + "  placeholder=" + (fields.FieldLabel == null ? "" : fields.FieldLabel) + ">");
+                                        }
+                                        else
+                                        {
+                                            sb.Append("<label style='float:" + formFieldsModel.LabelPosition + "' for=" + fields.FieldLabel + ">" + fields.FieldLabel + "<em class='red'>*</em></label>");
+                                            sb.Append("<input id=" + fields.MapField + " name=" + fields.MapField + " type='text' class='form-control' maxlength=" + (fields.FieldLength == null ? "13" : fields.FieldLength) + "  placeholder=" + (fields.FieldLabel == null ? "" : fields.FieldLabel) + ">");
+                                        }
                                         sb.Append("</div>");
                                         sb.AppendLine();
                                     }
                                 }
 
-                                sb.Append("<div style='margin-top:10px' class='form-group'><div class='col-sm-12 controls'><button type = 'submit' class='btn btn-success' id='btn-f-submit' >" + (formFieldsModel.SubmitButtonText == null ? "Submit" : formFieldsModel.SubmitButtonText) + "</button></div></div>");
-
+                           
+                                if ((Type == "IFRAME") || (Type == "URL"))
+                                    sb.Append("<div style='margin-top:10px' class='form-group'><div class='col-sm-12 controls'><button type = 'submit' class='btn btn-success' id='btn-f-submit' >" + (formFieldsModel.SubmitButtonText == null ? "Submit" : formFieldsModel.SubmitButtonText) + "</button></div></div>");
+                               else if (Type== "PREVIEW")
+                                    //sb.Append("<div style='margin-top:10px' class='form-group'><div class='col-sm-12 controls'><button type = 'submit' class='btn btn-success' id='btn-f-submit' >" + (formFieldsModel.SubmitButtonText == null ? "Submit" : formFieldsModel.SubmitButtonText) + "</button></div></div>");
 
                                 sb.Append("</form>");
                                 sb.Append("</div></div></div></div>");
                                 sb.Append("<script src='https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js'></script>");
                                 sb.Append("<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js'></script>");
                                 sb.Append("<link href='https://cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/theme-default.min.css' rel='stylesheet' type='text/css'/>");
-                                sb.Append("<script src='" + sd + "/Script/bootstrap.min.js'></script>");
+                                sb.Append("<script src='" + sd + "/Scripts/bootstrap.min.js'></script>");
                                 sb.Append("<script>$.validate({form: '" + '#' + formFieldsModel.FormId + "', });</script>");
 
                                 sb.Append("</body>");
-
+                               // return Content(sb.ToString(), "text/html");
                                 sb.Append("</html>");
+                                if (Type == "PREVIEW")                                   
+                                 return Json(new { IsSuccess=true, successMessage="Success", htmlResult =sb.ToString() }, JsonRequestBehavior.AllowGet);
+                                else if ((Type == "IFRAME") || (Type == "URL"))
+                                    ViewBag.result = sb;
+                                else
+                                    ViewBag.message = "Something going wrong!!! ";
 
-
-
-                                // return sb;
-
-                                ViewBag.result = sb;
-
-
-                                //string getUrlName = "GetForm";
-                                //var AbsoluteUri = Request.Url.AbsoluteUri;
-                                //var sd = Request.Url.GetLeftPart(UriPartial.Authority);
-                                //string ApiUrl = AbsoluteUri.Replace(AbsoluteUri, sd + "/api/values/" + getUrlName.ToLower());
-                                //HttpClient httpClient = new HttpClient();
-
-
-                                //string server = "http://wds1.projectstatus.co.uk/CRMWebAPI/api/values/GetForm";
-                                ////string local = "http://localhost:54126/api/values/GetForm";
-                                //HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, ApiUrl);
-                                //HttpResponseMessage response = await httpClient.SendAsync(request);
-                                //string result = await response.Content.ReadAsStringAsync();
-                                //var rs = JsonConvert.DeserializeObject<HtmlConversion>(result);
-                                //string body = rs.m_StringValue;
-                                //body = body.Replace("###5", rId.ToString());
-
-                                //ViewBag.result = body;
-
-                                //ViewBag.url = Request.Url.AbsoluteUri;
                             }
                             else
                             {
                                 message = "Trial pack has expire!!!";
-                                ViewBag.message = message;
+                                if (Type == "PREVIEW")
+                                    return Json(new { IsSuccess = false, successMessage = message, }, JsonRequestBehavior.AllowGet);
+                                else
+                                {
+                                  
+                                    ViewBag.message = message;
+                                }
                             }
                         }
                         else
                         {
                             message = "Please check solution registration and installation exist or not!!!";
+                            if (Type == "PREVIEW")
+                                return Json(new { IsSuccess = false, successMessage = message, }, JsonRequestBehavior.AllowGet);
+                            else
                             ViewBag.message = message;
                         }
                     }
                     else
                     {
                         message = "You are not authorized user!!!";
+                        if (Type == "PREVIEW")
+                            return Json(new { IsSuccess = false, successMessage = message, }, JsonRequestBehavior.AllowGet);
+                        else
                         ViewBag.message = message;
                     }
+                }
+                else
+                {
+
+                    message = "Something going wrong!!!";
+                    if (Type == "PREVIEW")
+                        return Json(new { IsSuccess = false, successMessage = message, }, JsonRequestBehavior.AllowGet);
+                    else
+                    ViewBag.message = message;
                 }
 
 
             }
             catch (Exception ex)
             {
+                if (Type == "PREVIEW")
+                    return Json(new { IsSuccess = false, successMessage = ex.Message, }, JsonRequestBehavior.AllowGet);
+                else
                 ViewBag.message = ex.Message;
             }
             return View();
@@ -762,68 +826,98 @@ namespace WebApi.Controllers
         [HttpPost]
         public ActionResult CrmForm(FormCollection formCollection)
         {
-            Dictionary<string, string> Dctn = new Dictionary<string, string>();
-            //KeyValuePair<String, Object> Dctn = new KeyValuePair<String, Object>();
-           
-                foreach (var key in formCollection.Keys)
+            try
             {
-                var Recordkey = key.ToString();
-                var value = formCollection[Recordkey];
-                Dctn.Add(Recordkey, value);
-            }
-
-
-            var Leadmodel = new LeadCreationModel();
-
-            var Id = Dctn["configId"];
-            Guid configId = Guid.Empty;
-            if (configId != null)
-                configId = Guid.Parse(Id);
-
-            var tblConfiData = Obj.tbl_Configuration.SingleOrDefault(o => o.Id == configId);
-            if (tblConfiData != null)
-            {
-
-                //var result = DataInsertTimeUserAuthenticate(tblConfiData.OrgUniqueName, tblConfiData.ServerUrl, tblConfiData.UserName, tblConfiData.Password);
-
-
-                OrganizationService _service;
-                //EntityMap lead;
-                //Entity contactRetrive;
-                //var rs = fm["new_firstname"];                                        
-
-                CrmConnection connection = CrmConnection.Parse("Url='" + tblConfiData.ServerUrl + "'; Username='" + tblConfiData.UserName + "'; Password='" + tblConfiData.Password + "'");
-                using (_service = new OrganizationService(connection))
+                if (formCollection.AllKeys.Length > 0)
                 {
-                    //List<Microsoft.Xrm.Sdk.Entity> lst = new List<Microsoft.Xrm.Sdk.Entity>();
+                    Dictionary<string, string> Dctn = new Dictionary<string, string>();
 
-                    //Entity entityObj = new Entity(Dctn["entity"]);
-                    //List<Microsoft.Xrm.Sdk.Entity> lst = new List<Microsoft.Xrm.Sdk.Entity>();
-                    //foreach (var item in Dctn)
-                    //{
-                    //    if ((item.Key.ToString() != "config") || item.Key.ToString() != "entity")
-                    //        entityObj[item.Key] = item.Value;
-                    //    lst.Add(new Entity { Attributes= entityObj.Attributes.Add(item.Key,item.Value),Id=new Guid(), LogicalName="", RowVersion="", ExtensionData=entityObj.ExtensionData, EntityState=entityObj.EntityState,  KeyAttributes=entityObj.KeyAttributes, });
-                    //}
-                    //var _accountId = _service.Create(lst);
+                    foreach (var key in formCollection.Keys)
+                    {
+                        var Recordkey = key.ToString();
+                        var value = formCollection[Recordkey];
+                        Dctn.Add(Recordkey, value);
+                    }
+
+                                     
+                    var Id = Dctn["configId"];
+                    Guid configId = Guid.Empty;
+                    if (configId != null)
+                        configId = Guid.Parse(Id);
+
+                    var tblConfiData = Obj.tbl_Configuration.SingleOrDefault(o => o.Id == configId);
+                    if (tblConfiData != null)
+                    {
+                       
+                        //var result = DataInsertTimeUserAuthenticate(tblConfiData.OrgUniqueName, tblConfiData.ServerUrl, tblConfiData.UserName, tblConfiData.Password);
+
+                        var result = new ValuesController().DataInsertTimeUserAuthenticate(tblConfiData.OrgUniqueName, tblConfiData.ServerUrl, tblConfiData.UserName, tblConfiData.Password);
+                        if (result.IsSuccess)
+                        {
+                            OrganizationService _service;
+                            CrmConnection connection = CrmConnection.Parse("Url='" + tblConfiData.ServerUrl + "'; Username='" + tblConfiData.UserName + "'; Password='" + tblConfiData.Password + "'");
+                            using (_service = new OrganizationService(connection))
+                            {
+                                Entity entityObj = new Entity(Dctn["entity"]);
+                                foreach (var item in Dctn)
+                                {
+                                    if ((item.Key.ToString() == "entity"))
+                                        continue;
+                                    else if ((item.Key.ToString() == "configId"))
+                                        continue;
+                                    else if ((item.Key.ToString() == "submitMessage"))
+                                        continue;
+                                    else if ((item.Key.ToString() == "redirectUrl"))
+                                        continue;
+                                    else if ((item.Key.ToString() == "redirectMode"))
+                                        continue;
+                                    else if ((item.Key.ToString() == "linkButtonText"))
+                                        continue;
+                                    else
+                                        entityObj.Attributes[item.Key] = item.Value;
+
+                                }
+                                if (entityObj.Attributes.Count > 0)
+                                {
+                                    var _entityId = _service.Create(entityObj);
+                                    return Json(new { IsSuccess = true, successMessage = (Dctn.ContainsKey("submitMessage") == false ? null : Dctn["submitMessage"].ToString()), redirectMode = (Dctn.ContainsKey("redirectMode") == false ? null : Dctn["redirectMode"].ToString()), linkButtonText = (Dctn.ContainsKey("linkButtonText") == false ? null : Dctn["linkButtonText"].ToString()), redirectUrl = (Dctn.ContainsKey("redirectUrl") == false ? null : Dctn["redirectUrl"].ToString()) });
+                                }else                                                               
+                                return Json(new { IsSuccess = false, errorMessage = "Entity attributes are not found." });
+                                //ViewBag.successMessage = Dctn["submitMessage"];
+                                //ViewBag.redirectMode= Dctn["redirectMode"];
+                                //ViewBag.redirectUrl = Dctn["redirectUrl"];
+
+
+                            }
+
+
+                        }
+                        else
+                            return Json(new { IsSuccess = false, errorMessage = "User is not authorized please check." });
+                    }
                 }
-                // Create an account record named Fourth Coffee.
-               
-
-
-
-
+                else
+                    return Json(new { IsSuccess = false, errorMessage = "The input values are not found." });
             }
-            return View();
+            catch (Exception ex)
+            {
+               
+                return Json(new { IsSuccess = false,errorMessage=ex.Message.ToString() });
+            }
 
+
+            return View();
         }
 
 
-
-
-
     }
+
+
+
+
+
 }
+
 
 
 

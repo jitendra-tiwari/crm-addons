@@ -180,10 +180,7 @@ function SaveConfigurationDetails(RegisterId,serverUrl, orgUniqueName, username,
                 $("#tryalertsuccess").show();
                 $("#tryalertdanger").hide();
                 $("#tryalertsuccess").text("User Authenticate Successfully!");
-                //appned button to div for open popup
-                AppendButton();
-                //create url and set value to popup
-                CreateUrl(RegisterId);
+               
 
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -326,11 +323,7 @@ function LoadConfigurationService(registrationId) {
                 var fulldate = ((date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear());
                 $("#solutionExpires").text(fulldate);
                 // $("#trytxtpassword").val(response.Password); 
-
-                //appned button to div for open popup
-                AppendButton();
-                //create url and set value to popup
-                CreateUrl(registrationId);
+                             
 
                 $(".loading").hide();
 
@@ -349,12 +342,6 @@ function LoadConfigurationService(registrationId) {
         }
     });
 }
-function AppendButton() {
-    $('#mydivbutton').append('<button id="btnurlpopup" data-target="#myModalUrl" data-toggle="modal">Get Url</button>');
-}
 
-function CreateUrl(RegisterId) {
-    var link = "https://crmwebapi.24livehost.com/Home/CrmForm?rId=" + RegisterId + "";
-    $("#txtUrl-Link").val(link);
-    $("#txtIframe-Src").val("<iframe style='width:500px;height:300px' src='" + link + "'></iframe>");
-}
+
+

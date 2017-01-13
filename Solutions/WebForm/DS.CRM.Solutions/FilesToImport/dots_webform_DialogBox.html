@@ -1,10 +1,15 @@
 ﻿<html>
 <head>
     <title></title>
+    <!--for $validate function error resolved on load--> 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js'></script>
     <script type="text/javascript" src="../../ClientGlobalContext.js.aspx"></script>
 
     <script>
+
+
+
 
         function ParseQueryString(query) {
             var result = {};
@@ -20,7 +25,29 @@
             }
             return result;
         }
-        function CheckConfigurationDetails(obj) {
+        function formPreview(fullUrl) {
+           
+            $.ajax({
+                //url: "https://crmwebapi.24livehost.com/api/values/UserAuthenticate",
+                url: fullUrl,
+                type: "get", //send it through get method
+                //data: { rId: rId, entityId: eId, Type: type},
+                success: function (response) {                  
+                    if (response.IsSuccess) {                      
+                        $("#html-form-Preview").html(response.htmlResult);
+
+                    }
+                    else {
+                        $("#html-form-Preview").html(response.successMessage);
+                    }
+                },
+                error: function (xhr) {
+                 
+                }
+            });
+        }
+
+        function CheckConfigurationDetails(obj,type) {
             
             var myserverUrl = parent.Xrm.Page.context.getClientUrl();
             var myorgUniqueName = parent.Xrm.Page.context.getOrgUniqueName();
@@ -39,18 +66,23 @@
 
                     var output = data.d.results;
                     console.log(output);
-                    if (output.length > 0) {
-                        console.log("==============registerid=============");
-                        console.log(output[0].dots_registerid);
+                    if (output.length > 0) {                     
                         var dots_registerid = output[0].dots_registerid;                        
                        
-                        var link = "https://crmwebapi.24livehost.com/Home/CrmForm?rId=" + dots_registerid + "&entityId=" + entityId + "";
-                        if ($(obj).val() == "Copy URL") {
+                        var link = "https://crmwebapi.24livehost.com/Home/CrmForm?rId=" + dots_registerid + "&entityId=" + entityId + "&Type=" + type + "";
+                       // var link = "http://localhost:54126/Home/CrmForm?rId=" + dots_registerid + "&entityId=" + entityId + "&Type=" + type + "";
+                        console.log("==============value =============");
+                        console.log($(obj).val() +"  type  "+type);
+                     
+                        if ($(obj).val() == "Copy URL" && type == "URL") {
                             prompt("For Copy URL Cltr+C", link);
                         }
-                        else if ($(obj).val() == "Copy IFRAME") {
+                       else if ($(obj).val() == "Copy IFRAME" && type == "IFRAME") {
                             "<iframe style='width:500px;height:300px' src='" + link + "'></iframe>";
                             prompt("For Copy IFRAME Cltr+C", "<iframe style='width:500px;height:300px' src='" + link + "'></iframe>");
+                        }
+                       else if ($(obj).val() == "Preview" && type == "PREVIEW") {
+                            formPreview(link);
                         }
                     }
 
@@ -196,6 +228,14 @@
         .ms-crm-DialogChrome {
             padding: 20px;
         }
+.btn1 {
+    background: #000 none repeat scroll 0 0;
+    border: medium none;
+    color: #fff;
+    cursor: pointer;
+    padding: 9px 23px;
+}
+     
     </style>
 
 
@@ -223,12 +263,15 @@
             </div>
             <!--<div id="dialogHeaderDesc" class="ms-crm-RefreshDialog-Header-Desc"
                  title="Your dialog additional description">Select Entity from list and click OK.</div>-->
-            <div id="DlgHdBodyContainer" class="ms-crm-RefreshDialog-Main">
-                <input type="button" id="copy_url" value="Copy URL" onclick="CheckConfigurationDetails(this);" />
-                <input type="button" id="copy_iframe" value="Copy IFRAME" onclick="CheckConfigurationDetails(this);" />
-                <input type="button" id="btn_close" value="Close" />
+            <div id="DlgHdBodyContainer" class="ms-crm-RefreshDialog-Main header-changed" style="text-align:center;">
+                <input type="button" class="btn1" id="copy_url" value="Copy URL" onclick="CheckConfigurationDetails(this, 'URL');" />
+                <input type="button" class="btn1" id="copy_iframe" value="Copy IFRAME" onclick="CheckConfigurationDetails(this, 'IFRAME');" />
+                <input type="button" class="btn1" id="form_priview" value="Preview" onclick="CheckConfigurationDetails(this, 'PREVIEW');" />
+                <input type="button" class="btn1" id="btn_close" value="Close" onclick="closeWindow();" />
             </div>
+            
         </div>
+        <div id="html-form-Preview"></div>
         <div class="ms-crm-RefreshDialog-Footer" id="tdDialogFooter">
             <!--<button id="btnOK" onclick="Mscrm.Utilities.setReturnValue(true); closeWindow();" type="button"
                     class="ms-crm-RefreshDialog-Button" tabindex="1" style="margin-left: 8px;">

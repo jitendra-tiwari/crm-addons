@@ -57,6 +57,22 @@
     <name>_/ImportWebResources/Script/SDK.MetaData.js</name>
     <type name="JScript">3</type>
   </webResource>
+
+  <webResource>
+    <path>FilesToImport\Script\webformOpenDialogBox.js</path>
+    <displayName>Web Resource Import Sample webformOpenDialogBox.js file</displayName>
+    <description>Provides the webformOpenDialogBox JScript library for the sample_/ImportWebResources/dots_webform_configuration.htm Web resource.</description>
+    <name>_/ImportWebResources/Script/webformOpenDialogBox.js</name>
+    <type name="JScript">3</type>
+  </webResource>
+
+  <webResource>
+    <path>FilesToImport\Script\webformOnChange.js</path>
+    <displayName>Web Resource Import Sample webformOnChange.js file</displayName>
+    <description>Provides the webformOnChange JScript library for the sample_/ImportWebResources/dots_webform_configuration.htm Web resource.</description>
+    <name>_/ImportWebResources/Script/webformOnChange.js</name>
+    <type name="JScript">3</type>
+  </webResource>
   
   <webResource>
     <path>FilesToImport\dots_webform_EntityDialogbox.html</path>
@@ -109,6 +125,21 @@
     <displayName>Web Resource Import Sample webformdotsquares.png image</displayName>
     <description>The HTML Web resource for the sample.</description>
     <name>_/ImportWebResources/Images/webformdotsquares.png</name>
+    <type name="PNG format">5</type>
+  </webResource>
+
+  <webResource>
+    <path>FilesToImport\Images\getformurl16x16.png</path>
+    <displayName>Web Resource Import Sample getformurl16x16.png image</displayName>
+    <description>The Image Web resource for the sample.</description>
+    <name>_/ImportWebResources/Images/getformurl16x16.png</name>
+    <type name="PNG format">5</type>
+  </webResource>
+  <webResource>
+    <path>FilesToImport\Images\getformurl32x32.png</path>
+    <displayName>Web Resource Import Sample getformurl32x32.png image</displayName>
+    <description>The Image Web resource for the sample.</description>
+    <name>_/ImportWebResources/Images/getformurl32x32.png</name>
     <type name="PNG format">5</type>
   </webResource>
 </job>

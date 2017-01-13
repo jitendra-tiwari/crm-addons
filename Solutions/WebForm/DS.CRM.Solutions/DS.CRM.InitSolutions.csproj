@@ -104,14 +104,20 @@
     <Content Include="FilesToImport\dots_webform_AttributeDialogbox.html" />
     <Content Include="FilesToImport\dots_webform_EntityDialogbox.html" />
     <Content Include="FilesToImport\dots_webform_DialogBox.html" />
+    <Content Include="FilesToImport\Images\getformurl16x16.png" />
+    <Content Include="FilesToImport\Images\getformurl32x32.png" />
     <Content Include="FilesToImport\Images\webformdotsquares.png" />
     <Content Include="FilesToImport\Images\webformsubmit.png" />
     <Content Include="FilesToImport\Script\SDK.MetaData.js" />
     <Content Include="FilesToImport\Script\webformbootstrap.js" />
     <Content Include="FilesToImport\Script\webformbootstrap.min.js" />
     <Content Include="FilesToImport\Script\webformconfiguration.js" />
+    <Content Include="FilesToImport\Script\webformOnChange.js" />
+    <Content Include="FilesToImport\Script\webformOpenDialogBox.js" />
     <Content Include="FilesToImport\Script\webformScript.js" />
-    <Content Include="ImportJob.xml" />
+    <Content Include="ImportJob.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="ImportConfiguration.xml" />
   </ItemGroup>
   <ItemGroup>

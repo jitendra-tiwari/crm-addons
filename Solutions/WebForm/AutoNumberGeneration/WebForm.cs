@@ -114,8 +114,8 @@ namespace WebForm
                     Description = new Label("Boolean Label Position Attribute", _languageCode),
                     // Set extended properties
                     OptionSet = new BooleanOptionSetMetadata(
-                    new OptionMetadata(new Label("True", _languageCode), 1),
-                    new OptionMetadata(new Label("False", _languageCode), 0)
+                    new OptionMetadata(new Label("Left", _languageCode), 1),
+                    new OptionMetadata(new Label("Right", _languageCode), 0)
                     )
                 }
             };
@@ -185,7 +185,7 @@ namespace WebForm
                     SchemaName = "dots_redirecturl",
                     RequiredLevel = new AttributeRequiredLevelManagedProperty(AttributeRequiredLevel.None),
                     MaxLength = 500,
-                    FormatName = StringFormatName.Text,
+                    FormatName = StringFormatName.Url,
                     DisplayName = new Label("Redirect URL", 1033),
                     Description = new Label("The Redirect URL.", 1033),
                 }
@@ -221,6 +221,21 @@ namespace WebForm
 
             _serviceProxy.Execute(createRedirectModeAttributeRequest);
 
+            CreateAttributeRequest createRedirectUrlTextAttributeRequest = new CreateAttributeRequest
+            {
+                EntityName = _customEntityName,
+                Attribute = new StringAttributeMetadata
+                {
+                    SchemaName = "dots_linkbuttontext",
+                    RequiredLevel = new AttributeRequiredLevelManagedProperty(AttributeRequiredLevel.None),
+                    MaxLength = 200,
+                    FormatName = StringFormatName.Text,
+                    DisplayName = new Label("LinkButtonText", 1033),
+                    Description = new Label("The LinkButtonText.", 1033),
+                }
+            };
+
+            _serviceProxy.Execute(createRedirectUrlTextAttributeRequest);
 
             CreateAttributeRequest createCSSAttributeRequest = new CreateAttributeRequest
             {
@@ -404,7 +419,7 @@ namespace WebForm
                 Attribute = new StringAttributeMetadata
                 {
                     SchemaName = "dots_mapfield",
-                    RequiredLevel = new AttributeRequiredLevelManagedProperty(AttributeRequiredLevel.None),
+                    RequiredLevel = new AttributeRequiredLevelManagedProperty(AttributeRequiredLevel.ApplicationRequired),
                     MaxLength = 100,
                     FormatName = StringFormatName.Text,
                     DisplayName = new Label("Map Field", 1033),

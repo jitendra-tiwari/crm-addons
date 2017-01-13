@@ -16,7 +16,7 @@ namespace DS.CRM
 
         public const int LanguageCode = 1033;
 
-        public static Guid[] WebResourceIds = new Guid[16];
+        public static Guid[] WebResourceIds = new Guid[19];
         public static Guid[] WebResourceIdForSolution = new Guid[1];
 
         // Publisher Information
