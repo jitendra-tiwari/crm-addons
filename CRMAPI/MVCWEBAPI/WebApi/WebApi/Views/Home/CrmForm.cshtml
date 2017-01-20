@@ -49,6 +49,7 @@
                     }
                     var redirectmMode = data.redirectMode;
                     var redirectUrl = data.redirectUrl;
+                    var linkButtonText = data.linkButtonText;
                     $('.loading').hide();
                     if (redirectmMode == "Auto") {
                         if (redirectUrl != null)                           
@@ -64,7 +65,7 @@
                     else if (redirectmMode == "Button") {
                         if (redirectUrl != null && linkButtonText != null) {
                             $("#redirect-mode").show();
-                            $("#redirect-mode").html("<input type='button' onclick='window.open(" + redirectUrl + ",'_blank')' value=" + linkButtonText + " />");
+                            $("#redirect-mode").html("<input type='button' onclick=window.open('"+redirectUrl+"','_blank') value='"+ linkButtonText + "' />");
                             //window.open(redirectUrl, "_blank");
                         }
                     }

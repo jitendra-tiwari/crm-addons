@@ -1,14 +1,15 @@
 ﻿<html>
 <head>
     <title></title>
+    <!--for loader-->
+    <link href="css/webformstyle.css" rel="stylesheet" />
+
     <!--for $validate function error resolved on load--> 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js'></script>
     <script type="text/javascript" src="../../ClientGlobalContext.js.aspx"></script>
 
     <script>
-
-
 
 
         function ParseQueryString(query) {
@@ -26,7 +27,7 @@
             return result;
         }
         function formPreview(fullUrl) {
-           
+          
             $.ajax({
                 //url: "https://crmwebapi.24livehost.com/api/values/UserAuthenticate",
                 url: fullUrl,
@@ -35,20 +36,21 @@
                 success: function (response) {                  
                     if (response.IsSuccess) {                      
                         $("#html-form-Preview").html(response.htmlResult);
-
+                        $(".loading").hide();
                     }
                     else {
-                        $("#html-form-Preview").html(response.successMessage);
+                        $("#html-form-Preview").html(response.errorMessage);
+                        $(".loading").hide();
                     }
                 },
                 error: function (xhr) {
-                 
+                    $(".loading").hide();
                 }
             });
         }
 
         function CheckConfigurationDetails(obj,type) {
-            
+            $(".loading").show();
             var myserverUrl = parent.Xrm.Page.context.getClientUrl();
             var myorgUniqueName = parent.Xrm.Page.context.getOrgUniqueName();
 
@@ -75,9 +77,11 @@
                         console.log($(obj).val() +"  type  "+type);
                      
                         if ($(obj).val() == "Copy URL" && type == "URL") {
+                            $(".loading").hide();
                             prompt("For Copy URL Cltr+C", link);
                         }
-                       else if ($(obj).val() == "Copy IFRAME" && type == "IFRAME") {
+                        else if ($(obj).val() == "Copy IFRAME" && type == "IFRAME") {
+                            $(".loading").hide();
                             "<iframe style='width:500px;height:300px' src='" + link + "'></iframe>";
                             prompt("For Copy IFRAME Cltr+C", "<iframe style='width:500px;height:300px' src='" + link + "'></iframe>");
                         }
@@ -85,16 +89,20 @@
                             formPreview(link);
                         }
                     }
-
+                    else {
+                        $(".loading").hide();
+                        alert("Please Register Goto-->Setting->Solutions-->select solution and register!");
+                    }
 
 
                 },
                 error: function (XmlHttpRequest, textStatus, errorThrown) {
-                    //alert('OData Select Failed: ' + oDataUri);
+                    $(".loading").hide();
+                    alert('OData Select Failed: ' + oDataUri);
                     //$(".loading").hide();
                     //$("#tryalertdanger").show();
                     //$("#tryalertdanger").text("Some error occur.!");
-
+                    
                 }
             });
 
@@ -105,6 +113,7 @@
 
     </script>
     <style type="text/css">
+      
         body {
             direction: LTR;
             margin: 0px;
@@ -235,14 +244,24 @@
     cursor: pointer;
     padding: 9px 23px;
 }
-     
+.header-changed {
+    top:36px !important;
+}  
+.pop_up_margin_top
+{
+    margin-top:90px;
+}  
+.ms-crm-InlineDialogCloseContainer.ms-crm-InlineDialogCloseInnerContainer
+{ padding:9px 30px !important;}
+
     </style>
 
 
 </head>
-<body>
+<body style="padding:0px !important;">
+    <div class="loading" style="display:none;">&nbsp;</div>
     <div class="ms-crm-RefreshDialog-Main-Container">
-        <div class="ms-crm-RefreshDialog-Header" id="tdDialogHeader">
+        <div class="ms-crm-RefreshDialog-Header" id="tdDialogHeader" style="height:24px !important;">
             <div id="dialogHeaderTitle" class="ms-crm-RefreshDialog-Header-Title ms-crm-TextAutoEllipsis"
                  title="Your dialog header" style="width: 75%;">
                 <!--<input type="button" id="copy_url" value="Copy URL" onclick="CheckConfigurationDetails(this);" />
@@ -287,5 +306,7 @@
             </button>-->
         </div>
     </div>
+
+ 
 </body>
 </html>

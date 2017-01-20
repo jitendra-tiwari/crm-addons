@@ -87,13 +87,15 @@ namespace Dotsquares.DCRM.Plugins
                 {
                     if (messageName == "Create")
                     {
-                       
+
                         //for check duplicate field
-                        if (IsFieldExist(entity.LogicalName, entity.Attributes["new_targetattributelogicalname"].ToString()))
-                            throw new InvalidPluginExecutionException(string.Format("Field {0} already exist in Entity {1}!", entity.Attributes["new_targetattributelogicalname"].ToString(), entity.LogicalName));
+                        //if (IsFieldExist(entity.LogicalName, entity.Attributes["new_targetattributelogicalname"].ToString()))
+                        //    throw new InvalidPluginExecutionException(string.Format("Field {0} already exist in Entity {1}!", entity.Attributes["new_targetattributelogicalname"].ToString(), entity.LogicalName));
+                        if (IsFieldExist2(entity.Attributes["new_targetentitylogicalname"].ToString(), entity.Attributes["new_targetattributelogicalname"].ToString()))
+                            throw new InvalidPluginExecutionException(string.Format("Field {0} already exist in Entity {1}!", entity.Attributes["new_targetattributelogicalname"].ToString(), entity.Attributes["new_targetentitylogicalname"].ToString()));
 
                         // allow one fields for one entity
-                        if (IsEntityExist(entity.LogicalName, entity.Attributes["new_targetentitylogicalname"].ToString()))
+                        if (IsEntityExist2(entity.LogicalName, entity.Attributes["new_targetentitylogicalname"].ToString()))
                             throw new InvalidPluginExecutionException(string.Format("Already created AutoNumber field for Entity {0}!", entity.Attributes["new_targetentitylogicalname"].ToString()));
 
 
@@ -183,11 +185,31 @@ namespace Dotsquares.DCRM.Plugins
                 if (entityDetail.FieldFormat.Contains("{yy}"))
                     newCode = newCode.Replace("{yy}", DateTime.UtcNow.ToString("yy"));
                 if (entityDetail.FieldFormat.Contains("{yyyy}"))
-                    newCode = newCode.Replace("{yyyy}", DateTime.UtcNow.ToString("yyyy"));              
+                    newCode = newCode.Replace("{yyyy}", DateTime.UtcNow.ToString("yyyy"));
+                if (entityDetail.FieldFormat.Contains("{0000}"))
+                    newCode = newCode.Replace("{0000}", "0000");
 
+              
                 int currentNumber;
-              currentNumber = (entityDetail.CurrentNumber == null) ? entityDetail.InitializeNumber.Value : entityDetail.CurrentNumber.Value;               
-                var result = newCode + "#" + currentNumber.ToString();
+                string result = "";
+                currentNumber = (entityDetail.CurrentNumber == null) ? entityDetail.InitializeNumber.Value : entityDetail.CurrentNumber.Value;
+                if (entityDetail.FieldFormat == "{0000}")
+                {
+                    int newcodelength = newCode.Length;
+                    int numberlength = currentNumber.ToString().Length;
+
+                    if (newCode.Length != numberlength)
+                    {
+                        newCode = newCode.Remove(newCode.ToString().Length - numberlength);
+                        result = newCode + "#" + currentNumber.ToString();
+                    }
+                    if (numberlength >= newcodelength)
+                    {
+                        result = currentNumber.ToString();
+                    }
+                }
+                else
+                    result = newCode + "#" + currentNumber.ToString();
 
                 return result;
             }
@@ -203,10 +225,32 @@ namespace Dotsquares.DCRM.Plugins
                     newCode = newCode.Replace("{yy}", DateTime.UtcNow.ToString("yy"));
                 if (entityDetail.FieldFormat.Contains("{yyyy}"))
                     newCode = newCode.Replace("{yyyy}", DateTime.UtcNow.ToString("yyyy"));
-              
+                if (entityDetail.FieldFormat.Contains("{0000}"))
+                    newCode = newCode.Replace("{0000}", "0000");
+
+                
                 int currentNumber;
+                string result = "";
                 currentNumber = (entityDetail.InitializeNumber == null && entityDetail.CurrentNumber == null) ? 1 : entityDetail.CurrentNumber.Value;
-                var result = newCode + "#" + currentNumber.ToString();
+
+                if (entityDetail.FieldFormat == "{0000}")
+                {
+                    int newcodelength = newCode.Length;
+                    int numberlength = currentNumber.ToString().Length;
+
+                    if (newCode.Length != numberlength)
+                    {
+                        newCode = newCode.Remove(newCode.ToString().Length - numberlength);
+                        result = newCode + "#" + currentNumber.ToString();
+                    }
+                    if (numberlength >= newcodelength)
+                    {
+                        result = currentNumber.ToString();
+                    }
+                }
+              else
+                    result = newCode + "#" + currentNumber.ToString();
+
                 return result;
             }
          
@@ -233,11 +277,46 @@ namespace Dotsquares.DCRM.Plugins
                 EntityName = col.Entities[0];
 
                 var result = EntityName.Attributes.Where(o => o.Value.ToString() == fieldName).ToList();
-
+                
                 if (result.Count() > 0)
                     return true;
                 else
                     return false;
+            }
+            return false;
+
+        }
+
+        private bool IsFieldExist2(String entityName, String fieldName)
+        {
+            QueryExpression query = new QueryExpression();
+            query.EntityName = "dots_autonumber";
+            query.ColumnSet = new Microsoft.Xrm.Sdk.Query.ColumnSet("new_targetentitylogicalname", "new_targetattributelogicalname");
+
+            EntityCollection col = OrganizationService.RetrieveMultiple(query);
+
+            // Entity EntityName = null;
+            if (col != null && col.Entities.Count > 0)
+            {
+                // EntityName = col.Entities[0];
+
+                //var result = EntityName.Attributes.Where(o => o.Value.ToString() == fieldName).ToList();
+                int count = 0;
+                foreach (var act in col.Entities)
+                {
+                    var entity = act["new_targetentitylogicalname"].ToString();
+                    var attr = act["new_targetattributelogicalname"].ToString();
+                    if (entity == entityName && attr == fieldName)
+                        count = count + 1;
+                }
+                if (count > 0)
+                    return true;
+                else
+                    return false;
+                //if (result.Count() > 0)
+                //    return true;
+                //else
+                //    return false;
             }
             return false;
 
@@ -256,6 +335,36 @@ namespace Dotsquares.DCRM.Plugins
 
                 var result = EntityName.Attributes.Where(o => o.Value.ToString() == AssignedentityName).ToList();
                 if (result.Count() > 0)
+                    return true;
+                else
+                    return false;
+            }
+            else
+                return false;
+
+        }
+
+        private bool IsEntityExist2(String mainEntityName, String AssignedentityName)
+        {
+            QueryExpression query = new QueryExpression();
+            query.EntityName = mainEntityName;
+            query.ColumnSet = new Microsoft.Xrm.Sdk.Query.ColumnSet(true);
+            EntityCollection col = OrganizationService.RetrieveMultiple(query);
+
+           // Entity EntityName = null;
+            if (col != null && col.Entities.Count > 0)
+            {
+                //EntityName = col.Entities[0];
+
+                //var result = EntityName.Attributes.Where(o => o.Value.ToString() == AssignedentityName).ToList();
+                int count = 0;
+                foreach (var act in col.Entities)
+                {
+                    var entity = act["new_targetentitylogicalname"].ToString();                   
+                    if (entity == AssignedentityName)
+                        count = count + 1;
+                }
+                if (count > 0)
                     return true;
                 else
                     return false;

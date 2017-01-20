@@ -77,7 +77,7 @@ function getValidUser()
                     //for update
                     console.log(output[0].dots_registerid);
                     var tblconfigId = output[0].dots_webformconfigurationId;
-                    CallConfigurationService(firstname, lastname, company, phonenumber, email, address, country, state, city, postalcode, type, orgUniqueName, serverUrl, username, password, output[0].new_registerid, tblconfigId);
+                    CallConfigurationService(firstname, lastname, company, phonenumber, email, address, country, state, city, postalcode, type, orgUniqueName, serverUrl, username, password, output[0].dots_registerid, tblconfigId);
                 }
                 else {
                     //for insert new 

@@ -8,7 +8,7 @@ using Microsoft.Uii.Common.Entities;
 using Microsoft.Xrm.Tooling.PackageDeployment;
 using Microsoft.Xrm.Tooling.PackageDeployment.CrmPackageExtentionBase;
 
-namespace CRMEventCalendarPackage
+namespace CRMWebFormPackage
 {
     /// <summary>
     /// Import package starter frame. 
@@ -77,7 +77,7 @@ namespace CRMEventCalendarPackage
         /// <returns></returns>
         public override string GetNameOfImport(bool plural)
         {
-            return "Dotsquares Package Event Calendar";
+            return "Dotsquares Package WebForm";
         }
 
         /// <summary>
@@ -106,7 +106,7 @@ namespace CRMEventCalendarPackage
         /// </summary>
         public override string GetLongNameOfImport
         {
-            get { return "Dotsquares Package Event Calendar Install Package"; }
+            get { return "Dotsquares Package WebForm Install Package"; }
         }
 
 

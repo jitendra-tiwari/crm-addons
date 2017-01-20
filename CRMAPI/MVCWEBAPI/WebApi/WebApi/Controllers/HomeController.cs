@@ -553,7 +553,7 @@ namespace WebApi.Controllers
                                 sb.Append("</head>");
                                 sb.Append("<body>");
 
-                                sb.Append("<div class='container'><div id='loginbox' style='margin-top:50px;' class='mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2'><div class='panel panel-info'><div style = 'padding-top:30px' class='panel-body'><div style = 'display:none' id='login-alert' class='alert alert-danger col-sm-12'>AlertMessage</div>");
+                                sb.Append("<div class='container'><div id='loginbox' style='margin-top:50px;' class='mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2'><div class='panel panel-info pop_up_margin_top'><div style = 'padding-top:30px' class='panel-body'><div style = 'display:none' id='login-alert' class='alert alert-danger col-sm-12'>AlertMessage</div>");
 
                                 sb.Append("<form action=" + formFieldsModel.FormAction + " id=" + formFieldsModel.FormId + " method='POST' class='form-horizontal'>");
 
@@ -581,7 +581,7 @@ namespace WebApi.Controllers
                                 //for submit button text
                                 if (formFieldsModel.RedirectUrl != null)
                                 {
-                                    sb.Append("<input id='redirectUrl' name='redirectUrl' type='Hidden' value = " + formFieldsModel.RedirectUrl + " >");
+                                    sb.Append("<input id='redirectUrl' name='redirectUrl' type='Hidden' value = '" + formFieldsModel.RedirectUrl + "' >");
                                     //sb.Append("</div>");
                                     sb.AppendLine();
                                 }
@@ -594,7 +594,7 @@ namespace WebApi.Controllers
                                 }
                                 if (formFieldsModel.LinkButtonText != null)
                                 {
-                                    sb.Append("<input id='linkButtonText' name='linkButtonText' type='Hidden' value = " + formFieldsModel.LinkButtonText + " >");
+                                    sb.Append("<input id='linkButtonText' name='linkButtonText' type='Hidden' value = '" + formFieldsModel.LinkButtonText + "' >");
                                     //sb.Append("</div>");
                                     sb.AppendLine();
                                 }
@@ -620,11 +620,11 @@ namespace WebApi.Controllers
                                         //sb.Append("<label style='float:'"+ formFieldsModel.LabelPosition+" for=" + fields.FieldLabel + ">" + fields.FieldLabel + "<em class='red'>*</em></label>");
                                         if (fields.FieldRequired == "True") {                                         
                                             sb.Append("<label style='float:"+formFieldsModel.LabelPosition+"' for=" + fields.FieldLabel + ">" + fields.FieldLabel + "<em class='red'>*</em></label>");
-                                            sb.Append("<input id=" + fields.MapField + " name=" + fields.MapField + " type=" + fields.FieldType + " " + (fields.FieldDefaultValue == null ? "" : "value=" + fields.FieldDefaultValue) + "  data-validation='required' data-validation-error-msg='This is a required field.' class='form-control'  maxlength=" + (fields.FieldLength == null ? "100" : fields.FieldLength) + " placeholder=" + (fields.FieldLabel == null ? "" : fields.FieldLabel) + ">");
+                                            sb.Append("<input id=" + fields.MapField + " name=" + fields.MapField + " type=" + fields.FieldType + "   value='"+ (fields.FieldDefaultValue == null ? "" : fields.FieldDefaultValue )+ "'   data-validation='required' data-validation-error-msg='This is a required field.' class='form-control'  maxlength='" + (fields.FieldLength == null ? "100" : fields.FieldLength) + "' placeholder='" + (fields.FieldLabel == null ? "" : fields.FieldLabel) + "'>");
                                         }
                                         else {                                         
                                             sb.Append("<label style='float:" + formFieldsModel.LabelPosition + "' for=" + fields.FieldLabel + ">" + fields.FieldLabel + "</label>");
-                                            sb.Append("<input id=" + fields.MapField + " name=" + fields.MapField + " type=" + fields.FieldType + " " + (fields.FieldDefaultValue == null ? "" : "value=" + fields.FieldDefaultValue) + " class='form-control'   maxlength=" + (fields.FieldLength == null ? "" : fields.FieldLength) + " placeholder=" + (fields.FieldLabel == null ? "" : fields.FieldLabel) + ">");
+                                            sb.Append("<input id=" + fields.MapField + " name=" + fields.MapField + " type=" + fields.FieldType + "   value='" + (fields.FieldDefaultValue == null ? "" : fields.FieldDefaultValue )+ "' class='form-control'   maxlength='" + (fields.FieldLength == null ? "" : fields.FieldLength )+ "' placeholder='" + (fields.FieldLabel == null ? "" : fields.FieldLabel) + "'>");
                                         }
                                         sb.Append("</div>");
                                         sb.AppendLine();
@@ -637,12 +637,12 @@ namespace WebApi.Controllers
                                         if (fields.FieldRequired == "True")
                                         {
                                             sb.Append("<label style='float:" + formFieldsModel.LabelPosition + "' for=" + fields.FieldLabel + ">" + fields.FieldLabel + "<em class='red'>*</em></label>");
-                                            sb.Append("<textarea id =" + fields.MapField + " name = " + fields.MapField + " data-validation='required' data-validation-error-msg='This is a required field.' class='form-control'  maxlength=" + (fields.FieldLength == null ? "1000" : fields.FieldLength) + " placeholder=" + (fields.FieldLabel == null ? "" : fields.FieldLabel) + "></textarea>");
+                                            sb.Append("<textarea id =" + fields.MapField + " name = " + fields.MapField + "  value='" + (fields.FieldDefaultValue == null ? "" : fields.FieldDefaultValue) + "'  data-validation='required' data-validation-error-msg='This is a required field.' class='form-control'  maxlength='" + (fields.FieldLength == null ? "1000" : fields.FieldLength) + "' placeholder='" + (fields.FieldLabel == null ? "" : fields.FieldLabel) + "'></textarea>");
                                         }
                                         else
                                         {
                                             sb.Append("<label style='float:" + formFieldsModel.LabelPosition + "' for=" + fields.FieldLabel + ">" + fields.FieldLabel + "</label>");
-                                            sb.Append("<textarea id =" + fields.MapField + " name = " + fields.MapField + " class='form-control'  maxlength=" + (fields.FieldLength == null ? "1000" : fields.FieldLength) + " placeholder=" + (fields.FieldLabel == null ? "" : fields.FieldLabel) + "></textarea>");
+                                            sb.Append("<textarea id =" + fields.MapField + " name = " + fields.MapField + " value='" + (fields.FieldDefaultValue == null ? "" : fields.FieldDefaultValue) + "'  class='form-control'  maxlength='" + (fields.FieldLength == null ? "1000" : fields.FieldLength) + "' placeholder='" + (fields.FieldLabel == null ? "" : fields.FieldLabel) + "'></textarea>");
                                         }
                                         sb.Append("</div>");
                                         sb.AppendLine();
@@ -656,12 +656,12 @@ namespace WebApi.Controllers
                                         if (fields.FieldRequired == "True")
                                         {
                                             sb.Append("<label style='float:" + formFieldsModel.LabelPosition + "' for=" + fields.FieldLabel + ">" + fields.FieldLabel + "<em class='red'>*</em></label>");
-                                            sb.Append("<input id=" + fields.MapField + " name=" + fields.MapField + " type=" + fields.FieldType.ToLower() + " data-validation='required' data-validation-error-msg='This is a required field.'   maxlength=" + (fields.FieldLength == null ? "1000" : fields.FieldLength) + " placeholder=" + (fields.FieldLabel == null ? "" : fields.FieldLabel) + ">");
+                                            sb.Append("<input id=" + fields.MapField + " name=" + fields.MapField + " type=" + fields.FieldType.ToLower() + " value='" + (fields.FieldDefaultValue == null ? "" : fields.FieldDefaultValue) + "'   data-validation='required' data-validation-error-msg='This is a required field.'   maxlength='" + (fields.FieldLength == null ? "1000" : fields.FieldLength) + "' placeholder='" + (fields.FieldLabel == null ? "" : fields.FieldLabel) + "'>");
                                         }
                                         else
                                         {
                                             sb.Append("<label style='float:" + formFieldsModel.LabelPosition + "' for=" + fields.FieldLabel + ">" + fields.FieldLabel + "</label>");
-                                            sb.Append("<input id=" + fields.MapField + " name=" + fields.MapField + " type=" + fields.FieldType.ToLower() + "    maxlength=" + (fields.FieldLength == null ? "" : fields.FieldLength) + " placeholder=" + (fields.FieldLabel == null ? "" : fields.FieldLabel) + ">");
+                                            sb.Append("<input id=" + fields.MapField + " name=" + fields.MapField + " type=" + fields.FieldType.ToLower() + " value='" + (fields.FieldDefaultValue == null ? "" : fields.FieldDefaultValue) + "'    maxlength='" + (fields.FieldLength == null ? "" : fields.FieldLength) + "' placeholder='" + (fields.FieldLabel == null ? "" : fields.FieldLabel) + "'>");
                                         }
                                         sb.Append("</div>");
                                         sb.AppendLine();
@@ -675,12 +675,12 @@ namespace WebApi.Controllers
                                         if (fields.FieldRequired == "True")
                                         {
                                             sb.Append("<label style='float:" + formFieldsModel.LabelPosition + "' for=" + fields.FieldLabel + ">" + fields.FieldLabel + "<em class='red'>*</em></label>");
-                                            sb.Append("<input id=" + fields.MapField + " name=" + fields.MapField + " type='text'  data-validation='date' data-validation-format='dd/mm/yyyy' data-validation-error-msg='This is a required field with(dd/mm/yyyy).' class='form-control' >");
+                                            sb.Append("<input id=" + fields.MapField + " name=" + fields.MapField + " value='" + (fields.FieldDefaultValue == null ? "" : fields.FieldDefaultValue) + "'   type='text'  data-validation='date' data-validation-format='dd/mm/yyyy' data-validation-error-msg='This is a required field with(dd/mm/yyyy).' class='form-control' >");
                                         }
                                         else
                                         {
                                             sb.Append("<label style='float:" + formFieldsModel.LabelPosition + "' for=" + fields.FieldLabel + ">" + fields.FieldLabel + "</em></label>");
-                                            sb.Append("<input id=" + fields.MapField + " name=" + fields.MapField + " type='text' data-validation-format='dd/mm/yyyy' class='form-control' >");
+                                            sb.Append("<input id=" + fields.MapField + " name=" + fields.MapField + " value='" + (fields.FieldDefaultValue == null ? "" : fields.FieldDefaultValue) + "'  type='text' data-validation-format='dd/mm/yyyy' class='form-control' >");
                                         }
 
                                         sb.Append("</div>");
@@ -694,12 +694,12 @@ namespace WebApi.Controllers
                                         if (fields.FieldRequired == "True")
                                         {
                                             sb.Append("<label style='float:" + formFieldsModel.LabelPosition + "' for=" + fields.FieldLabel + ">" + fields.FieldLabel + "<em class='red'>*</em></label>");
-                                            sb.Append("<input id=" + fields.MapField + " name=" + fields.MapField + " type=" + (fields.FieldType == "EmailAddress" ? "Text" : "Text") + "  data-validation='email'  class='form-control' maxlength=" + (fields.FieldLength == null ? "200" : fields.FieldLength) + "  placeholder=" + (fields.FieldLabel == null ? "" : fields.FieldLabel) + ">");
+                                            sb.Append("<input id=" + fields.MapField + " name=" + fields.MapField + " type=" + (fields.FieldType == "EmailAddress" ? "Text" : "Text") + " value='" + (fields.FieldDefaultValue == null ? "" : fields.FieldDefaultValue) + "'   data-validation='email'  class='form-control' maxlength='" + (fields.FieldLength == null ? "200" : fields.FieldLength) + "'  placeholder='" + (fields.FieldLabel == null ? "" : fields.FieldLabel) + "'>");
                                         }
                                         else
                                         {
                                             sb.Append("<label style='float:" + formFieldsModel.LabelPosition + "' for=" + fields.FieldLabel + ">" + fields.FieldLabel + "</label>");
-                                            sb.Append("<input id=" + fields.MapField + " name=" + fields.MapField + " type=" + (fields.FieldType == "EmailAddress" ? "Text" : "Text") + "  class='form-control' maxlength=" + (fields.FieldLength == null ? "200" : fields.FieldLength) + "  placeholder=" + (fields.FieldLabel == null ? "" : fields.FieldLabel) + ">");
+                                            sb.Append("<input id=" + fields.MapField + " name=" + fields.MapField + " type=" + (fields.FieldType == "EmailAddress" ? "Text" : "Text") + " value='" + (fields.FieldDefaultValue == null ? "" : fields.FieldDefaultValue) + "'   class='form-control' maxlength='" + (fields.FieldLength == null ? "200" : fields.FieldLength) + "'  placeholder='" + (fields.FieldLabel == null ? "" : fields.FieldLabel) + "'>");
                                         }
 
                                         sb.Append("</div>");
@@ -715,12 +715,12 @@ namespace WebApi.Controllers
                                         if (fields.FieldRequired == "True")
                                         {
                                             sb.Append("<label style='float:" + formFieldsModel.LabelPosition + "' for=" + fields.FieldLabel + ">" + fields.FieldLabel + "<em class='red'>*</em></label>");
-                                            sb.Append("<input id=" + fields.MapField + " name=" + fields.MapField + " type='Text' data-validation='required' data-validation-error-msg='This is a required field.' class='form-control' maxlength=" + (fields.FieldLength == null ? "6" : fields.FieldLength) + "  placeholder=" + (fields.FieldLabel == null ? "" : fields.FieldLabel) + ">");
+                                            sb.Append("<input id=" + fields.MapField + " name=" + fields.MapField + " type='Text' value='" + (fields.FieldDefaultValue == null ? "" : fields.FieldDefaultValue) + "'  data-validation='required' data-validation-error-msg='This is a required field.' class='form-control' maxlength='" + (fields.FieldLength == null ? "6" : fields.FieldLength) + "'  placeholder='" + (fields.FieldLabel == null ? "" : fields.FieldLabel) + "'>");
                                         }
                                         else
                                         {
                                             sb.Append("<label style='float:" + formFieldsModel.LabelPosition + "' for=" + fields.FieldLabel + ">" + fields.FieldLabel + "<em class='red'>*</em></label>");
-                                            sb.Append("<input id=" + fields.MapField + " name=" + fields.MapField + " type='text' class='form-control' maxlength=" + (fields.FieldLength == null ? "6" : fields.FieldLength) + "  placeholder=" + (fields.FieldLabel == null ? "" : fields.FieldLabel) + ">");
+                                            sb.Append("<input id=" + fields.MapField + " name=" + fields.MapField + " type='text' value='" + (fields.FieldDefaultValue == null ? "" : fields.FieldDefaultValue) + "'  class='form-control' maxlength='" + (fields.FieldLength == null ? "6" : fields.FieldLength) + "'  placeholder='" + (fields.FieldLabel == null ? "" : fields.FieldLabel) + "'>");
                                         }
                                         sb.Append("</div>");
                                         sb.AppendLine();
@@ -734,12 +734,12 @@ namespace WebApi.Controllers
                                         if (fields.FieldRequired == "True")
                                         {
                                             sb.Append("<label style='float:" + formFieldsModel.LabelPosition + "' for=" + fields.FieldLabel + ">" + fields.FieldLabel + "<em class='red'>*</em></label>");
-                                            sb.Append("<input id=" + fields.MapField + " name=" + fields.MapField + " type='text' data-validation='required' data-validation-error-msg='This is a required field.' class='form-control' maxlength=" + (fields.FieldLength == null ? "13" : fields.FieldLength) + "  placeholder=" + (fields.FieldLabel == null ? "" : fields.FieldLabel) + ">");
+                                            sb.Append("<input id=" + fields.MapField + " name=" + fields.MapField + " type='text' value='" + (fields.FieldDefaultValue == null ? "" : fields.FieldDefaultValue) + "'  data-validation='required' data-validation-error-msg='This is a required field.' class='form-control' maxlength='" + (fields.FieldLength == null ? "13" : fields.FieldLength) + "'  placeholder='" + (fields.FieldLabel == null ? "" : fields.FieldLabel) + "'>");
                                         }
                                         else
                                         {
                                             sb.Append("<label style='float:" + formFieldsModel.LabelPosition + "' for=" + fields.FieldLabel + ">" + fields.FieldLabel + "<em class='red'>*</em></label>");
-                                            sb.Append("<input id=" + fields.MapField + " name=" + fields.MapField + " type='text' class='form-control' maxlength=" + (fields.FieldLength == null ? "13" : fields.FieldLength) + "  placeholder=" + (fields.FieldLabel == null ? "" : fields.FieldLabel) + ">");
+                                            sb.Append("<input id=" + fields.MapField + " name=" + fields.MapField + " type='text' value='" + (fields.FieldDefaultValue == null ? "" : fields.FieldDefaultValue) + "'  class='form-control' maxlength='" + (fields.FieldLength == null ? "13" : fields.FieldLength) + "'  placeholder='" + (fields.FieldLabel == null ? "" : fields.FieldLabel) + "'>");
                                         }
                                         sb.Append("</div>");
                                         sb.AppendLine();

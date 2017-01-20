@@ -7,8 +7,8 @@
     <ProjectGuid>{170C0103-3F94-4896-9062-6314167F596A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CRMEventCalendarPackage</RootNamespace>
-    <AssemblyName>CRMEventCalendarPackage</AssemblyName>
+    <RootNamespace>CRMWebFormPackage</RootNamespace>
+    <AssemblyName>CRMWebFormPackage</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <RestorePackages>true</RestorePackages>
@@ -162,7 +162,7 @@
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="PkgFolder\DsEventCalendar_1_0_managed.zip">
+    <None Include="PkgFolder\DsWebForm_1_0_managed.zip">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
