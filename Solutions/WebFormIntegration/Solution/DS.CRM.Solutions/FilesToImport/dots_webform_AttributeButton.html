@@ -1,0 +1,101 @@
+﻿
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script>
+        function retrieveEntityName() {
+           
+            var serverUrl = parent.Xrm.Page.context.getClientUrl();
+
+            var lookupItem = parent.Xrm.Page.getAttribute("dots_parent_webformid").getValue();
+            // var lookupItem = parent.Xrm.Page.getControl("dots_parent_webformid").getValue();
+          
+            if (lookupItem != null) {
+                console.log("Intered");
+                var guid = lookupItem[0].id;             
+              
+                // var name = lookupItem[0].name;
+
+                // var entType = lookupItem[0].entityType;
+                $.getJSON(serverUrl + "/XRMServices/2011/OrganizationData.svc/dots_webformSet?$filter=dots_webformId eq guid'" + guid + "'", {}, function (data) {
+                    if (data.d.results[0].dots_relatedentity != null) {
+                        var entyName = data.d.results[0].dots_relatedentity;
+                        getDialogBox(entyName);
+                    }
+                    else {
+                        getDialogBox(null);
+                    }
+
+
+
+                });
+            }
+
+           
+            
+            
+        }
+        
+        function getDialogBox(selectedEntity)
+        {
+            
+
+           // Passing parameters to webresource
+            var addParams = "name=" + selectedEntity + "";
+            var webresourceurl = "/webresources/wf_/ImportWebResources/dots_webform_AttributeDialogbox.html?Data=" + encodeURIComponent(addParams);
+
+            //Passing parameters to webresource
+            //var addParams = "Param1=" + param1 + "&Param2=" + param2;
+            //var webresourceurl = "/webresources/new_/webresource.htm?Data=" + encodeURIComponent(addParams);
+
+            //If you don't need to pass any parameters use following code instead:
+            //var webresourceurl = "/webresources/wf_/ImportWebResources/dots_webform_AttributeDialogbox.html";
+
+            var DialogOptions = new parent.Xrm.DialogOptions();
+            DialogOptions.width = 620;
+            DialogOptions.height = 500;
+
+            //parent.Xrm.Internal.openDialog(Mscrm.CrmUri.create(webresourceurl), DialogOptions, null, null, callBackFunction);
+            parent.Xrm.Internal.openDialog(webresourceurl, DialogOptions, null, null, callBackFunction);
+        }
+
+        function callBackFunction(result) {
+            if (result != null) {
+                parent.Xrm.Page.getAttribute("dots_mapfield").setValue(result);
+            } else {
+                parent.Xrm.Page.getAttribute("dots_mapfield").setValue(null);
+            }
+        }
+
+        function ParseQueryString(query) {
+            var result = {};
+
+            if (typeof query == "undefined" || query == null) {
+                return result;
+            }
+
+            var queryparts = query.split("&");
+            for (var i = 0; i < queryparts.length; i++) {
+                var params = queryparts[i].split("=");
+                result[params[0]] = params.length > 1 ? params[1] : null;
+            }
+            return result;
+        }
+
+
+        //To get parameters,
+        //var passedparams = ParseQueryString(GetGlobalContext().getQueryStringParameters()["Data"]);
+        //alert(passedparams.Param1);
+        //alert(passedparams.Param2);
+
+    </script>
+</head>
+<body style="margin:0px;">
+    
+    <input type="button" id="btn_attribute" value="Lookup Attribute" onclick="retrieveEntityName();" />
+</body>
+</html>

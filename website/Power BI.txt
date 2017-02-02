@@ -1,0 +1,40 @@
+//Measure query
+ http://www.sqlbi.com/articles/calculated-columns-and-measures-in-dax/
+ http://www.daxpatterns.com/time-patterns/
+http://www.toadworld.com/platforms/sql-server/b/weblog/archive/2014/03/10/conditional-logic-in-power-query
+//joins
+https://www.sqlbi.com/articles/from-sql-to-dax-joining-tables/
+
+//MySql native query
+let 
+Source=MySQL.Database("111.93.53.164","inhousecrm",[Query="select * from lead;"])
+in
+Source
+
+
+//count using mesure
+LeadData = CALCULATE (
+    COUNT ( 'inhousecrm lead'[lead_date] ),
+    FILTER (
+        ALL ('inhousecrm lead'),
+       YEAR( 'inhousecrm lead'[lead_date])=YEAR(NOW()) && MONTH('inhousecrm lead'[lead_date])=MONTH(NOW())
+    )
+)
+
+
+//rowcount by mesure
+LeadData = CALCULATE (
+    COUNT ( 'inhousecrm lead'[lead_id] ),
+    FILTER (
+        ALL ('inhousecrm lead'),
+       YEAR( 'inhousecrm lead'[lead_date])=YEAR(NOW()) && MONTH('inhousecrm lead'[lead_date])=MONTH(NOW())
+    )
+)
+
+//
+Months = FORMAT('inhousecrm lead'[lead_date],"MMMM")
+
+
+//php mysql 
+SELECT * FROM lead
+WHERE EXTRACT(YEAR_MONTH FROM lead_date) = EXTRACT(YEAR_MONTH FROM NOW())

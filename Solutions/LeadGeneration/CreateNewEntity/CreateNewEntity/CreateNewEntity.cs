@@ -923,8 +923,16 @@ namespace CreateNewEntity
                     _serviceProxy.Update(bankAccountMainForm);
 
                     // Customizations must be published after an entity is updated.
-                    PublishAllXmlRequest publishRequest = new PublishAllXmlRequest();
-                    _serviceProxy.Execute(publishRequest);
+                    //PublishAllXmlRequest publishRequest = new PublishAllXmlRequest();
+                    //_serviceProxy.Execute(publishRequest);
+
+                    PublishXmlRequest publishXmlReq = new PublishXmlRequest();
+                    publishXmlReq.ParameterXml = @"<importexportxml>" +
+                                                  "<entities>" +
+                                                  "<entity>" + entityLogicalName + "</entity>" +
+                                                  "</entities>" +
+                                                  "</importexportxml>";
+                    PublishXmlResponse publishXmlResponse = (PublishXmlResponse)_serviceProxy.Execute(publishXmlReq);
                     Console.WriteLine("\nCustomizations were published.");
 
                 }

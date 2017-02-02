@@ -1,0 +1,419 @@
+https://community.dynamics.com/crm/f/117/t/120233
+https://msdn.microsoft.com/en-us/library/gg309461(v=crm.7).aspx
+http://www.crmanswers.net/2014/07/dont-use-getselectedoptiontext.html
+http://mscrmbasics.blogspot.in/2012/10/crm-2011-odata-explained.html
+http://garethtuckercrm.com/2011/02/22/adding-selection-criteria-to-rest-queries/
+
+http://garethtuckercrm.com/2011/03/16/jscript-reference-for-microsoft-dynamics-crm-2011/
+http://learnslate.org/2014/01/15/microsoft-crm-2013-javascript-getformtype-and-getsavemode/
+http://www.hebbink.com/post/2015/06/22/saving-and-refreshing-a-crm-entity-form-without-postback
+
+//Working with Dynamics CRM 2013 Composite Fields/Fly-out Menu 
+http://www.magnetismsolutions.com/blog/paulnieuwelaar/2013/10/22/working-with-dynamics-crm-2013-composite-fields-fly-out-menu
+//Fly-out Menu /alertdialbox
+https://msdn.microsoft.com/en-in/library/dn481581.aspx
+//change Fly-out Menu field label
+http://www.qgate.co.uk/knowledge/setting-composite-field-labels-in-microsoft-dynamics-crm/
+http://www.nalashaa.com/composite-controls-features-customization-dynamics-crm-2015/
+https://dipankarbhattacharya.com/2014/03/31/how-can-we-customize-the-address-composite-control/
+
+//update form using javascript odata
+http://www.resultondemand.nl/support/sdk/bc203be5-ec1a-4921-90d3-62dec2b8d847.htm
+http://asimsajjad.blogspot.com/2012/02/update-record-using-odata-call.html
+http://asimsajjad.blogspot.de/2012/02/insert-new-record-in-micosoft-crm-2011.html
+http://mehmetgunen.com/open-entity-form-javascript-function-crm-2013/
+
+Microsoft Azure
+================================
+username:jitendra@dotsquarestech.onmicrosoft.com
+password:sgfdg$DFSD
+
+https://github.com/Azure-Samples/active-directory-dotnet-webapp-openidconnect
+=========================================
+
+New Created Dynamic CRM 
+=================================================
+
+disabled
+
+url:https://dotsjpr.crm8.dynamics.com
+UserName:akram@dotsjpr.onmicrosoft.com
+pass:dots@123
+=================================================
+
+Url:https://dotsjaipur.crm8.dynamics.com
+Usename:akram.khan@dotsjaipur.onmicrosoft.com
+Password:dots@123
+=================================================
+
+//jquery validation form crm configuration
+http://www.formvalidator.net/
+http://www.formvalidator.net/#configuration_html5
+
+//show selected field in lookup
+http://missdynamicscrm.blogspot.com/2014/09/crm-2013-modify-columns-shown-in-inline-lookup.html
+
+//error reporting(popup of error ) remove
+http://www.powerobjects.com/2015/02/24/disable-script-error-notifications-dynamics-crm-2015/
+
+//javascript validation
+http://stackoverflow.com/questions/32684015/javascript-set-required-level-doesnt-work
+
+For Save and New:
+Xrm.Page.data.entity.save('saveandnew'); 
+
+For Save and Close:
+Xrm.Page.data.entity.save('saveandclose');
+
+//restrict-customer-lookup-to-accounts-or-contacts-in-dynamics-crm
+http://www.powerobjects.com/2015/11/20/restrict-customer-lookup-to-accounts-or-contacts-in-dynamics-crm/
+
+//Replacing a Field Label text in Microsoft Dynamics CRM with an HTML Web Resource
+http://www.dynamicscrmpros.com/replacing-field-label-microsoft-dynamics-crm-html-web-resource/
+
+
+//// Update Field Label Colors
+   document.getElementById("new_numbervalue_c").style.color = "White";
+   document.getElementById("new_numbervalue_c").style.backgroundColor = "#66CDAA";
+
+   //// Update Field Input Colors
+   document.getElementById("new_numbervalue_i").style.color = "White";
+   document.getElementById("new_numbervalue_i").style.backgroundColor = "Red";
+
+//all field customization
+https://garethtuckercrm.com/2011/03/16/jscript-reference-for-microsoft-dynamics-crm-2011/
+
+//for business logic
+http://www.powerobjects.com/2014/02/19/creating-if-then-else-logic-in-crm-2013-business-rules/
+
+//CrM order
+https://www.microsoft.com/en-us/dynamics/crm-customer-center/create-or-edit-an-order.aspx
+http://crmbook.powerobjects.com/basics/microsoft-dynamics-crm-sales-process/advanced-sales-processes/
+
+//BPA Best Practices Analyzer(BPA)
+http://www.powerobjects.com/2013/12/04/best-practices-analyzer-for-dynamics-crm-2013/
+https://justaucguy.wordpress.com/2014/02/28/exchange-2013-service-pack-1-best-practices-analyzer-updated/
+https://community.office365.com/en-us/w/deploy/office-365-best-practices-analyzer-for-your-pc
+
+//make password field
+http://www.preact.co.uk/blog/updated-field-security-profiles-dynamics-crm-2015
+
+// tool for BPA
+https://www.microsoft.com/en-in/download/details.aspx?id=41156
+
+//CRM Add-ons
+http://www.iotap.com/add-ons/microsoft-dynamics-crm
+
+//ribbonworkbench
+https://ribbonworkbench.uservoice.com/knowledgebase/articles/80806-download-ribbon-workbench-for-crm-2011
+https://ribbonworkbench.uservoice.com/knowledgebase/articles/102796-5-hiding-unhiding-ribbon-elements
+//how to use ribbonworkbench
+1. download and import solution
+2.create a own solution  for which entity want to customize menu,button etc.
+3.now open your created solution and add entity like accout, contact on click on "Add existing button" and also add "application Ribbons".
+4. now open ribbonworkbench that you have already imported and select own solution and mak customization.
+
+
+//Add button using Ribbon
+https://ribbonworkbench.uservoice.com/knowledgebase/articles/358664-create-a-command-bar-button-for-your-custom-acitiv
+http://blog.cobalt.net/blog/ribbon-workbench-solution
+https://msdn.microsoft.com/en-us/library/gg334563.aspx
+https://garethtuckercrm.com/2011/09/13/working-with-display-rules-in-crm-2011ribbon-customisation/
+
+//crm outlook
+https://www.microsoft.com/en-us/dynamics/crm-customer-center/set-up-crm-for-outlook.aspx
+
+//crm submitmode
+//always,never,dirty
+Xrm.Page.getAttribute("fieldName").setSubmitMode("always")
+
+//crm display grid in HTML page
+http://mscrmtools.blogspot.de/2013/01/full-featured-crm-grid-in-htmljs.html
+
+//Open popup for both account and webresource
+http://www.magnetismsolutions.com/blog/roshanmehta/2012/08/16/open_dynamics_crm_forms_and_web_resources_the_supported_way
+http://butenko.pro/2014/06/dynamics-crm-2013-step-by-step-creating-dialog-windows/
+http://mscrmtechie.blogspot.com.tr/2015/09/open-dialog-box-in-crm-20132015.html
+
+//CRM auto complete
+https://msdn.microsoft.com/en-us/library/mt607648.aspx
+
+//crm onkeypress
+function onLoad() {
+  Xrm.Page.getControl('telephone1').addOnKeyPress(function() {
+    var userInput = Xrm.Page.getControl('telephone1').getValue();
+    userInput = userInput.replace(/[^\d-()]+/g, '');
+    Xrm.Page.getAttribute('telephone1').setValue(userInput);
+  });
+}
+
+//downolad crm On-Premise
+https://community.dynamics.com/crm/b/dynamicscrm101byibstechnology/archive/2015/12/18/microsoft-dynamics-crm-2016-on-premise-download
+//dynamic checkbox list manage solution
+https://tunemulticheckbox.codeplex.com/documentation
+
+//create plugin by visual studio
+//https://www.youtube.com/watch?v=2Ft1GIhqWOE
+https://www.youtube.com/watch?v=v3vie4hSE80
+https://crmbusiness.wordpress.com/2014/04/07/crm-2013-step-by-step-update-plugin-tutorial-using-the-crm-2013-development-toolkit/
+http://crmbook.powerobjects.com/extending-crm/plug-in-development-and-workflow-extensions/plug-ins/developing-a-plug-in/
+https://msdn.microsoft.com/en-in/library/gg309580.aspx
+//for create key
+https://www.youtube.com/watch?v=eYHIwfYGZOM
+
+//CRM editor
+https://crmhtmleditor.codeplex.com/
+
+//another way to create plugin
+http://us.hitachi-solutions.com/2015/01/07/using-the-microsoft-crm-developer-toolkit-to-deploy-custom-plugin-assemblies/
+
+//Create plugin by CRM
+https://technet.microsoft.com/en-us/library/dn531198.aspx
+
+//Call Actions from Javascript/C# in CRM 2013/2015 and Trigger a plugin
+http://mscrmtechie.blogspot.com/2015/09/call-actions-from-javascriptc-in-crm.html
+
+//Create plugin for upload file to sharepoint
+https://community.dynamics.com/crm/b/crminogic/archive/2015/10/16/programmatically-create-folders-and-upload-files-in-sharepoint-server-2013-through-plug-in-workflow
+
+//register plugin-in marketplace(like play store)
+https://msdn.microsoft.com/ro-ro/library/gg309251(v=crm.6).aspx
+https://msdn.microsoft.com/en-us/library/hh547440(v=crm.6).aspx
+
+=====================
+Plugin setting for solution
+1. plugin-assimblies: assign plugin
+2. http://stackoverflow.com/questions/8490151/why-does-my-deployed-solution-not-include-plugin-and-workflow-steps 
+in setp 2 assign plugin event like create ,update etc.
+======================
+
+//Plug-in Images (Pre vs. Post)
+http://crmbook.powerobjects.com/extending-crm/plug-in-development-and-workflow-extensions/plug-ins/plug-in-images-pre-vs-post/
+
+//static and dynamic marketing list
+https://community.dynamics.com/crm/b/crmbusiness/archive/2011/11/24/crm-2011-the-difference-between-dynamic-and-static-marketing-lists
+//quick campaign and campaign
+http://crmbook.powerobjects.com/basics/marketing/campaigns-and-quick-campaigns/
+
+//Create custom/dynamic button
+http://missdynamicscrm.blogspot.in/2015/06/create-button-in-crm-form-javascript.html
+
+//pass parameters to webresource
+http://www.leicht-bewoelkt.de/en/variable-an-html-webresource-uebergeben
+
+// pass parameter to popup using webresource
+http://blog.turingion.com/post/Microsoft-Dynamics-CRM-2015-Javascript-API-Utility
+var customParameters = encodeURIComponent("first=First Value&second=Second Value&third=Third Value");
+Xrm.Utility.openWebResource("new_webResource.htm",customParameters);
+http://www.powerobjects.com/2013/02/06/passing-parameters-between-forms-crm-2011/
+
+//call webresource and find control of it
+https://community.dynamics.com/crm/b/mscrmcustomization/archive/2015/01/22/disable-html-web-resource-control-from-crm-form-events
+http://charanmandya.blogspot.in/2012/05/microsoft-dynamics-crm-2011-javascript.html
+
+//reload webresource/iframe
+Xrm.Page.getControl('WebResource_multiselect').getObject().contentWindow.location.reload();
+
+//adding profile image on form
+http://www.powerobjects.com/2013/11/12/adding-images-in-crm-2013/
+
+//set validation
+http://stackoverflow.com/questions/32684015/javascript-set-required-level-doesnt-work
+//calcel and save form
+https://msdn.microsoft.com/en-us/library/cc150868.aspx?tduid=%28273011b91486a4dc2fdf143f8176cfc3%29%28256380%29%282459594%29%28TnL5HPStwNw-9TCCllDzDK8lfmgnnGiiIg%29%28%29
+
+//Odata query
+var oDataUri =serverUrl+"/XRMServices/2011/OrganizationData.svc/AccountSet?$filter=AccountId eq (guid'" + recordID+ "')";
+http://stackoverflow.com/questions/26134326/dynamics-crm-rest-odata-endpoint-support-for-all-and-any
+http://stackoverflow.com/questions/18341764/odata-v2-filter-by-property-of-expanded-entity
+
+//Auto complete
+http://inogic.com/blog/2015/12/design-auto-complete-text-controls-in-dynamics-crm-2016/
+
+//AES Encryption/Decryption using Javascript in MS Dynamics CRM 2015
+https://meetdynamics.wordpress.com/2015/06/12/aes-encryptiondecryption-using-javascript-in-microsoft-dynamics-crm-2015/
+<script src="https://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/aes.js"></script>
+http://www.coderanch.com/t/637480/Security/Java-encryption-javascript-decryption
+https://gist.github.com/ncerminara/11257943#file-base64-js
+
+//XRM toolkit
+http://stackoverflow.com/questions/28843105/crm-javascript-automatically-populated-a-look-up-value-with-a-specific-field
+//Lookup field get/set
+http://mehmetgunen.com/get-set-lookup-field-value-using-javascript-in-crm/
+http://blog.simpletrees.com/2014/02/dynamics-crm-enablingdisabling-fields.html
+
+//show state based on relation from country
+http://garethtuckercrm.com/2011/03/22/filtered-lookup-approaches-in-crm-2011/
+http://www.abtosoftware.com/blog/how-to-create-cascading-lookup-in-microsoft-dynamics-crm
+
+//disable control
+http://msdyncrmmathis.blogspot.in/2013/07/mscrm-2011-disable-fields-based-on.html
+
+//skype call
+http://milanhingu.blogspot.in/2013/07/microsoft-dynamics-crm-2011-tools.html
+http://crmskype.codeplex.com/
+
+//header footer color
+http://www.crmsoftwareblog.com/2011/08/crm-2011-changing-the-form-header-and-footer-colors/
+
+//phone no validate
+http://www.powerobjects.com/2013/12/09/formatting-a-phone-field-in-crm-2013/
+https://community.dynamics.com/crm/b/crmpowerobjects/archive/2013/12/09/formatting-a-phone-field-in-crm-2013
+
+//CRm get deleted record
+http://icsrecyclebin.codeplex.com/
+
+//on-promises crm setup
+http://www.fulcrumww.com/blogs/-/blogs/dynamics-crm-2015-on-premise-an-illustrative-guide-on-step-by-step-installation-and-configuration
+https://www.youtube.com/watch?v=Rz-c0lF4LAc
+//On-promises CRM trial 
+https://technet.microsoft.com/en-us/subscriptions/downloads/default.aspx
+
+//multiselection
+https://www.youtube.com/watch?v=i0jA8rwP6ys&app=desktop
+https://social.microsoft.com/Forums/en-US/2db47a59-165d-40c9-b995-6b3262b949eb/how-to-convert-a-optionset-into-multi-selection-picklist-in-crm-2011-using-javasacript?forum=crmdevelopment
+https://community.dynamics.com/crm/b/mscrmcustomization/archive/2015/02/18/convert-option-set-to-multi-select-checkbox-list
+http://prog3.com/sbdm/blog/vic0228/article/details/49681867
+//some easy
+http://blogs.msdn.com/b/crm/archive/2009/03/31/crm-4-0-checkbox-style-multi-select-picklist.aspx
+https://xrmmultiselect.codeplex.com/
+http://vikramaengg.blogspot.in/2015/07/dynamics-crm-2015-2013-2011-multi.html
+//add multiselect dynamically
+http://www.mindfiresolutions.com/Add-a-MultiSelect-OptionSet-to-MS-Dynamics-2210.php
+
+//javascript checkbox
+http://msdynamicscrm4all.blogspot.in/2011/12/how-create-multi-select-option-set-in.html
+
+// Run previous verion code
+http://www.crmbuzz.co/how-to-update-crm2015-form-field-background-color/
+
+// backgroud color
+http://guruprasadcrm.blogspot.in/2010/02/changing-background-color-of-form-tab.html
+http://inogic.com/blog/2015/08/theme-your-dynamics-crm-2015-to-custom-solution/
+
+http://www.magnetismsolutions.com/blog/gregolsen/2015/03/24/microsoft-dynamics-crm-2015-%E2%80%93-you-can-now-add-a-theme-to-your-crm
+
+//javascript notification/validation
+http://www.magnetismsolutions.com/blog/paulnieuwelaar/2015/08/10/crm-2015-custom-alerts-and-popup-dialogs-in-javascript
+http://inogic.com/blog/2014/09/alternative-to-showmodaldialog/
+http://blog.encorebusiness.com/microsoft-dynamics-crm-javascript-how-do-you-alert/
+https://alertjs.codeplex.com/releases/view/616746
+http://garethtuckercrm.com/2013/10/17/crm-2013-new-features-javascript-notifications/
+
+//related to product and order
+http://crmbook.powerobjects.com/basics/microsoft-dynamics-crm-sales-process/advanced-sales-processes/
+
+
+tool for database
+http://www.dynamicscrmpros.com/backup-microsoft-dynamics-crm-online-salesforce-com-database-local-use/
+http://garethtuckercrm.com/2012/04/29/introduction-to-scribe-onlines-replication-and-integration-services/
+https://online.scribesoft.com/ScribeOnline.aspx#/Connections
+
+//in scribe software online CRM Online URL
+https://disco.crm5.dynamics.com
+
+//file upload
+http://blogs.c5insight.com/Home/entryid/445/Dynamically-Set-the-Document-Location-in-Dynamics-CRM-2013-with-JavaScript
+
+
+//CRM Enable javascript
+http://maleemakbar.blogspot.com/2016/06/how-to-hide-posts-activities-notes-tabs-in-socialpane-in-dynamic-crm-2016.html
+1. got to setting and select administrator.
+2.Click on system setting.
+3.Select radio button yes of "Use legacy form rendering" option in first tab.
+
+
+
+//enable sharepoint 
+http://garethtuckercrm.com/2014/07/20/enabling-sharepoint-integration-on-a-crm-online-trial/
+http://congruentdynamics.blogspot.in/2013/04/bulk-upload-documents-to-online.html
+https://msdn.microsoft.com/en-us/library/jj163201.aspx#BasicOps_FileTasks
+
+//create sharepoint location by entity
+https://community.dynamics.com/crm/b/c5insightblog/archive/2014/04/09/dynamically-set-the-document-location-in-dynamics-crm-2013-with-javascript
+
+//sharepoint trial account
+http://bartholdsonconsulting.com/office-365-sharepoint-boston/sharepoint-free-trial/
+
+//share point urls
+https://dotsquaresjaipur-admin.sharepoint.com/_layouts/15/online/SiteCollections.aspx
+
+//add file to sharepoint
+http://anthony-verschraegen.blogspot.in/2013/12/sharepoint-2013-js-upload-file-to.html
+
+https://social.msdn.microsoft.com/Forums/office/en-US/28778c0d-a414-40c1-a6fb-1fba089e9c83/how-to-upload-file-to-sharepoint-list-after-adding-items-using-jquery?forum=sharepointdevelopment
+
+//direct doenload file from sharepoint
+https://dotsquaresjaipur.sharepoint.com/new_userfile/DSDSF_1129DA6FCCD6E51180EA3863BB34BA88/accc.xlsx
+
+//Authentication-to-SharePoint-Online-using-Javascript
+http://www.antaressolutions.com.au/Blog/Post/19/Remote-Authentication-to-SharePoint-Online-using-Javascript
+https://pholpar.wordpress.com/2013/05/11/accessing-office-365-sharepoint-sites-using-rest-from-a-local-html-javascript-host/
+http://woodoweb.com/?p=250
+
+//checkbox check and uncheck very simple jquery
+================================================
+ $('.Checkbox').change(function() {
+var rs=$('.Checkbox:checked').map(function() {
+    return this.value;
+}).get().join(',');
+alert(rs);
+});
+==================================================
+
+
+
+
+
+//share point get folder name and files
+function getFolderWithFiles(webUrl,folderUrl) 
+{
+    var endpointUrl = webUrl + "/_api/web/GetFolderByServerRelativeUrl('" + folderUrl + "')?$expand=Files";
+var test=https://dotsquaresjaipur.sharepoint.com/_api/web/GetFolderByServerRelativeUrl('/new_userfile')/Folders?$expand=Files;
+    return $.getJSON(endpointUrl);
+}
+
+var webUrl = _spPageContextInfo.webAbsoluteUrl;
+getFolderWithFiles(webUrl,'Documents/Guides').done(function(folder){
+    console.log(folder.Name); //print folder name
+    for(var i = 0;i < folder.Files.length;i++) {
+        console.log(folder.Files[i].Name); //print file name
+    }
+
+});
+
+// XRMserviceTool
+http://mmcrm.ru/wp-content/uploads/crm2011/xrmservicetoolkit/XrmServiceToolkitTest.aspx
+https://alisharifiblog.wordpress.com/tag/xrmservicetoolkit-rest-retrievemultiple/
+https://migsbeja.wordpress.com/2015/06/20/xrmservicetoolkit-associate-disassociate-fetch-etc/
+
+//get value fro optionset
+http://stackoverflow.com/questions/25401527/getoptions-for-loop-not-working
+
+//create multipale checkbox
+https://tunemulticheckbox.codeplex.com/
+
+//create/save record using javascript odata
+https://community.dynamics.com/crm/f/117/t/137979
+https://garethtuckercrm.com/2011/02/15/creating-crm-records-from-jscript-in-2011using-the-rest-end-point/
+
+https://banwariyadav.crm4.dynamics.com/XRMServices/2011/OrganizationData.svc/ListSet?$select=ListId,ListName,listaccount_association/Name&$expand=listaccount_association
+https://dynamicscrmgirl.wordpress.com/2014/01/04/crm-2013-javascript-retrieve-record-using-odatarest-endpoint-without-jquery/
+
+
+campaignlist_association
+listaccount_association
+
+https://banwariyadav.crm4.dynamics.com/XRMServices/2011/OrganizationData.svc/ListSet?$select=ListId,ListName,listaccount_association/Name,listaccount_association/accountid&filter=listaccount_association/accountid%20eq%20(guid%20%22895355cb-edc0-e511-80d9-6c3be5beee2c%22)&$expand=listaccount_association
+
+https://banwariyadav.crm4.dynamics.com/XRMServices/2011/OrganizationData.svc/ListSet?$select=listaccount_association/Name,listaccount_association/accountid&filter=listaccount_association/accountid eq%20(guid%20"895355cb-edc0-e511-80d9-6c3be5beee2c")&$expand=listaccount_association
+
+//MVC remove validation
+http://stackoverflow.com/questions/24773925/how-to-remove-required-attribute-in-mvc4-although-that-has-been-made-required-i
+$(document).ready(function () {
+
+        $(".form-submit").click(function () {
+            $("#Title").rules("remove", "required");
+        });
+        
+    });

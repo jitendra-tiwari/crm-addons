@@ -1,0 +1,84 @@
+﻿
+@{
+
+    Layout = null;
+}
+
+@{ 
+    if (ViewBag.message != null)
+    {
+<h1 style="text-align:center;color:red;">@ViewBag.message</h1>
+    }
+    <div class="loading" style="display:none;">&nbsp;</div>
+    <div style="text-align: center;display:none" id="tryalertdanger" class="alert alert-danger col-sm-12"></div>   
+    <div style="text-align: center;display:none" id="tryalertsuccess" class="alert alert-success col-sm-12"></div>
+   <div id="redirect-mode" style="text-align: center;display:none"></div>
+    if (ViewBag.result != null)
+    {
+
+       @Html.Raw(ViewBag.result);
+
+
+    }
+
+  
+
+}
+
+<script>
+
+    $(document).ready(function () {
+              
+        var fid = $("form").attr("id");        
+        $("#"+fid).submit(function (event) {
+            event.preventDefault();
+            $('.loading').show();
+            var form = $("#" + fid).serialize();
+            var action = $("#" + fid).attr("action");
+            $.ajax({
+                type: 'POST',
+                url: action,
+            data: form,
+            dataType: 'json',
+            success: function (data) {
+                if (data.IsSuccess) {
+                   
+                    if (data.successMessage != null) {
+                        $('#tryalertsuccess').show();
+                        $('#tryalertsuccess').text(data.successMessage);
+                    }
+                    var redirectmMode = data.redirectMode;
+                    var redirectUrl = data.redirectUrl;
+                    var linkButtonText = data.linkButtonText;
+                    $('.loading').hide();
+                    if (redirectmMode == "Auto") {
+                        if (redirectUrl != null)                           
+                        window.open(redirectUrl, "_blank");
+                    }
+                    else if (redirectmMode == "Link") {
+                        if (redirectUrl != null && linkButtonText!=null) {
+                            $("#redirect-mode").show();
+                            $("#redirect-mode").html("<a href=" + redirectUrl + " target='_blank'>" + linkButtonText + "</a>");
+                        }
+                            //window.open(redirectUrl, "_blank");
+                    }
+                    else if (redirectmMode == "Button") {
+                        if (redirectUrl != null && linkButtonText != null) {
+                            $("#redirect-mode").show();
+                            $("#redirect-mode").html("<input type='button' onclick=window.open('"+redirectUrl+"','_blank') value='"+ linkButtonText + "' />");
+                            //window.open(redirectUrl, "_blank");
+                        }
+                    }
+                }
+                else {
+                    $('.loading').hide();
+                    $('#tryalertdanger').show();
+                    $('#tryalertdanger').text(data.errorMessage);
+                }
+            }
+        });
+
+        });
+
+    });
+</script>

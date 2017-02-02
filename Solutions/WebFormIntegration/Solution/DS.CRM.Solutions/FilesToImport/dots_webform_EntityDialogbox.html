@@ -1,0 +1,261 @@
+﻿<html>
+<head>
+    <title></title>
+    <!--for loader-->
+    <link href="css/webformstyle.css" rel="stylesheet" />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script type="text/javascript" src="../../ClientGlobalContext.js.aspx"></script>
+    <script src="Script/SDK.MetaData.js" type="text/javascript"></script>
+    <script>
+       
+        function   getSelectedEntity(value)
+        {
+           $('.chk').not(value).prop('checked', false);           
+            if ($(value).prop('checked', true)) {
+                //$('.chk').not(value).prop('checked', false);
+                var chkvalue = $(value).val();                             
+                $("#btnOK").attr("onclick", "getSelected('" + chkvalue + "'); closeWindow();");           
+                              
+                
+            } else {
+                $('.chk').prop('checked', false);
+                $("#btnOK").attr("onclick", "getSelected('null'); closeWindow();");
+            }
+                      
+
+           
+        }
+
+        function getSelected(entity) {
+
+            Mscrm.Utilities.setReturnValue(entity);
+        }
+        function getAllEntites() {
+            $(".loading").show();
+            ///<summary>
+            /// Initializes the sample when the document is ready
+            ///</summary>
+            //Assign the global variables
+            //results = document.getElementById("results");
+
+            //alertFlag = document.getElementById("dispalert");
+            //selectbox = document.getElementById("selectbox_AllEntites");
+            //attributeSelectBox = document.getElementById("selectbox_Allattributes");
+
+            //document.getElementById("btnstartSample").setAttribute("disabled", "disabled");
+            //Retrieve entities
+            SDK.Metadata.RetrieveAllEntities(SDK.Metadata.EntityFilters.Entity,
+             false,
+             successRetrieveAllEntities,
+             errorRetrieveAllEntities);
+            // setText(message, "Loading...");
+
+
+
+        }
+        function successRetrieveAllEntities(entityMetadataCollection) {
+            ///<summary>
+            /// Receives the data from SDK.Metadata.RetrieveAllEntities and
+            /// appends a list item to results for each one.
+            ///</summary>
+
+            entityMetadataCollection.sort(function (a, b) {
+                if (a.LogicalName < b.LogicalName)
+                { return -1 }
+                if (a.LogicalName > b.LogicalName)
+                { return 1 }
+                return 0;
+            });
+            var result;
+            for (var i = 0; i < entityMetadataCollection.length; i++) {
+
+                var entity = entityMetadataCollection[i];
+
+                if (entity.DisplayName.UserLocalizedLabel != null) {
+                    //optn.text = entity.DisplayName.UserLocalizedLabel.Label;
+
+                    // optn.value = entity.LogicalName;
+
+                    //selectbox.options.add(optn);
+                    var html = "<tr><td><input type='checkbox' class='chk' id=chk_"+ entity.LogicalName + " onclick='getSelectedEntity(this);' value=" + entity.LogicalName + " /></td><td>" + entity.DisplayName.UserLocalizedLabel.Label + "</td><td>" + entity.LogicalName + "</td></tr>";
+                    result += html;
+                }
+
+
+            }
+            var tbl = "<table class='table pop_up_table'><tr class='t-head'><th class'=sel'>Select</th><th class'=sel'> Display Name</th><th class'=sel2'>Logical Name</th><th></th></tr>" + result + "</table>";
+            $("#DlgHdBodyContainer").text(" ");
+            $("#DlgHdBodyContainer").html(tbl);
+            $(".loading").hide();
+        }
+            function errorRetrieveAllEntities(error) {
+                ///<summary>
+                /// Displays the error returned from  SDK.Metadata.RetrieveAllEntities if it fails.
+                ///</summary>
+                $(".loading").hide();
+                setText(message, error.message);
+                if (alertFlag.checked == true)
+                    alert("An Error occurred.");
+            }
+
+
+
+    </script>
+    <style type="text/css">
+        body {
+            direction: LTR;
+            margin: 0px;
+            border: 0px;
+            cursor: default;
+            font-family: Segoe UI,Tahoma,Arial;
+            font-size: 11px;
+        }
+
+        .ms-crm-RefreshDialog-Header {
+            top: 0px;
+            position: absolute;
+            width: 96%;
+            height: 75px;
+            padding-top: 10px;
+            background-color: #FFFFFF;
+            border-bottom-color: #A4ABB2;
+        }
+
+        DIV.ms-crm-RefreshDialog-Header-Title {
+            font-weight: Lighter;
+            font-size: 27px;
+            font-family: Segoe UI Light, Segoe UI, Tahoma, Arial;
+            margin-left: 30px;
+            margin-right: 30px;
+            color: #262626;
+        }
+
+        .ms-crm-TextAutoEllipsis {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .ms-crm-RefreshDialog-Header-Desc {
+            padding-top: 4px;
+            font-family: Segoe UI,Tahoma,Arial;
+            margin-left: 30px;
+            margin-right: 30px;
+            color: #666666;
+            font-size: 12px;
+        }
+
+        .ms-crm-RefreshDialog-Main {
+            font-size: 12px;
+            top: 90px;
+            position: absolute;
+            bottom: 49px;
+            vertical-align: top;
+            width: 95%;
+            font-family: Segoe UI,Tahoma,Arial;
+            color: #444444;
+            background-color: #FFFFFF;
+            border-bottom-color: #A4ABB2;
+            right: 30px;
+            left: 30px;
+        }
+
+       
+.ms-crm-RefreshDialog-Footer {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #f1f1f1;
+    border-color: #ccc #f8f8f8 #f8f8f8;
+    border-image: none;
+    border-style: solid none none;
+    border-width: 1px medium medium;
+    bottom: 0;
+    height: 44px;
+    min-width: 288px;
+    position: fixed;
+    text-align: right;
+    width: 100%;
+}
+
+        .ms-crm-RefreshDialog-Button {
+            color: #444444;
+            background-color: #FFFFFF;
+            height: 24px;
+            font-family: Segoe UI,Tahoma,Arial;
+            border: 1px solid #C6C6C6;
+            background-image: none;
+            margin-top: 10px;
+            width: auto;
+            min-width: 80px;
+            white-space: nowrap;
+            font-size: 12px;
+            line-height: 16px;
+            width: 84px;
+            text-align: center;
+            cursor: pointer;
+            background-repeat: repeat-x;
+            padding-left: 5px;
+            padding-right: 5px;
+        }
+
+       
+table.table.pop_up_table tr td {
+    font-size: 12px;
+     border-bottom: 1px solid #f5f5f5;
+    color: #666 !important;
+}
+
+.t-head th {
+    background: #f5f5f5 none repeat scroll 0 0;
+    border-bottom: 1px solid #ddd;
+    border-top: 1px solid #ddd;
+    font-size: 13px;
+    font-weight: normal;
+    text-align: left;
+}
+.sel {
+    width: 12%;
+}
+.sel2 {
+    width: 45%;
+}
+.ms-crm-DialogChrome {
+    padding: 20px;
+}
+
+    </style>
+
+    
+</head>
+<body onload="getAllEntites();">
+    <div class="loading" style="display:none;">&nbsp;</div>
+    <div class="ms-crm-RefreshDialog-Main-Container">
+        <div class="ms-crm-RefreshDialog-Header" id="tdDialogHeader">
+            <div id="dialogHeaderTitle" class="ms-crm-RefreshDialog-Header-Title ms-crm-TextAutoEllipsis"
+                 title="Your dialog header" style="width: 75%;">Entites</div>
+            <div id="dialogHeaderDesc" class="ms-crm-RefreshDialog-Header-Desc"
+                 title="Your dialog additional description">Select Entity from list and click OK.</div>
+            <div id="DlgHdBodyContainer" class="ms-crm-RefreshDialog-Main">
+                                
+            </div>
+        </div>
+        <div class="ms-crm-RefreshDialog-Footer" id="tdDialogFooter">
+            <!--<button id="btnOK" onclick="Mscrm.Utilities.setReturnValue(true); closeWindow();" type="button"
+                    class="ms-crm-RefreshDialog-Button" tabindex="1" style="margin-left: 8px;">
+                OK
+            </button>-->
+            <button id="btnOK"  type="button"
+                    class="ms-crm-RefreshDialog-Button" tabindex="1" style="margin-left: 8px;">
+                OK
+            </button>
+            <button id="cmdDialogCancel" onclick="closeWindow();" type="button" class="ms-crm-RefreshDialog-Button"
+                    tabindex="1" style="margin-left: 8px; margin-right: 30px">
+                Cancel
+            </button>
+        </div>
+    </div>
+</body>
+</html>
